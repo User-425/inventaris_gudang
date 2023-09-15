@@ -11,6 +11,5 @@ public class inventarisGudang {
 
 
     // Ambil stok
-    
 
 }
