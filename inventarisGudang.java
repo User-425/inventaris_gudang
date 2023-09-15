@@ -11,7 +11,8 @@ public class inventarisGudang {
     int jml_tambah1, jml_tambah2; 
 
     // Lihat stok
-
+    System.out.println("Jumlah stok obat1: " + obat1);
+    System.out.println("Jumlah stok obat2: " + obat2); 
 
     // Tambah stok
 
@@ -31,6 +32,7 @@ public class inventarisGudang {
     
 
     // Ambil stok
+
 
     }
 }
