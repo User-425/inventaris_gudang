@@ -8,24 +8,27 @@ public class inventarisGudang {
     public static void main(String[] args) {
     Scanner input = new Scanner(System.in);
     int obat1 = 100, obat2 = 100;
-    int jml_tambah1, jml_tambah2;
+    int jml_tambah1, jml_tambah2,jml_ambil1, jml_ambil2;
     char pemilihan;
     
     System.out.println("1.Lihat Stok\n2.Tambah Stok\n3.Ambil Stok");
     pemilihan = input.next().charAt(0);
+    
     switch (pemilihan) {
+    case '1':
     // Lihat stok
+    System.out.println("Jumlah stok obat1: " + obat1);
+    System.out.println("Jumlah stok obat2: " + obat2); 
+    break;
 
-
-   
+    case '2':        
     // Tambah stok
-    case '2':
     //obat1
     System.out.println("Tambah Stok Obat 1 : ");
     jml_tambah1 = input.nextInt();
     obat1 += jml_tambah1;
     
-        //obat2
+    //obat2
     System.out.println("Tambah Stok Obat 2 : ");
     jml_tambah2 = input.nextInt();
     obat2 += jml_tambah2;
@@ -35,12 +38,22 @@ public class inventarisGudang {
     System.out.println("Jumlah Stok Akhir Obat 2 " + obat2);
     break;
 
-    
-
+    case '3':
     // Ambil stok
-    default:
-    System.out.println("Error");
+    System.out.println("Ambil stok obat1 : ");
+    jml_ambil1 = input.nextInt();
+    obat1 -= jml_ambil1;
+
+    System.out.println("Ambil stok obat2  : ");
+    jml_ambil2 = input.nextInt();
+    obat2 -= jml_ambil2;
+
+    System.out.println("Stok obat1 setelah diambil: " + obat1);
+    System.out.println("Stok obat2 setelah diambil: "+ obat2);
     break;
+        default:
+         System.out.println("Error");
+            break;
     }
     }
 }
