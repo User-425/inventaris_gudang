@@ -9,12 +9,12 @@ public class inventarisGudang {
     Scanner input = new Scanner(System.in);
     int obat1 = 100, obat2 = 100;
     int jml_tambah1, jml_tambah2,jml_ambil1, jml_ambil2;
-    char pemilihan;
+    char pilihMenu;
     
     System.out.println("1.Lihat Stok\n2.Tambah Stok\n3.Ambil Stok");
-    pemilihan = input.next().charAt(0);
+    pilihMenu = input.next().charAt(0);
     
-    switch (pemilihan) {
+    switch (pilihMenu) {
     case '1':
     // Lihat stok
     System.out.println("Jumlah stok obat1: " + obat1);
