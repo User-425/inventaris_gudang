@@ -10,20 +10,28 @@ public class inventarisGudang {
         int obat1 = 100, obat2 = 100;
         int jml_tambah1, jml_tambah2, jml_ambil1, jml_ambil2;
         char pilihMenu;
-        String user, pass, userData = "admin", userPass = "test";
+        String user="woy", pass, userData = "admin", userPass = "test";
+        boolean login = false;
 
-        // login page
-        System.out.print("============== GUDANG ==============\n");
-        System.out.print("Masukan Username : ");
-        user = input.nextLine();
-        System.out.print("Masukan Password : ");
-        pass = input.nextLine();
+        while (login != true) {
+            // login page
+            System.out.print("============== GUDANG ==============\n");
+            System.out.print("Masukan Username : ");
+            user = input.nextLine();
+            System.out.print("Masukan Password : ");
+            pass = input.nextLine();
 
-        if (userData.equals(user) && userPass.equals(pass)) {
+            if (userData.equals(user) && userPass.equals(pass)) {
+                break;
+            } else {
+                System.out.println("Username atau Password yang Anda Masukan Salah");
+            }
+        }
+
             System.out.printf("Selamat Datang Kembali %s\n", user);
 
             // menu page
-            System.out.println("1.Lihat Stok\n2.Tambah Stok\n3.Ambil Stok");
+            System.out.println("1.Lihat Stok\n2.Tambah Stok\n3.Ambil Stok\n4. Keluar");
             pilihMenu = input.next().charAt(0);
 
             switch (pilihMenu) {
@@ -65,12 +73,14 @@ public class inventarisGudang {
                     System.out.println("Stok obat1 setelah diambil: " + obat1);
                     System.out.println("Stok obat2 setelah diambil: " + obat2);
                     break;
+
+                case '4':
+                    login = true;
+                    break;
                 default:
                     System.out.println("Error");
                     break;
-            }
-        } else {
-            System.out.println("Username atau Password yang Anda Masukan Salah");
         }
+
     }
 }
