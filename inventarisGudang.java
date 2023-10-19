@@ -32,7 +32,7 @@ public class inventarisGudang {
             System.out.printf("Selamat Datang Kembali %s\n", userData);
 
             // menu page
-            System.out.println("1.Lihat Stok\n2.Tambah Stok\n3.Ambil Stok\n4.Keluar");
+            System.out.println("1.Lihat Stok\n2.Tambah Stok\n3.Ambil Stok\n4.Logout\n5.Keluar");
             pilihMenu = input.next().charAt(0);
 
             switch (pilihMenu) {
@@ -84,6 +84,10 @@ public class inventarisGudang {
                 case '4':
                     // Exit Menu
                     login = false;
+                    break;
+               case '5':
+                    // Exit Program Menu
+                    running = false;
                     break;
                 default:
                     System.out.println("Error");
