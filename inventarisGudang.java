@@ -13,6 +13,7 @@ public class inventarisGudang {
         String user, pass, userData = "admin", userPass = "test";
         boolean login = false, running = true;
         String[] namaObat = { "Pfizer", "Promag" };
+        int[] jumlahStok = {120,100};
         while (running) {
             if (login != true) {
                 // login page
@@ -41,7 +42,7 @@ public class inventarisGudang {
                         // Lihat stok Section
                         System.out.print("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n============== Data Obat ==============\n");
                         for (int i = 0; i < namaObat.length; i++) {
-                            System.out.println((i + 1) + ". " + namaObat[i]);
+                            System.out.println((i + 1) + ". " + namaObat[i]+" ("+jumlahStok[i]+')');
                         }
                         System.out.println("Masukkan apapun untuk kembali ke menu");
                         String x = input.next();
@@ -50,21 +51,23 @@ public class inventarisGudang {
                     case '2':
                         // Tambah stok Section
                         System.out.print("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n============== Tambah Obat ==============\n");
-                        // obat1
-                        System.out.print("Tambah Stok Obat 1 : ");
-                        jml_tambah1 = input.nextInt();
-                        obat1 += jml_tambah1;
-                        System.out.printf("Sukses Menambahkan Obat Sebanyak %d\n", jml_tambah1);
+                        
+                        for (int i = 0; i < namaObat.length; i++) {
+                            System.out.println((i + 1) + ". " + namaObat[i]);
+                        }
 
-                        // obat2
-                        System.out.print("Tambah Stok Obat 2 : ");
-                        jml_tambah2 = input.nextInt();
-                        obat2 += jml_tambah2;
-                        System.out.printf("Sukses Menambahkan Obat Sebanyak %d\n", jml_tambah2);
+                        System.out.println("Masukkan nomor obat:");
+                        int y = input.nextInt();
 
-                        // Stok
-                        System.out.println("Jumlah Stok Akhir Obat 1: " + obat1);
-                        System.out.println("Jumlah Stok Akhir Obat 2: " + obat2);
+                        System.out.println("Jumlah stok obat "+ namaObat[y-1] + " = "+jumlahStok[y-1]);
+                        
+                        System.out.println("Masukkan jumlah tambah obat " + namaObat[y-1]+": ");
+                        int z = input.nextInt();
+
+                        jumlahStok[y-1] += z; 
+
+                        System.out.println("Jumlah stok obat "+ namaObat[y-1] + " saat ini adalah "+jumlahStok[y-1]);
+
                         System.out.println("Masukkan apapun untuk kembali ke menu");
                          x = input.next();
                         break;
