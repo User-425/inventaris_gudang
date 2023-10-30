@@ -7,8 +7,6 @@ public class inventarisGudang {
 
     public static void main(String[] args) {
         Scanner input = new Scanner(System.in);
-        int obat1 = 100, obat2 = 100;
-        int jml_tambah1, jml_tambah2, jml_ambil1, jml_ambil2;
         char pilihMenu;
         String user, pass, userData = "admin", userPass = "test";
         boolean login = false, running = true;
@@ -75,22 +73,24 @@ public class inventarisGudang {
                     case '3':
                         // Ambil stok Section
                         System.out.print("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n============== Ambil Obat ==============\n");
-                        // Obat1
-                        System.out.println("Ambil stok obat1 : ");
-                        jml_ambil1 = input.nextInt();
-                        obat1 -= jml_ambil1;
+                        for (int i = 0; i < namaObat.length; i++) {
+                            System.out.println((i + 1) + ". " + namaObat[i]);
+                        }
 
-                        // Obat2
-                        System.out.println("Ambil stok obat2  : ");
-                        jml_ambil2 = input.nextInt();
-                        obat2 -= jml_ambil2;
+                        System.out.println("Masukkan nomor obat:");
+                        y = input.nextInt();
 
-                        // Stok
-                        System.out.println("Stok obat1 setelah diambil: " + obat1);
-                        System.out.println("Stok obat2 setelah diambil: " + obat2);
+                        System.out.println("Jumlah stok obat "+ namaObat[y-1] + " = "+jumlahStok[y-1]);
+                        
+                        System.out.println("Masukkan jumlah ambil obat " + namaObat[y-1]+": ");
+                        z = input.nextInt();
+
+                        jumlahStok[y-1] -= z; 
+
+                        System.out.println("Jumlah stok obat "+ namaObat[y-1] + " saat ini adalah "+jumlahStok[y-1]);
 
                         System.out.println("Masukkan apapun untuk kembali ke menu");
-                        x = input.next();
+                         x = input.next();
                         break;
 
                     case '4':
