@@ -16,7 +16,7 @@ public class inventarisGudang {
         while (running) {
             if (login != true) {
                 // login page
-                System.out.print("============== GUDANG ==============\n");
+                System.out.print("\n\n\n\n\n\n\n\n\n\n\n\n\n\n============== GUDANG ==============\n");
                 System.out.print("Masukan Username : ");
                 user = input.next();
                 System.out.print("Masukan Password : ");
