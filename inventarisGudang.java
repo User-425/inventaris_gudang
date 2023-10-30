@@ -38,14 +38,14 @@ public class inventarisGudang {
             switch (pilihMenu) {
                 case '1':
                     // Lihat stok Section
-                    System.out.print("============== Data Obat ==============\n");
+                    System.out.print("\n\n\n\n\n\n\n\n\n\n\n\n\n\n============== Data Obat ==============\n");
                     System.out.println("Jumlah stok obat1: " + obat1);
                     System.out.println("Jumlah stok obat2: " + obat2);
                     break;
 
                 case '2':
                     // Tambah stok Section
-                    System.out.print("============== Tambah Obat ==============\n");
+                    System.out.print("\n\n\n\n\n\n\n\n\n\n\n\n\n\n============== Tambah Obat ==============\n");
                     // obat1
                     System.out.print("Tambah Stok Obat 1 : ");
                     jml_tambah1 = input.nextInt();
@@ -65,7 +65,7 @@ public class inventarisGudang {
 
                 case '3':
                     // Ambil stok Section
-                    System.out.print("============== Ambil Obat ==============\n");
+                    System.out.print("\n\n\n\n\n\n\n\n\n\n\n\n\n\n============== Ambil Obat ==============\n");
                     // Obat1
                     System.out.println("Ambil stok obat1 : ");
                     jml_ambil1 = input.nextInt();
@@ -90,7 +90,7 @@ public class inventarisGudang {
                     running = false;
                     break;
                 default:
-                    System.out.println("Error");
+                    System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\nError: Invalid Input!");
                     break;
             }
         }
