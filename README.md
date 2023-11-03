@@ -23,7 +23,7 @@ Aplikasi inventory biasanya memberikan manfaat seperti kemudahan dalam memantau 
 
 - Achmad Anfasa Rabbany *(2341720150)* [@User_425](https://github.com/User-425)
 - Arjuna Charly Dhymas Mahendra *(2341720156)*
-    [@ArjnCrly](https://github.com/ArjnCr)
+    [@ArjnCrly](https://github.com/ArjnCrly)
 - Muhammad Ammar Hafizh *(2341720074)* [@uhamhz](https://github.com/uhamhz)
 
 
