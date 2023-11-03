@@ -6,12 +6,18 @@ import java.util.Scanner;
 public class inventarisGudang {
 
     public static void main(String[] args) {
+        String x;
+        int y,z;
         Scanner input = new Scanner(System.in);
         char pilihMenu;
         String user, pass, userData = "admin", userPass = "test";
         boolean login = false, running = true;
-        String[] namaObat = { "Pfizer", "Promag" };
-        int[] jumlahStok = {120,100};
+        String[] namaObat = { "Pfizer", "Promag","Paracetamol"};
+        int[][] stok = {
+            {0,100},
+            {1,50},
+            {2,73},
+        };
         while (running) {
             if (login != true) {
                 // login page
@@ -36,14 +42,15 @@ public class inventarisGudang {
                 pilihMenu = input.next().charAt(0);
 
                 switch (pilihMenu) {
+
                     case '1':
                         // Lihat stok Section
                         System.out.print("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n============== Data Obat ==============\n");
-                        for (int i = 0; i < namaObat.length; i++) {
-                            System.out.println((i + 1) + ". " + namaObat[i]+" ("+jumlahStok[i]+')');
+                        for (int i = 0; i < stok.length; i++) {
+                            System.out.println(namaObat[stok[i][0]]+": "+stok[i][1]);
                         }
                         System.out.println("Masukkan apapun untuk kembali ke menu");
-                        String x = input.next();
+                        x = input.next();
                         break;
 
                     case '2':
@@ -51,24 +58,33 @@ public class inventarisGudang {
                         System.out.print("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n============== Tambah Obat ==============\n");
                         
                         for (int i = 0; i < namaObat.length; i++) {
-                            System.out.println((i + 1) + ". " + namaObat[i]);
+                            System.out.println((1+i)+". " +namaObat[i]); 
                         }
 
                         System.out.println("Masukkan nomor obat:");
-                        int y = input.nextInt();
+                        y = input.nextInt();
 
-                        System.out.println("Jumlah stok obat "+ namaObat[y-1] + " = "+jumlahStok[y-1]);
                         
+                        if (0 < y && y <= namaObat.length) {
+                        System.out.println("Jumlah stok obat "+ namaObat[y-1] + " = "+stok[y-1][1]);
                         System.out.println("Masukkan jumlah tambah obat " + namaObat[y-1]+": ");
-                        int z = input.nextInt();
+                        z = input.nextInt();
 
-                        jumlahStok[y-1] += z; 
+                    stok[y-1][1] += z; 
 
-                        System.out.println("Jumlah stok obat "+ namaObat[y-1] + " saat ini adalah "+jumlahStok[y-1]);
+                        System.out.println("Jumlah stok obat "+ namaObat[y-1] + " saat ini adalah "+stok[y-1][1]);
 
                         System.out.println("Masukkan apapun untuk kembali ke menu");
                          x = input.next();
-                        break;
+                        break; 
+
+                        } else {
+                        System.out.println("ERROR! Masukkan Nomor obat yang benar!");
+                        System.out.println("Masukkan apapun untuk kembali ke menu");
+                        x = input.next(); 
+                        break; 
+                        }
+
 
                     case '3':
                         // Ambil stok Section
@@ -79,19 +95,26 @@ public class inventarisGudang {
 
                         System.out.println("Masukkan nomor obat:");
                         y = input.nextInt();
-
-                        System.out.println("Jumlah stok obat "+ namaObat[y-1] + " = "+jumlahStok[y-1]);
+                        if (0 < y && y <= namaObat.length) {
+                        System.out.println("Jumlah stok obat "+ namaObat[y-1] + " = "+stok[y-1][1]);
                         
                         System.out.println("Masukkan jumlah ambil obat " + namaObat[y-1]+": ");
                         z = input.nextInt();
 
-                        jumlahStok[y-1] -= z; 
+                    stok[y-1][1] -= z; 
 
-                        System.out.println("Jumlah stok obat "+ namaObat[y-1] + " saat ini adalah "+jumlahStok[y-1]);
+                        System.out.println("Jumlah stok obat "+ namaObat[y-1] + " saat ini adalah "+stok[y-1][1]);
 
                         System.out.println("Masukkan apapun untuk kembali ke menu");
                          x = input.next();
                         break;
+
+                        } else {
+                        System.out.println("ERROR! Masukkan Nomor obat yang benar!");
+                        System.out.println("Masukkan apapun untuk kembali ke menu");
+                        x = input.next(); 
+                        break;
+                        } 
 
                     case '4':
                         // Exit Menu
