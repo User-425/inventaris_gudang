@@ -29,7 +29,7 @@ public class inventarisGudang {
                 while (i <= 4) {
                     // Halaman Login //
                     System.out.print(
-                            "\n".repeat(15)+"============== GUDANG ==============\n");
+                            "\n".repeat(15) + "============== GUDANG ==============\n");
                     System.out.print("Masukan Username : ");
                     user = input.next();
                     System.out.print("Masukan Password : ");
@@ -52,11 +52,20 @@ public class inventarisGudang {
                 }
             } else {
                 // Notification if login valid
-                System.out.printf("\n".repeat(15)+"Selamat Datang Kembali %s\n",
+                System.out.printf("\n".repeat(15) + "Selamat Datang Kembali %s\n",
                         userData);
 
                 // menu page
-                System.out.print("1.Lihat Stok\n2.Tambah Stok\n3.Ambil Stok\n4.Logout\n5.Keluar\nPilih Menu : ");
+
+                System.out.println("Menu:");
+                System.out.println("1. Lihat Stok");
+                System.out.println("2. Tambah Stok");
+                System.out.println("3. Ambil Stok");
+                System.out.println("4. Data Keseluruhan");
+                System.out.println("5. Logout");
+                System.out.println("6. Keluar");
+
+                System.out.print("Pilih Menu : ");
                 pilihMenu = input.next().charAt(0);
 
                 switch (pilihMenu) {
@@ -64,14 +73,15 @@ public class inventarisGudang {
                     case '1':
                         // Pilih Gudang
                         System.out.print(
-                                "\n".repeat(15)+"============== Gudang ==============\n");
+                                "\n".repeat(15) + "============== Gudang ==============\n");
                         for (int i = 0; i < gudang.length; i++) {
                             System.out.println((i + 1) + "." + gudang[i] + " ");
                         }
                         System.out.print("Pilih Gudang :");
                         pilihGudang = input.nextInt();
                         // Lihat Stok Section
-                        System.out.printf("\n".repeat(15)+"============== Gudang %s ==============\n",gudang[pilihGudang-1]);
+                        System.out.printf("\n".repeat(15) + "============== Gudang %s ==============\n",
+                                gudang[pilihGudang - 1]);
                         for (int i = 0; i < stok.length; i++) {
                             if (stok[i][2] == pilihGudang - 1) {
                                 System.out.println(namaObat[stok[i][0]] + ": " + stok[i][1]);
@@ -147,10 +157,24 @@ public class inventarisGudang {
                         }
 
                     case '4':
+                        // Show Every Data
+                        System.out.println("\n".repeat(15)+"============== Data Seluruh Obat ==============");
+                        for (int i = 0; i < gudang.length; i++) {
+                            System.out.println("Data Obat Gudang " + gudang[i]+": ");
+                            for (int j = 0; j < stok.length; j++) {
+                                if (stok[j][2] == i) {
+                                    System.out.println("("+j+") "+namaObat[stok[j][0]] + ": " + stok[j][1]);
+                                }
+                            }
+                        }
+                        System.out.println("Masukkan apapun untuk kembali ke menu");
+                        x = input.next();
+                        break;
+                    case '5':
                         // Exit Menu
                         login = false;
                         break;
-                    case '5':
+                    case '6':
                         // Exit Program Menu
                         running = false;
                         break;
