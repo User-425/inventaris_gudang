@@ -10,7 +10,7 @@ public class inventarisGudang {
         String x;
         int y, z;
         char pilihMenu;
-        int pilihGudang;
+        int pilihGudang, pilihStok, ambilStok;
         String user, pass, userData = "admin", userPass = "test";
         boolean login = false, running = true;
         String[] namaObat = { "Pfizer", "Promag", "Paracetamol" };
@@ -29,7 +29,7 @@ public class inventarisGudang {
                 while (i <= 4) {
                     // Halaman Login //
                     System.out.print(
-                            "\n".repeat(15)+"============== GUDANG ==============\n");
+                            "\n".repeat(15) + "============== GUDANG ==============\n");
                     System.out.print("Masukan Username : ");
                     user = input.next();
                     System.out.print("Masukan Password : ");
@@ -52,7 +52,7 @@ public class inventarisGudang {
                 }
             } else {
                 // Notification if login valid
-                System.out.printf("\n".repeat(15)+"Selamat Datang Kembali %s\n",
+                System.out.printf("\n".repeat(15) + "Selamat Datang Kembali %s\n",
                         userData);
 
                 // menu page
@@ -64,16 +64,17 @@ public class inventarisGudang {
                     case '1':
                         // Pilih Gudang
                         System.out.print(
-                                "\n".repeat(15)+"============== Gudang ==============\n");
+                                "\n".repeat(15) + "============== Gudang ==============\n");
                         for (int i = 0; i < gudang.length; i++) {
                             System.out.println((i + 1) + "." + gudang[i] + " ");
                         }
                         System.out.print("Pilih Gudang :");
-                        pilihGudang = input.nextInt();
+                        pilihGudang = input.nextInt() - 1;
                         // Lihat Stok Section
-                        System.out.printf("\n".repeat(15)+"============== Gudang %s ==============\n",gudang[pilihGudang-1]);
+                        System.out.printf("\n".repeat(15) + "============== Gudang %s ==============\n",
+                                gudang[pilihGudang]);
                         for (int i = 0; i < stok.length; i++) {
-                            if (stok[i][2] == pilihGudang - 1) {
+                            if (stok[i][2] == pilihGudang) {
                                 System.out.println(namaObat[stok[i][0]] + ": " + stok[i][1]);
                             }
                         }
@@ -82,69 +83,79 @@ public class inventarisGudang {
                         break;
 
                     case '2':
-                        // Tambah stok Section
+                        // Pilih Gudang
                         System.out.print(
-                                "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n============== Tambah Obat ==============\n");
-
-                        for (int i = 0; i < namaObat.length; i++) {
-                            System.out.println((1 + i) + ". " + namaObat[i]);
+                                "\n".repeat(15) + "============== Gudang ==============\n");
+                        for (int i = 0; i < gudang.length; i++) {
+                            System.out.println((i + 1) + "." + gudang[i] + " ");
                         }
+                        System.out.print("Pilih Gudang :");
+                        pilihGudang = input.nextInt() - 1;
+                        // Tambah Stok Section
+                        System.out.printf("\n".repeat(15) + "============== Gudang %s ==============\n",
+                                gudang[pilihGudang]);
+                        for (int i = 0; i < stok.length; i++) {
+                            if (stok[i][2] == pilihGudang) {
+                                System.out.println("(" + i + ") " + namaObat[stok[i][0]] + ": " + stok[i][1]);
+                            }
+                        }
+                        System.out.print("Masukan ID Obat : ");
+                        pilihStok = input.nextInt();
 
-                        System.out.print("Masukkan nomor obat: ");
-                        y = input.nextInt();
-
-                        if (0 < y && y <= namaObat.length) {
-                            System.out.println("Jumlah stok obat " + namaObat[y - 1] + " = " + stok[y - 1][1]);
-                            System.out.print("Masukkan jumlah tambah obat " + namaObat[y - 1] + ": ");
-                            z = input.nextInt();
-
-                            stok[y - 1][1] += z;
+                        if (stok[pilihStok][2] == pilihGudang) {
+                            System.out.print("Masukan Jumlah Tambah Stok Obat : ");
+                            stok[pilihStok][1] += input.nextInt();
 
                             System.out.println(
-                                    "Jumlah stok obat " + namaObat[y - 1] + " saat ini adalah " + stok[y - 1][1]);
-
-                            System.out.println("Masukkan apapun untuk kembali ke menu");
-                            x = input.next();
-                            break;
-
+                                    "Jumlah stok obat " + namaObat[stok[pilihStok][0]] + " saat ini adalah "
+                                            + stok[pilihStok][1]);
                         } else {
-                            System.out.println("ERROR! Masukkan Nomor obat yang benar!");
-                            System.out.println("Masukkan apapun untuk kembali ke menu");
-                            x = input.next();
-                            break;
+                            System.out.println("ERROR! Masukkan Nomor ID obat yang benar!");
                         }
+
+                        System.out.print("Masukkan apapun untuk kembali ke menu : ");
+                        x = input.next();
+                        break;
 
                     case '3':
-                        // Ambil stok Section
+                        // Pilih Gudang
                         System.out.print(
-                                "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n============== Ambil Obat ==============\n");
-                        for (int i = 0; i < namaObat.length; i++) {
-                            System.out.println((i + 1) + ". " + namaObat[i]);
+                                "\n".repeat(15) + "============== Gudang ==============\n");
+                        for (int i = 0; i < gudang.length; i++) {
+                            System.out.println((i + 1) + "." + gudang[i] + " ");
                         }
+                        System.out.print("Pilih Gudang : ");
+                        pilihGudang = input.nextInt() - 1;
+                        // Ambil Stok Section
+                        System.out.printf("\n".repeat(15) + "============== Gudang %s ==============\n",
+                                gudang[pilihGudang]);
+                        for (int i = 0; i < stok.length; i++) {
+                            if (stok[i][2] == pilihGudang) {
+                                System.out.println("(" + i + ") " + namaObat[stok[i][0]] + ": " + stok[i][1]);
+                            }
+                        }
+                        System.out.print("Masukan ID Obat : ");
+                        pilihStok = input.nextInt();
 
-                        System.out.print("Masukkan nomor obat: ");
-                        y = input.nextInt();
-                        if (0 < y && y <= namaObat.length) {
-                            System.out.println("Jumlah stok obat " + namaObat[y - 1] + " = " + stok[y - 1][1]);
-
-                            System.out.print("Masukkan jumlah ambil obat " + namaObat[y - 1] + ": ");
-                            z = input.nextInt();
-
-                            stok[y - 1][1] -= z;
+                        if (stok[pilihStok][2] == pilihGudang) {
+                            System.out.print("Masukan Jumlah Ambil Stok Obat : ");
+                            ambilStok = input.nextInt();
+                            if (ambilStok <= stok[pilihStok][1]) {
+                                stok[pilihStok][1] -= ambilStok;
+                            } else if (ambilStok > stok[pilihStok][1]) {
+                                System.out.println("ERROR! Stok Tidak Mencukupi!");
+                            }
 
                             System.out.println(
-                                    "Jumlah stok obat " + namaObat[y - 1] + " saat ini adalah " + stok[y - 1][1]);
-
-                            System.out.println("Masukkan apapun untuk kembali ke menu");
-                            x = input.next();
-                            break;
-
+                                    "Jumlah stok obat " + namaObat[stok[pilihStok][0]] + " saat ini adalah "
+                                            + stok[pilihStok][1]);
                         } else {
-                            System.out.println("ERROR! Masukkan Nomor obat yang benar!");
-                            System.out.println("Masukkan apapun untuk kembali ke menu");
-                            x = input.next();
-                            break;
+                            System.out.println("ERROR! Masukkan Nomor ID obat yang benar!");
                         }
+
+                        System.out.print("Masukkan apapun untuk kembali ke menu : ");
+                        x = input.next();
+                        break;
 
                     case '4':
                         // Exit Menu
