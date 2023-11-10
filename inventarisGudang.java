@@ -13,12 +13,18 @@ public class inventarisGudang {
         int pilihGudang, pilihStok, ambilStok;
         String user, pass, userData = "admin", userPass = "test";
         boolean login = false, running = true;
-        String[] namaObat = { "Pfizer", "Promag", "Paracetamol" };
+        String[] namaObat = { "Pfizer", "Promag", "Paracetamol", "Amoxicillin", "Decolgen" };
         int[][] stok = {
-                { 0, 100, 3 },
-                { 1, 50, 1 },
+                { 0, 113, 0 },
+                { 1, 57, 1 },
                 { 2, 73, 2 },
-                { 1, 59, 0 },
+                { 3, 59, 1 },
+                { 4, 34, 3 },
+                { 0, 82, 1 },
+                { 2, 141, 3 },
+                { 3, 42, 0 },
+                { 4, 29, 2 },
+                { 1, 65, 2 }
         };
         String[] gudang = { "Malang", "Jakarta", "Kediri", "Surabaya" };
 
@@ -52,7 +58,7 @@ public class inventarisGudang {
                 }
             } else {
                 // Notification if login valid
-                System.out.printf("\n".repeat(15) + "Selamat Datang Kembali %s\n",
+                System.out.printf("\n".repeat(10) + "Selamat Datang Kembali %s\n",
                         userData);
 
                 // menu page
@@ -168,12 +174,12 @@ public class inventarisGudang {
 
                     case '4':
                         // Show Every Data
-                        System.out.println("\n".repeat(15)+"============== Data Seluruh Obat ==============");
+                        System.out.println("\n".repeat(15) + "============== Data Seluruh Obat ==============");
                         for (int i = 0; i < gudang.length; i++) {
-                            System.out.println("Data Obat Gudang " + gudang[i]+": ");
+                            System.out.println("Data Obat Gudang " + gudang[i] + ": ");
                             for (int j = 0; j < stok.length; j++) {
                                 if (stok[j][2] == i) {
-                                    System.out.println("("+j+") "+namaObat[stok[j][0]] + ": " + stok[j][1]);
+                                    System.out.println("(" + j + ") " + namaObat[stok[j][0]] + ": " + stok[j][1]);
                                 }
                             }
                         }
