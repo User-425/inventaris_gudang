@@ -141,16 +141,16 @@ public class inventarisGudang {
                         pilihGudang = input.nextInt();
                         // Ambil Stok Section
                         System.out.printf("\n".repeat(15) + "============== Gudang %s ==============\n",
-                                gudang[pilihGudang]);
+                                gudang[pilihGudang - 1]);
                         for (int i = 0; i < stok.length; i++) {
-                            if (stok[i][2] == pilihGudang) {
+                            if (stok[i][2] == pilihGudang - 1) {
                                 System.out.println("(" + i + ") " + namaObat[stok[i][0]] + ": " + stok[i][1]);
                             }
                         }
                         System.out.print("Masukan ID Obat : ");
                         pilihStok = input.nextInt();
 
-                        if (stok[pilihStok][2] == pilihGudang) {
+                        if (stok[pilihStok][2] == pilihGudang - 1) {
                             System.out.print("Masukan Jumlah Ambil Stok Obat : ");
                             ambilStok = input.nextInt();
                             if (ambilStok <= stok[pilihStok][1]) {
