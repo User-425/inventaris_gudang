@@ -9,7 +9,7 @@ public class inventarisGudang {
         Scanner input = new Scanner(System.in);
         String x;
         int y, z;
-        char pilihMenu;
+        char pilihMenu, pilihMenuKeluar;
         int pilihGudang, pilihStok, ambilStok;
         String user, pass, userData = "admin", userPass = "test";
         boolean login = false, running = true;
@@ -62,22 +62,20 @@ public class inventarisGudang {
                         userData);
 
                 // menu page
-
                 System.out.println("Menu:");
                 System.out.println("1. Lihat Stok");
                 System.out.println("2. Tambah Stok");
                 System.out.println("3. Ambil Stok");
                 System.out.println("4. Data Keseluruhan");
-                System.out.println("5. Logout");
-                System.out.println("6. Keluar");
+                System.out.println("5. Keluar");
 
                 System.out.print("Pilih Menu : ");
                 pilihMenu = input.next().charAt(0);
 
                 switch (pilihMenu) {
 
+                    // Pilih Gudang
                     case '1':
-                        // Pilih Gudang
                         System.out.print(
                                 "\n".repeat(15) + "============== Gudang ==============\n");
                         for (int i = 0; i < gudang.length; i++) {
@@ -87,9 +85,9 @@ public class inventarisGudang {
                         pilihGudang = input.nextInt();
                         // Lihat Stok Section
                         System.out.printf("\n".repeat(15) + "============== Gudang %s ==============\n",
-                                gudang[pilihGudang]);
+                                gudang[pilihGudang - 1]);
                         for (int i = 0; i < stok.length; i++) {
-                            if (stok[i][2] == pilihGudang) {
+                            if (stok[i][2] == pilihGudang - 1) {
                                 System.out.println(namaObat[stok[i][0]] + ": " + stok[i][1]);
                             }
                         }
@@ -97,8 +95,8 @@ public class inventarisGudang {
                         x = input.next();
                         break;
 
+                    // Pilih Gudang
                     case '2':
-                        // Pilih Gudang
                         System.out.print(
                                 "\n".repeat(15) + "============== Gudang ==============\n");
                         for (int i = 0; i < gudang.length; i++) {
@@ -132,8 +130,8 @@ public class inventarisGudang {
                         x = input.next();
                         break;
 
+                    // Pilih Gudang
                     case '3':
-                        // Pilih Gudang
                         System.out.print(
                                 "\n".repeat(15) + "============== Gudang ==============\n");
                         for (int i = 0; i < gudang.length; i++) {
@@ -143,16 +141,16 @@ public class inventarisGudang {
                         pilihGudang = input.nextInt();
                         // Ambil Stok Section
                         System.out.printf("\n".repeat(15) + "============== Gudang %s ==============\n",
-                                gudang[pilihGudang]);
+                                gudang[pilihGudang - 1]);
                         for (int i = 0; i < stok.length; i++) {
-                            if (stok[i][2] == pilihGudang) {
+                            if (stok[i][2] == pilihGudang - 1) {
                                 System.out.println("(" + i + ") " + namaObat[stok[i][0]] + ": " + stok[i][1]);
                             }
                         }
                         System.out.print("Masukan ID Obat : ");
                         pilihStok = input.nextInt();
 
-                        if (stok[pilihStok][2] == pilihGudang) {
+                        if (stok[pilihStok][2] == pilihGudang - 1) {
                             System.out.print("Masukan Jumlah Ambil Stok Obat : ");
                             ambilStok = input.nextInt();
                             if (ambilStok <= stok[pilihStok][1]) {
@@ -172,8 +170,8 @@ public class inventarisGudang {
                         x = input.next();
                         break;
 
+                    // Show Every Data
                     case '4':
-                        // Show Every Data
                         System.out.println("\n".repeat(15) + "============== Data Seluruh Obat ==============");
                         for (int i = 0; i < gudang.length; i++) {
                             System.out.println("Data Obat Gudang " + gudang[i] + ": ");
@@ -186,13 +184,31 @@ public class inventarisGudang {
                         System.out.println("Masukkan apapun untuk kembali ke menu");
                         x = input.next();
                         break;
+                    // Exit Section
                     case '5':
                         // Exit Menu
-                        login = false;
-                        break;
-                    case '6':
-                        // Exit Program Menu
-                        running = false;
+                        System.out.print("\n".repeat(15) + "1. Keluar Akun\n2. Keluar Program\n3. Kembali\n");
+                        System.out.print("Pilih Menu : ");
+                        pilihMenuKeluar = input.next().charAt(0);
+                        switch (pilihMenuKeluar) {
+                            // Exit Account
+                            case '1':
+                                login = false;
+                                break;
+                            // Exit Program Menu
+                            case '2':
+                                running = false;
+                                break;
+                            // Back to Menu
+                            case '3':
+                                running = true;
+                                break;
+                            default:
+                                System.out.println("Error: Invalid User Input!");
+                                System.out.println("Masukkan apapun untuk kembali ke menu");
+                                x = input.next();
+                                break;
+                        }
                         break;
                     default:
                         System.out.println("Error: Invalid User Input!");
