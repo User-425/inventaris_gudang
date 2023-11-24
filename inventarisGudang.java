@@ -84,7 +84,7 @@ public class inventarisGudang {
                         for (int i = 0; i < gudang.length; i++) {
                             System.out.println((i + 1) + "." + gudang[i] + " ");
                         }
-                        System.out.print("Pilih Gudang :");
+                        System.out.print("Pilih Gudang : ");
                         pilihGudang = input.nextInt();
                         // Lihat Stok Section
                         CleanDisplay();
@@ -106,7 +106,7 @@ public class inventarisGudang {
                         for (int i = 0; i < gudang.length; i++) {
                             System.out.println((i + 1) + "." + gudang[i] + " ");
                         }
-                        System.out.print("Pilih Gudang :");
+                        System.out.print("Pilih Gudang : ");
                         pilihGudang = input.nextInt() - 1;
                         // Tambah Stok Section
                         CleanDisplay();
