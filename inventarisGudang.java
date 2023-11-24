@@ -27,11 +27,11 @@ public class inventarisGudang {
         char pilihMenu, pilihMenuKeluar;
         int pilihGudang, pilihStok, ambilStok;
         String user, pass, userData = "admin", userPass = "test";
-        boolean login = false, running = true;
+        boolean isLoggedIn = false, isRunning = true;
 
         // Main Program
-        while (running) {
-            if (login != true) {
+        while (isRunning) {
+            if (isLoggedIn != true) {
                 short i = 1, j = 3;
                 while (i <= 4) {
                     // Halaman Login //
@@ -42,10 +42,10 @@ public class inventarisGudang {
                     pass = input.next();
 
                     if (userData.equals(user) && userPass.equals(pass)) {
-                        login = true;
+                        isLoggedIn = true;
                         break;
                     } else if (i == 4) {
-                        running = false;
+                        isRunning = false;
                         CleanDisplay();
                         System.out.println("Akses Ditolak!");
                     } else {
@@ -202,16 +202,16 @@ public class inventarisGudang {
                             // Exit Account
                             case '1':
                                 CleanDisplay();
-                                login = false;
+                                isLoggedIn = false;
                                 break;
                             // Exit Program Menu
                             case '2':
-                                running = false;
+                                isRunning = false;
                                 break;
                             // Back to Menu
                             case '3':
                                 CleanDisplay();
-                                running = true;
+                                isRunning = true;
                                 break;
                             default:
                                 System.out.println("Error: Invalid User Input!");
