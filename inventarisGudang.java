@@ -4,17 +4,9 @@ import java.util.Scanner;
  * inventarisGudang
  */
 public class inventarisGudang {
-    public static void main(String[] args) {
-        // Declaration
-        Scanner input = new Scanner(System.in);
-        String x;
-        int y, z;
-        char pilihMenu, pilihMenuKeluar;
-        int pilihGudang, pilihStok, ambilStok;
-        String user, pass, userData = "admin", userPass = "test";
-        boolean login = false, running = true;
-        String[] namaObat = { "Pfizer", "Promag", "Paracetamol", "Amoxicillin", "Decolgen" };
-        int[][] stok = {
+    static String[] namaObat = { "Pfizer", "Promag", "Paracetamol", "Amoxicillin", "Decolgen" };
+            
+    static int[][] stok = {
                 { 0, 113, 0 },
                 { 1, 57, 1 },
                 { 2, 73, 2 },
@@ -26,7 +18,16 @@ public class inventarisGudang {
                 { 4, 29, 2 },
                 { 1, 65, 2 }
         };
-        String[] gudang = { "Malang", "Jakarta", "Kediri", "Surabaya" };
+    static String[] gudang = { "Malang", "Jakarta", "Kediri", "Surabaya" };
+    public static void main(String[] args) {
+        // Declaration
+        Scanner input = new Scanner(System.in);
+        String x;
+        int y, z;
+        char pilihMenu, pilihMenuKeluar;
+        int pilihGudang, pilihStok, ambilStok;
+        String user, pass, userData = "admin", userPass = "test";
+        boolean login = false, running = true;
 
         // Main Program
         while (running) {
@@ -91,7 +92,7 @@ public class inventarisGudang {
                                 gudang[pilihGudang - 1]);
                         for (int i = 0; i < stok.length; i++) {
                             if (stok[i][2] == pilihGudang - 1) {
-                                System.out.println(namaObat[stok[i][0]] + ": " + stok[i][1]);
+                                System.out.println(getNamaObat(i) + ": " + getStokObat(i));
                             }
                         }
                         System.out.println("Masukkan apapun untuk kembali ke menu");
@@ -113,7 +114,7 @@ public class inventarisGudang {
                                 gudang[pilihGudang]);
                         for (int i = 0; i < stok.length; i++) {
                             if (stok[i][2] == pilihGudang) {
-                                System.out.println("(" + i + ") " + namaObat[stok[i][0]] + ": " + stok[i][1]);
+                                System.out.println("(" + i + ") " + getNamaObat(i) + ": " + getStokObat(i));
                             }
                         }
                         System.out.print("Masukan ID Obat : ");
@@ -124,8 +125,8 @@ public class inventarisGudang {
                             stok[pilihStok][1] += input.nextInt();
 
                             System.out.println(
-                                    "Jumlah stok obat " + namaObat[stok[pilihStok][0]] + " saat ini adalah "
-                                            + stok[pilihStok][1]);
+                                    "Jumlah stok obat " + getNamaObat(pilihStok) + " saat ini adalah "
+                                            + getStokObat(pilihStok));
                         } else {
                             System.out.println("ERROR! Masukkan Nomor ID obat yang benar!");
                         }
@@ -149,7 +150,7 @@ public class inventarisGudang {
                                 gudang[pilihGudang - 1]);
                         for (int i = 0; i < stok.length; i++) {
                             if (stok[i][2] == pilihGudang - 1) {
-                                System.out.println("(" + i + ") " + namaObat[stok[i][0]] + ": " + stok[i][1]);
+                                System.out.println("(" + i + ") " + getNamaObat(i) + ": " +getStokObat(i));
                             }
                         }
                         System.out.print("Masukan ID Obat : ");
@@ -158,15 +159,15 @@ public class inventarisGudang {
                         if (stok[pilihStok][2] == pilihGudang - 1) {
                             System.out.print("Masukan Jumlah Ambil Stok Obat : ");
                             ambilStok = input.nextInt();
-                            if (ambilStok <= stok[pilihStok][1]) {
+                            if (ambilStok <= getStokObat(pilihStok)) {
                                 stok[pilihStok][1] -= ambilStok;
-                            } else if (ambilStok > stok[pilihStok][1]) {
+                            } else if (ambilStok > getStokObat(pilihStok)) {
                                 System.out.println("ERROR! Stok Tidak Mencukupi!");
                             }
 
                             System.out.println(
-                                    "Jumlah stok obat " + namaObat[stok[pilihStok][0]] + " saat ini adalah "
-                                            + stok[pilihStok][1]);
+                                    "Jumlah stok obat " + getNamaObat(pilihStok) + " saat ini adalah "
+                                            + getStokObat(pilihStok));
                         } else {
                             System.out.println("ERROR! Masukkan Nomor ID obat yang benar!");
                         }
@@ -183,7 +184,7 @@ public class inventarisGudang {
                             System.out.println("Data Obat Gudang " + gudang[i] + ": ");
                             for (int j = 0; j < stok.length; j++) {
                                 if (stok[j][2] == i) {
-                                    System.out.println("(" + j + ") " + namaObat[stok[j][0]] + ": " + stok[j][1]);
+                                    System.out.println("(" + j + ") " + getNamaObat(j) + ": " + getStokObat(j));
                                 }
                             }
                         }
@@ -228,9 +229,16 @@ public class inventarisGudang {
             }
         }
     }
+        static String getNamaObat(int index){
+        return namaObat[stok[index][0]];
+    }
+
 
     static void CleanDisplay() {
         System.out.print("\033[H\033[2J");
         System.out.flush();
+    }
+    static int getStokObat(int index){
+        return stok[index][1];
     }
 }
