@@ -4,86 +4,53 @@ import java.util.Scanner;
  * inventarisGudang
  */
 public class inventarisGudang {
+    static boolean isLoggedIn = false, isRunning = true;
     static String[] namaObat = { "Pfizer", "Promag", "Paracetamol", "Amoxicillin", "Decolgen" };
-            
+    static String[] gudang = { "Malang", "Jakarta", "Kediri", "Surabaya", "Gresik" };
+    static String userData = "admin";
+    static String userPass = "test";
     static int[][] stok = {
-                { 0, 113, 0 },
-                { 1, 57, 1 },
-                { 2, 73, 2 },
-                { 3, 59, 1 },
-                { 4, 34, 3 },
-                { 0, 82, 1 },
-                { 2, 141, 3 },
-                { 3, 42, 0 },
-                { 4, 29, 2 },
-                { 1, 65, 2 }
-        };
-    static String[] gudang = { "Malang", "Jakarta", "Kediri", "Surabaya" };
+            { 0, 113, 0 },
+            { 1, 57, 1 },
+            { 2, 73, 2 },
+            { 3, 59, 1 },
+            { 4, 34, 3 },
+            { 0, 82, 1 },
+            { 2, 141, 3 },
+            { 3, 42, 0 },
+            { 4, 29, 2 },
+            { 1, 65, 2 }
+    };
+
     public static void main(String[] args) {
+        CleanDisplay();
         // Declaration
         Scanner input = new Scanner(System.in);
         String x;
         int y, z;
         char pilihMenu, pilihMenuKeluar;
         int pilihGudang, pilihStok, ambilStok;
-        String user, pass, userData = "admin", userPass = "test";
-        boolean isLoggedIn = false, isRunning = true;
 
         // Main Program
         while (isRunning) {
             if (isLoggedIn != true) {
-                short i = 1, j = 3;
-                while (i <= 4) {
-                    // Halaman Login //
-                    System.out.print("============== GUDANG ==============\n");
-                    System.out.print("Masukan Username : ");
-                    user = input.next();
-                    System.out.print("Masukan Password : ");
-                    pass = input.next();
-
-                    if (userData.equals(user) && userPass.equals(pass)) {
-                        isLoggedIn = true;
-                        break;
-                    } else if (i == 4) {
-                        isRunning = false;
-                        CleanDisplay();
-                        System.out.println("Akses Ditolak!");
-                    } else {
-                        CleanDisplay();
-                        System.out.println("============== NOTIFIKASI ==============");
-                        System.out.printf(
-                                "Username atau Password yang Anda Masukan Salah!\nPercobaan yang tersisa adalah %d \n",
-                                j);
-                    }
-                    j--;
-                    i++;
-                }
+                loginPage();
             } else {
                 CleanDisplay();
                 // Notification if login valid
                 System.out.printf("Selamat Datang Kembali %s\n",
                         userData);
 
-                // menu page
-                System.out.println("Menu:");
-                System.out.println("1. Lihat Stok");
-                System.out.println("2. Tambah Stok");
-                System.out.println("3. Ambil Stok");
-                System.out.println("4. Data Keseluruhan");
-                System.out.println("5. Keluar");
+                displayMenu();
 
                 System.out.print("Pilih Menu : ");
                 pilihMenu = input.next().charAt(0);
 
                 switch (pilihMenu) {
-
                     // Pilih Gudang
                     case '1':
                         CleanDisplay();
-                        System.out.print("============== Gudang ==============\n");
-                        for (int i = 0; i < gudang.length; i++) {
-                            System.out.println((i + 1) + "." + gudang[i] + " ");
-                        }
+                        displayWarehouse();
                         System.out.print("Pilih Gudang : ");
                         pilihGudang = input.nextInt();
                         // Lihat Stok Section
@@ -102,10 +69,7 @@ public class inventarisGudang {
                     // Pilih Gudang
                     case '2':
                         CleanDisplay();
-                        System.out.print("============== Gudang ==============\n");
-                        for (int i = 0; i < gudang.length; i++) {
-                            System.out.println((i + 1) + "." + gudang[i] + " ");
-                        }
+                        displayWarehouse();
                         System.out.print("Pilih Gudang : ");
                         pilihGudang = input.nextInt() - 1;
                         // Tambah Stok Section
@@ -138,10 +102,7 @@ public class inventarisGudang {
                     // Pilih Gudang
                     case '3':
                         CleanDisplay();
-                        System.out.print("============== Gudang ==============\n");
-                        for (int i = 0; i < gudang.length; i++) {
-                            System.out.println((i + 1) + "." + gudang[i] + " ");
-                        }
+                        displayWarehouse();
                         System.out.print("Pilih Gudang : ");
                         pilihGudang = input.nextInt();
                         CleanDisplay();
@@ -150,7 +111,7 @@ public class inventarisGudang {
                                 gudang[pilihGudang - 1]);
                         for (int i = 0; i < stok.length; i++) {
                             if (stok[i][2] == pilihGudang - 1) {
-                                System.out.println("(" + i + ") " + getNamaObat(i) + ": " +getStokObat(i));
+                                System.out.println("(" + i + ") " + getNamaObat(i) + ": " + getStokObat(i));
                             }
                         }
                         System.out.print("Masukan ID Obat : ");
@@ -181,14 +142,19 @@ public class inventarisGudang {
                         CleanDisplay();
                         System.out.println("============== Data Seluruh Obat ==============");
                         for (int i = 0; i < gudang.length; i++) {
-                            System.out.println("Data Obat Gudang " + gudang[i] + ": ");
+                            System.out.println("\nData Obat Gudang " + gudang[i] + ": ");
+                            boolean hasObat = false;
                             for (int j = 0; j < stok.length; j++) {
                                 if (stok[j][2] == i) {
                                     System.out.println("(" + j + ") " + getNamaObat(j) + ": " + getStokObat(j));
+                                    hasObat = true;
                                 }
                             }
+                            if (!hasObat) {
+                                System.out.println("- Gudang Kosong -");
+                            }
                         }
-                        System.out.println("Masukkan apapun untuk kembali ke menu");
+                        System.out.println("\nMasukkan apapun untuk kembali ke menu");
                         x = input.next();
                         break;
                     // Exit Section
@@ -229,16 +195,63 @@ public class inventarisGudang {
             }
         }
     }
-        static String getNamaObat(int index){
+
+    static void displayWarehouse() {
+        System.out.print("============== Gudang ==============\n");
+        for (int i = 0; i < gudang.length; i++) {
+            System.out.println((i + 1) + "." + gudang[i] + " ");
+        }
+    }
+
+    static void CleanDisplay() {
+        for (int i = 0; i < 50; i++) {
+            System.out.println();
+        }
+        System.out.flush();
+    }
+
+    static void loginPage() {
+        Scanner input = new Scanner(System.in);
+        short loginAttempt = 1;
+        while (loginAttempt <= 3) {
+            System.out.print("============== GUDANG ==============\n");
+            System.out.print("Masukan Username : ");
+            String user = input.next();
+            System.out.print("Masukan Password : ");
+            String pass = input.next();
+            if (userData.equals(user) && userPass.equals(pass)) {
+                isLoggedIn = true;
+                break;
+            } else if (loginAttempt == 3) {
+                isRunning = false;
+                CleanDisplay();
+                System.out.println("Akses Ditolak!");
+            } else {
+                CleanDisplay();
+                System.out.println("============== NOTIFIKASI ==============");
+                System.out.printf(
+                        "Username atau Password yang Anda Masukan Salah!\nPercobaan yang tersisa adalah %d \n",
+                        (3-loginAttempt));
+            }
+            loginAttempt++;
+        }
+        input.close();
+    }
+
+    static void displayMenu() {
+        System.out.println("Menu:");
+        System.out.println("1. Lihat Stok");
+        System.out.println("2. Tambah Stok");
+        System.out.println("3. Ambil Stok");
+        System.out.println("4. Data Keseluruhan");
+        System.out.println("5. Keluar");
+    }
+
+    static String getNamaObat(int index) {
         return namaObat[stok[index][0]];
     }
 
-
-    static void CleanDisplay() {
-        System.out.print("\033[H\033[2J");
-        System.out.flush();
-    }
-    static int getStokObat(int index){
+    static int getStokObat(int index) {
         return stok[index][1];
     }
 }
