@@ -34,6 +34,7 @@ public class inventarisGudang {
         // Main Program
         while (isRunning) {
             if (isLoggedIn != true) {
+                // isLoggedIn = true;
                 loginPage();
             } else {
                 CleanDisplay();
@@ -235,7 +236,6 @@ public class inventarisGudang {
             }
             loginAttempt++;
         }
-        input.close();
     }
 
     static void displayMenu() {
