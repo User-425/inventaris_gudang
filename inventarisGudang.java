@@ -53,7 +53,7 @@ public class inventarisGudang {
                         CleanDisplay();
                         displayWarehouse();
                         System.out.print("Pilih Gudang : ");
-                        pilihGudang = input.nextInt();
+                        pilihGudang = getUserInput(input, 1, gudang.length);
                         // Lihat Stok Section
                         CleanDisplay();
                         System.out.printf("============== Gudang %s ==============\n",
@@ -232,7 +232,7 @@ public class inventarisGudang {
                 System.out.println("============== NOTIFIKASI ==============");
                 System.out.printf(
                         "Username atau Password yang Anda Masukan Salah!\nPercobaan yang tersisa adalah %d \n",
-                        (3-loginAttempt));
+                        (3 - loginAttempt));
             }
             loginAttempt++;
         }
@@ -253,5 +253,20 @@ public class inventarisGudang {
 
     static int getStokObat(int index) {
         return stok[index][1];
+    }
+
+    static int getUserInput(Scanner scanner, int min, int max) {
+        int input;
+        do {
+            while (!scanner.hasNextInt()) {
+                System.out.println("Invalid input. Please enter a valid integer.");
+                scanner.next();
+            }
+            input = scanner.nextInt();
+            if (input < min || input > max) {
+                System.out.println("Please enter a number between " + min + " and " + max + ".");
+            }
+        } while (input < min || input > max);
+        return input;
     }
 }
