@@ -72,7 +72,7 @@ public class inventarisGudang {
                         CleanDisplay();
                         displayWarehouse();
                         System.out.print("Pilih Gudang : ");
-                        pilihGudang = input.nextInt() - 1;
+                        pilihGudang = (getUserInput(input, 1, gudang.length) - 1);
                         // Tambah Stok Section
                         CleanDisplay();
                         System.out.printf("============== Gudang %s ==============\n",
@@ -83,7 +83,7 @@ public class inventarisGudang {
                             }
                         }
                         System.out.print("Masukan ID Obat : ");
-                        pilihStok = input.nextInt();
+                        pilihStok = getUserInput(input, 0, stok.length);
 
                         if (stok[pilihStok][2] == pilihGudang) {
                             System.out.print("Masukan Jumlah Tambah Stok Obat : ");
@@ -105,7 +105,7 @@ public class inventarisGudang {
                         CleanDisplay();
                         displayWarehouse();
                         System.out.print("Pilih Gudang : ");
-                        pilihGudang = input.nextInt();
+                        pilihGudang = getUserInput(input, 1, gudang.length);
                         CleanDisplay();
                         // Ambil Stok Section
                         System.out.printf("============== Gudang %s ==============\n",
@@ -116,7 +116,7 @@ public class inventarisGudang {
                             }
                         }
                         System.out.print("Masukan ID Obat : ");
-                        pilihStok = input.nextInt();
+                        pilihStok = getUserInput(input, 0, stok.length);
 
                         if (stok[pilihStok][2] == pilihGudang - 1) {
                             System.out.print("Masukan Jumlah Ambil Stok Obat : ");
