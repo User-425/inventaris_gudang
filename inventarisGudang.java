@@ -166,6 +166,7 @@ public class inventarisGudang {
                         pilihMenu = input.nextInt();
                         switch (pilihMenu) {
                             case 1:
+                                CleanDisplay();
                                 System.out.print("Nama Gudang Baru : ");
                                 String gudangBaru = input.next();
                                 String[] tempArray = new String[gudang.length + 1];
@@ -179,6 +180,19 @@ public class inventarisGudang {
                                 }
                                 break;
                             case 2:
+                                CleanDisplay();
+                                displayWarehouse();
+                                System.out.println("Pilih Gudang yang Akan Dihapus : ");
+                                pilihMenu = input.nextInt() - 1;
+                                tempArray = new String[gudang.length - 1];
+                                for (int i = 0; i < gudang.length; i++) {
+                                    if (i == pilihMenu) {
+                                        continue;
+                                    } else {
+                                        tempArray[i] = gudang[i];
+                                    }
+                                }
+                                gudang = tempArray;
                                 break;
                             default:
                                 break;
