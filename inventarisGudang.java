@@ -140,14 +140,15 @@ public class inventarisGudang {
                         CleanDisplay();
                         System.out.println("1. Tambah Jenis Obat");
                         System.out.println("2. Hapus Obat");
-                        System.out.println("3. Tambah Obat di Gudang");
-                        System.out.println("4. Hapus Obat di Gudang");
+                        System.out.println("3. Lihat Keseleruhan Jenis Obat");
+                        System.out.println("4. Tambah Obat di Gudang");
+                        System.out.println("3. Hapus Obat di Gudang");
                         System.out.print("Pilih Menu : ");
                         pilihMenu = input.nextInt();
                         switch (pilihMenu) {
                             case 1:
                                 CleanDisplay();
-                                System.out.println("Masukan Nama Obat : ");
+                                System.out.print("Masukan Nama Obat Baru : ");
                                 String obatBaru = input.next();
                                 String[] tempArray = new String[namaObat.length + 1];
                                 for (int i = 0; i < namaObat.length; i++) {
@@ -160,9 +161,27 @@ public class inventarisGudang {
                                 }
                                 break;
                             case 2:
+                                CleanDisplay();
+                                displayMedicine();
+                                System.out.print("Pilih Obat yang Akan Dihapus : ");
+                                pilihMenu = input.nextInt() - 1;
+                                tempArray = new String[namaObat.length - 1];
+                                int index = 0;
+                                for (int i = 0; i < namaObat.length; i++) {
+                                    if (i == pilihMenu) {
+                                        continue;
+                                    } else {
+                                        tempArray[index] = namaObat[i];
+                                        index++;
+                                    }
+                                }
+                                namaObat = tempArray;
                                 break;
                             case 3:
-
+                                CleanDisplay();
+                                displayMedicine();
+                                System.out.print("\nMasukkan apapun untuk kembali ke menu");
+                                x = input.next();
                                 break;
 
                             default:
@@ -277,6 +296,13 @@ public class inventarisGudang {
         System.out.print("============== Gudang ==============\n");
         for (int i = 0; i < gudang.length; i++) {
             System.out.println((i + 1) + "." + gudang[i] + " ");
+        }
+    }
+
+    static void displayMedicine() {
+        System.out.print("============== Jenis Obat ==============\n");
+        for (int i = 0; i < namaObat.length; i++) {
+            System.out.println((i + 1) + "." + namaObat[i] + " ");
         }
     }
 
