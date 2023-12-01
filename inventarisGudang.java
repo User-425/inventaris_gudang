@@ -137,10 +137,37 @@ public class inventarisGudang {
                         x = input.next();
                         break;
                     case 5:
-                    CleanDisplay();
-                    System.out.println("1. Tambah Obat");
-                    System.out.println("2. Hapus Obat");
-                    System.out.println("3. Pindah Obat");
+                        CleanDisplay();
+                        System.out.println("1. Tambah Jenis Obat");
+                        System.out.println("2. Hapus Obat");
+                        System.out.println("3. Tambah Obat di Gudang");
+                        System.out.println("4. Hapus Obat di Gudang");
+                        System.out.print("Pilih Menu : ");
+                        pilihMenu = input.nextInt();
+                        switch (pilihMenu) {
+                            case 1:
+                                CleanDisplay();
+                                System.out.println("Masukan Nama Obat : ");
+                                String obatBaru = input.next();
+                                String[] tempArray = new String[namaObat.length + 1];
+                                for (int i = 0; i < namaObat.length; i++) {
+                                    tempArray[i] = namaObat[i];
+                                }
+                                tempArray[tempArray.length - 1] = obatBaru;
+                                namaObat = new String[tempArray.length];
+                                for (int i = 0; i < tempArray.length; i++) {
+                                    namaObat[i] = tempArray[i];
+                                }
+                                break;
+                            case 2:
+                                break;
+                            case 3:
+
+                                break;
+
+                            default:
+                                break;
+                        }
                         break;
 
                     // Show Every Data
