@@ -41,7 +41,6 @@ public class inventarisGudang {
                 // Notification if login valid
                 System.out.printf("Selamat Datang Kembali %s\n",
                         userData);
-
                 displayMenu();
 
                 System.out.print("Pilih Menu : ");
@@ -161,8 +160,9 @@ public class inventarisGudang {
                     // Exit Section
                     case 5:
                         CleanDisplay();
-                        System.out.print("1. Tambah Gudang\n2. Hapus Gudang\n");
-                        System.out.print("Pilih Menu : ");
+                        System.out.println("1. Tambah Gudang");
+                        System.out.println("2. Hapus Gudang");
+                        System.out.println("Pilih Menu : ");
                         pilihMenu = input.nextInt();
                         switch (pilihMenu) {
                             case 1:
@@ -201,8 +201,10 @@ public class inventarisGudang {
                     case 6:
                         CleanDisplay();
                         // Exit Menu
-                        System.out.print("1. Keluar Akun\n2. Keluar Program\n3. Kembali\n");
-                        System.out.print("Pilih Menu : ");
+                        System.out.println("1. Keluar Akun");
+                        System.out.println("2. Keluar Program");
+                        System.out.println("3. Kembali");
+                        System.out.println("Pilih Menu : ");
                         pilihMenuKeluar = input.nextInt();
                         switch (pilihMenuKeluar) {
                             // Exit Account
@@ -241,6 +243,10 @@ public class inventarisGudang {
         for (int i = 0; i < gudang.length; i++) {
             System.out.println((i + 1) + "." + gudang[i] + " ");
         }
+    }
+
+    static void deleteElementArray() {
+
     }
 
     static void CleanDisplay() {
@@ -299,12 +305,12 @@ public class inventarisGudang {
         int input;
         do {
             while (!scanner.hasNextInt()) {
-                System.out.println("Invalid input. Please enter a valid integer.");
+                System.out.println("Input tidak valid. Silakan coba lagi.");
                 scanner.next();
             }
             input = scanner.nextInt();
             if (input < min || input > max) {
-                System.out.println("Please enter a number between " + min + " and " + max + ".");
+                System.out.println("Input tidak valid. Silakan coba lagi.");
             }
         } while (input < min || input > max);
         return input;
