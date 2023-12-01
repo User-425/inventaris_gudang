@@ -166,10 +166,19 @@ public class inventarisGudang {
                         pilihMenu = input.nextInt();
                         switch (pilihMenu) {
                             case 1:
-                            displayWarehouse();
+                                System.out.print("Nama Gudang Baru : ");
+                                String gudangBaru = input.next();
+                                String[] tempArray = new String[gudang.length + 1];
+                                for (int i = 0; i < gudang.length; i++) {
+                                    tempArray[i] = gudang[i];
+                                }
+                                tempArray[tempArray.length - 1] = gudangBaru;
+                                gudang = new String[tempArray.length];
+                                for (int i = 0; i < tempArray.length; i++) {
+                                    gudang[i] = tempArray[i];
+                                }
                                 break;
                             case 2:
-
                                 break;
                             default:
                                 break;
