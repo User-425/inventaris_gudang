@@ -28,7 +28,7 @@ public class inventarisGudang {
         Scanner input = new Scanner(System.in);
         String x;
         int y, z;
-        char pilihMenu, pilihMenuKeluar;
+        int pilihMenu, pilihMenuKeluar;
         int pilihGudang, pilihStok, ambilStok;
 
         // Main Program
@@ -45,11 +45,11 @@ public class inventarisGudang {
                 displayMenu();
 
                 System.out.print("Pilih Menu : ");
-                pilihMenu = input.next().charAt(0);
+                pilihMenu = input.nextInt();
 
                 switch (pilihMenu) {
                     // Pilih Gudang
-                    case '1':
+                    case 1:
                         CleanDisplay();
                         displayWarehouse();
                         System.out.print("Pilih Gudang : ");
@@ -68,7 +68,7 @@ public class inventarisGudang {
                         break;
 
                     // Pilih Gudang
-                    case '2':
+                    case 2:
                         CleanDisplay();
                         displayWarehouse();
                         System.out.print("Pilih Gudang : ");
@@ -101,7 +101,7 @@ public class inventarisGudang {
                         break;
 
                     // Pilih Gudang
-                    case '3':
+                    case 3:
                         CleanDisplay();
                         displayWarehouse();
                         System.out.print("Pilih Gudang : ");
@@ -139,7 +139,7 @@ public class inventarisGudang {
                         break;
 
                     // Show Every Data
-                    case '4':
+                    case 4:
                         CleanDisplay();
                         System.out.println("============== Data Seluruh Obat ==============");
                         for (int i = 0; i < gudang.length; i++) {
@@ -159,24 +159,40 @@ public class inventarisGudang {
                         x = input.next();
                         break;
                     // Exit Section
-                    case '5':
+                    case 5:
+                        CleanDisplay();
+                        System.out.print("1. Tambah Gudang\n2. Hapus Gudang\n");
+                        System.out.print("Pilih Menu : ");
+                        pilihMenu = input.nextInt();
+                        switch (pilihMenu) {
+                            case 1:
+                            displayWarehouse();
+                                break;
+                            case 2:
+
+                                break;
+                            default:
+                                break;
+                        }
+                        break;
+                    case 6:
                         CleanDisplay();
                         // Exit Menu
                         System.out.print("1. Keluar Akun\n2. Keluar Program\n3. Kembali\n");
                         System.out.print("Pilih Menu : ");
-                        pilihMenuKeluar = input.next().charAt(0);
+                        pilihMenuKeluar = input.nextInt();
                         switch (pilihMenuKeluar) {
                             // Exit Account
-                            case '1':
+                            case 1:
                                 CleanDisplay();
                                 isLoggedIn = false;
                                 break;
                             // Exit Program Menu
-                            case '2':
+                            case 2:
                                 isRunning = false;
                                 break;
                             // Back to Menu
-                            case '3':
+                            case 3:
                                 CleanDisplay();
                                 isRunning = true;
                                 break;
@@ -244,7 +260,8 @@ public class inventarisGudang {
         System.out.println("2. Tambah Stok");
         System.out.println("3. Ambil Stok");
         System.out.println("4. Data Keseluruhan");
-        System.out.println("5. Keluar");
+        System.out.println("5. Konfigurasi Gudang");
+        System.out.println("6. Keluar");
     }
 
     static String getNamaObat(int index) {
