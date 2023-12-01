@@ -136,6 +136,12 @@ public class inventarisGudang {
                         System.out.print("Masukkan apapun untuk kembali ke menu : ");
                         x = input.next();
                         break;
+                    case 5:
+                    CleanDisplay();
+                    System.out.println("1. Tambah Obat");
+                    System.out.println("2. Hapus Obat");
+                    System.out.println("3. Pindah Obat");
+                        break;
 
                     // Show Every Data
                     case 4:
@@ -158,11 +164,11 @@ public class inventarisGudang {
                         x = input.next();
                         break;
                     // Exit Section
-                    case 5:
+                    case 6:
                         CleanDisplay();
                         System.out.println("1. Tambah Gudang");
                         System.out.println("2. Hapus Gudang");
-                        System.out.println("Pilih Menu : ");
+                        System.out.print("Pilih Menu : ");
                         pilihMenu = input.nextInt();
                         switch (pilihMenu) {
                             case 1:
@@ -182,14 +188,16 @@ public class inventarisGudang {
                             case 2:
                                 CleanDisplay();
                                 displayWarehouse();
-                                System.out.println("Pilih Gudang yang Akan Dihapus : ");
+                                System.out.print("Pilih Gudang yang Akan Dihapus : ");
                                 pilihMenu = input.nextInt() - 1;
                                 tempArray = new String[gudang.length - 1];
+                                int index = 0;
                                 for (int i = 0; i < gudang.length; i++) {
                                     if (i == pilihMenu) {
                                         continue;
                                     } else {
-                                        tempArray[i] = gudang[i];
+                                        tempArray[index] = gudang[i];
+                                        index++;
                                     }
                                 }
                                 gudang = tempArray;
@@ -198,7 +206,7 @@ public class inventarisGudang {
                                 break;
                         }
                         break;
-                    case 6:
+                    case 7:
                         CleanDisplay();
                         // Exit Menu
                         System.out.println("1. Keluar Akun");
@@ -289,8 +297,9 @@ public class inventarisGudang {
         System.out.println("2. Tambah Stok");
         System.out.println("3. Ambil Stok");
         System.out.println("4. Data Keseluruhan");
-        System.out.println("5. Konfigurasi Gudang");
-        System.out.println("6. Keluar");
+        System.out.println("5. Konfigurasi Obat");
+        System.out.println("6. Konfigurasi Gudang");
+        System.out.println("7. Keluar");
     }
 
     static String getNamaObat(int index) {
