@@ -270,7 +270,7 @@ public class inventarisGudang {
                                 System.out.println("- Gudang Kosong -");
                             }
                         System.out.println("\nPilih ID Obat : ");
-                      = getUserInput(input, 0, stok.length-1);
+                        pilihStok = getUserInput(input, 1, stok.length) - 1;
                         
                         System.out.println("\nMasukkan apapun untuk kembali ke menu");
                         x = input.next();
