@@ -4,6 +4,8 @@ import java.util.Scanner;
  * inventarisGudang
  */
 public class inventarisGudang {
+    static String x;
+    static int y, z;
     static boolean isLoggedIn = false, isRunning = true;
     static String[] namaObat = { "Pfizer", "Promag", "Paracetamol", "Amoxicillin", "Decolgen" };
     static String[] gudang = { "Malang", "Jakarta", "Kediri", "Surabaya", "Gresik" };
@@ -26,8 +28,6 @@ public class inventarisGudang {
         cleanDisplay();
         // Declaration
         Scanner input = new Scanner(System.in);
-        String x;
-        int y, z;
         int pilihMenu, pilihMenuKeluar;
         int pilihGudang, pilihStok, ambilStok;
 
@@ -82,7 +82,7 @@ public class inventarisGudang {
                             }
                         }
                         System.out.print("Masukan ID Obat : ");
-                        pilihStok = getUserInput(input, 0, stok.length-1);
+                        pilihStok = getUserInput(input, 0, stok.length - 1);
 
                         if (stok[pilihStok][2] == pilihGudang) {
                             System.out.print("Masukan Jumlah Tambah Stok Obat : ");
@@ -115,7 +115,7 @@ public class inventarisGudang {
                             }
                         }
                         System.out.print("Masukan ID Obat : ");
-                        pilihStok = getUserInput(input, 0, stok.length-1);
+                        pilihStok = getUserInput(input, 0, stok.length - 1);
 
                         if (stok[pilihStok][2] == pilihGudang - 1) {
                             System.out.print("Masukan Jumlah Ambil Stok Obat : ");
@@ -260,18 +260,60 @@ public class inventarisGudang {
                         cleanDisplay();
                         System.out.print("============== Gudang " + gudang[pilihGudang] + " ==============\n");
                         boolean hasObat = false;
+                        for (int j = 0; j < stok.length; j++) {
+                            if (stok[j][2] == pilihGudang) {
+                                System.out.println("(" + j + ") " + getNamaObat(j) + ": " + getStokObat(j));
+                                hasObat = true;
+                            }
+                        }
+                        if (!hasObat) {
+                            System.out.println("- Gudang Kosong -");
+                        }
+                        System.out.println("\nPilih ID Obat : ");
+                        pilihStok = getUserInput(input, 0, stok.length - 1);
+
+                        System.out.println("\nMasukkan Jumlah yang akan dipindah : ");
+                        ambilStok = getUserInput(input, 1, stok[pilihStok][1]);
+
+                        cleanDisplay();
+                        displayWarehouse();
+                        System.out.println("Pilih Gudang Tujuan: ");
+                        int pilihGudangTujuan = getUserInput(input, 1, gudang.length) - 1;
+                        System.out.println(pilihGudangTujuan);
+                        y = -1;
+                        for (int i = 0; i < stok.length; i++) {
+                            if (stok[i][2] == pilihGudangTujuan && stok[i][0] == pilihStok) {
+                                y = i;
+                                break;
+                            }     
+                        }
+
+                        cleanDisplay();
+                        // Show before after
+                        System.out.println("============== Gudang " + gudang[pilihGudang] + " ==============\n");
+                        System.out.printf("%d => %d\n", getStokObat(pilihStok), getStokObat(pilihStok) - ambilStok);
+
+                        System.out.println("============== Gudang " + gudang[pilihGudangTujuan] + " ==============\n");
+                        System.out.printf("%d => %d\n", (y == -1) ? 0 : getStokObat(y), ((y == -1) ? 0 : getStokObat(y)) + ambilStok);
+
+                        System.out.println("Apakah anda yakin? (Y/N)");
+                        String yakin = input.next();
+                        if (yakin.equals("Y") || yakin.equals("y")) {
+                            // Implement Pindah Gudang
+                            hasObat = false;
                             for (int j = 0; j < stok.length; j++) {
-                                if (stok[j][2] == pilihGudang) {
-                                    System.out.println("(" + j + ") " + getNamaObat(j) + ": " + getStokObat(j));
+                                if (stok[j][2] == pilihGudangTujuan) {
+                                    stok[j][1] += ambilStok;
                                     hasObat = true;
+                                    break;
                                 }
                             }
                             if (!hasObat) {
-                                System.out.println("- Gudang Kosong -");
+                                addStock(pilihStok, ambilStok, pilihGudangTujuan);
                             }
-                        System.out.println("\nPilih ID Obat : ");
-                        pilihStok = getUserInput(input, 1, stok.length) - 1;
-                        
+                            stok[pilihStok][1] = stok[pilihStok][1] - ambilStok;
+                        }
+
                         System.out.println("\nMasukkan apapun untuk kembali ke menu");
                         x = input.next();
                         break;
@@ -315,6 +357,19 @@ public class inventarisGudang {
         }
     }
 
+    static void addStock(int gudang, int obat, int stokObat) {
+        int[][] tempArray = newArray(stok.length + 1);
+        for (int i = 0; i < stok.length; i++) {
+            tempArray[i] = stok[i];
+        }
+        tempArray[tempArray.length - 1] = new int[] { gudang, obat, stokObat };
+        stok = tempArray;
+    }
+
+    static int[][] newArray(int size) {
+        return new int[size][3];
+    }
+
     static void displayWarehouse() {
         System.out.print("============== Gudang ==============\n");
         for (int i = 0; i < gudang.length; i++) {
@@ -327,10 +382,6 @@ public class inventarisGudang {
         for (int i = 0; i < namaObat.length; i++) {
             System.out.println((i + 1) + "." + namaObat[i] + " ");
         }
-    }
-
-    static void deleteElementArray() {
-
     }
 
     static void cleanDisplay() {
