@@ -15,7 +15,6 @@ Aplikasi inventory biasanya memberikan manfaat seperti kemudahan dalam memantau 
 - 👓 Lihat Stok
 - 📦 Tambah Stok
 - 📦 Ambil Stok
-- ⚠️ Kadaluarsa (Dalam Proses)
 - 🚚 Pindah Gudang
 - ⚙️ Konfigurasi Obat
 - ⚙️ Konfigurasi Gudang
