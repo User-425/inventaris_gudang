@@ -153,7 +153,7 @@ public class inventarisGudang {
                                 System.out.println("- Gudang Kosong -");
                             }
                         }
-                        System.out.println("\nMasukkan apapun untuk kembali ke menu");
+                        System.out.print("\nMasukkan apapun untuk kembali ke menu ");
                         x = input.next();
                         break;
                     case 5:
@@ -200,7 +200,7 @@ public class inventarisGudang {
                             case 3:
                                 cleanDisplay();
                                 displayMedicine();
-                                System.out.print("\nMasukkan apapun untuk kembali ke menu");
+                                System.out.print("\nMasukkan apapun untuk kembali ke menu ");
                                 x = input.next();
                                 break;
 
@@ -254,7 +254,7 @@ public class inventarisGudang {
                     case 7:
                         cleanDisplay();
                         displayWarehouse();
-                        System.out.println("Pilih Gudang : ");
+                        System.out.print("Pilih Gudang : ");
                         pilihGudang = getUserInput(input, 1, gudang.length) - 1;
                         cleanDisplay();
                         System.out.print("============== Gudang " + gudang[pilihGudang] + " ==============\n");
@@ -268,15 +268,15 @@ public class inventarisGudang {
                         if (!hasObat) {
                             System.out.println("- Gudang Kosong -");
                         }
-                        System.out.println("\nPilih ID Obat : ");
+                        System.out.print("\nPilih ID Obat : ");
                         pilihStok = getUserInput(input, 0, stok.length - 1);
 
-                        System.out.println("\nMasukkan Jumlah yang akan dipindah : ");
+                        System.out.print("\nMasukkan Jumlah yang akan dipindah : ");
                         ambilStok = getUserInput(input, 1, stok[pilihStok][1]);
 
                         cleanDisplay();
                         displayWarehouse();
-                        System.out.println("Pilih Gudang Tujuan: ");
+                        System.out.print("Pilih Gudang Tujuan: ");
                         int pilihGudangTujuan = getUserInput(input, 1, gudang.length) - 1;
                         System.out.println(pilihGudangTujuan);
 
@@ -298,7 +298,7 @@ public class inventarisGudang {
                         System.out.printf("%d => %d\n", (y == -1) ? 0 : getStokObat(y), ((y == -1) ? 0 : getStokObat(y)) + ambilStok);
 
                         // Confirmation Prompt
-                        System.out.println("Apakah anda yakin? (Y/N)");
+                        System.out.print("Apakah anda yakin? (Y/N): ");
                         String yakin = input.next();
                         if (yakin.equals("Y") || yakin.equals("y")) {
                             // Implement Pindah Gudang
@@ -316,7 +316,7 @@ public class inventarisGudang {
                             stok[pilihStok][1] = stok[pilihStok][1] - ambilStok;
                         }
 
-                        System.out.println("\nMasukkan apapun untuk kembali ke menu");
+                        System.out.print("\nMasukkan apapun untuk kembali ke menu ");
                         x = input.next();
                         break;
                     case 8:
@@ -325,7 +325,7 @@ public class inventarisGudang {
                         System.out.println("1. Keluar Akun");
                         System.out.println("2. Keluar Program");
                         System.out.println("3. Kembali");
-                        System.out.println("Pilih Menu : ");
+                        System.out.print("Pilih Menu : ");
                         pilihMenuKeluar = input.nextInt();
                         switch (pilihMenuKeluar) {
                             // Exit Account
@@ -344,14 +344,14 @@ public class inventarisGudang {
                                 break;
                             default:
                                 System.out.println("Error: Invalid User Input!");
-                                System.out.println("Masukkan apapun untuk kembali ke menu");
+                                System.out.print("Masukkan apapun untuk kembali ke menu ");
                                 x = input.next();
                                 break;
                         }
                         break;
                     default:
                         System.out.println("Error: Invalid User Input!");
-                        System.out.println("Masukkan apapun untuk kembali ke menu");
+                        System.out.print("Masukkan apapun untuk kembali ke menu ");
                         x = input.next();
                         break;
                 }
