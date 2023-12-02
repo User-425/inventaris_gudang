@@ -136,6 +136,26 @@ public class inventarisGudang {
                         System.out.print("Masukkan apapun untuk kembali ke menu : ");
                         x = input.next();
                         break;
+                    // Show Every Data
+                    case 4:
+                        cleanDisplay();
+                        System.out.println("============== Data Seluruh Obat ==============");
+                        for (int i = 0; i < gudang.length; i++) {
+                            System.out.println("\nData Obat Gudang " + gudang[i] + ": ");
+                            boolean hasObat = false;
+                            for (int j = 0; j < stok.length; j++) {
+                                if (stok[j][2] == i) {
+                                    System.out.println("(" + j + ") " + getNamaObat(j) + ": " + getStokObat(j));
+                                    hasObat = true;
+                                }
+                            }
+                            if (!hasObat) {
+                                System.out.println("- Gudang Kosong -");
+                            }
+                        }
+                        System.out.println("\nMasukkan apapun untuk kembali ke menu");
+                        x = input.next();
+                        break;
                     case 5:
                         cleanDisplay();
                         System.out.println("1. Tambah Jenis Obat");
@@ -187,27 +207,6 @@ public class inventarisGudang {
                             default:
                                 break;
                         }
-                        break;
-
-                    // Show Every Data
-                    case 4:
-                        cleanDisplay();
-                        System.out.println("============== Data Seluruh Obat ==============");
-                        for (int i = 0; i < gudang.length; i++) {
-                            System.out.println("\nData Obat Gudang " + gudang[i] + ": ");
-                            boolean hasObat = false;
-                            for (int j = 0; j < stok.length; j++) {
-                                if (stok[j][2] == i) {
-                                    System.out.println("(" + j + ") " + getNamaObat(j) + ": " + getStokObat(j));
-                                    hasObat = true;
-                                }
-                            }
-                            if (!hasObat) {
-                                System.out.println("- Gudang Kosong -");
-                            }
-                        }
-                        System.out.println("\nMasukkan apapun untuk kembali ke menu");
-                        x = input.next();
                         break;
                     // Exit Section
                     case 6:
@@ -280,6 +279,8 @@ public class inventarisGudang {
                         System.out.println("Pilih Gudang Tujuan: ");
                         int pilihGudangTujuan = getUserInput(input, 1, gudang.length) - 1;
                         System.out.println(pilihGudangTujuan);
+
+                        // Get index of stok in the gudang tujuan
                         y = -1;
                         for (int i = 0; i < stok.length; i++) {
                             if (stok[i][2] == pilihGudangTujuan && stok[i][0] == pilihStok) {
@@ -296,6 +297,7 @@ public class inventarisGudang {
                         System.out.println("============== Gudang " + gudang[pilihGudangTujuan] + " ==============\n");
                         System.out.printf("%d => %d\n", (y == -1) ? 0 : getStokObat(y), ((y == -1) ? 0 : getStokObat(y)) + ambilStok);
 
+                        // Confirmation Prompt
                         System.out.println("Apakah anda yakin? (Y/N)");
                         String yakin = input.next();
                         if (yakin.equals("Y") || yakin.equals("y")) {
