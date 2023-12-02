@@ -163,6 +163,7 @@ public class inventarisGudang {
                         System.out.println("3. Lihat Keseleruhan Jenis Obat");
                         System.out.println("4. Tambah Obat di Gudang");
                         System.out.println("5. Hapus Obat di Gudang");
+                        System.out.println("6. Transfer Obat");
                         System.out.print("Pilih Menu : ");
                         pilihMenu = input.nextInt();
                         switch (pilihMenu) {
@@ -203,6 +204,78 @@ public class inventarisGudang {
                                 System.out.print("\nMasukkan apapun untuk kembali ke menu ");
                                 x = input.next();
                                 break;
+                            case 6:
+                                cleanDisplay();
+                                displayWarehouse();
+                                System.out.print("Pilih Gudang : ");
+                                pilihGudang = getUserInput(input, 1, gudang.length) - 1;
+                                cleanDisplay();
+                                System.out.print("============== Gudang " + gudang[pilihGudang] + " ==============\n");
+                                boolean hasObat = false;
+                                for (int j = 0; j < stok.length; j++) {
+                                    if (stok[j][2] == pilihGudang) {
+                                        System.out.println("(" + j + ") " + getNamaObat(j) + ": " + getStokObat(j));
+                                        hasObat = true;
+                                    }
+                                }
+                                if (!hasObat) {
+                                    System.out.println("- Gudang Kosong -");
+                                }
+                                System.out.print("\nPilih ID Obat : ");
+                                pilihStok = getUserInput(input, 0, stok.length - 1);
+
+                                System.out.print("\nMasukkan Jumlah yang akan dipindah : ");
+                                ambilStok = getUserInput(input, 1, stok[pilihStok][1]);
+
+                                cleanDisplay();
+                                displayWarehouse();
+                                System.out.print("Pilih Gudang Tujuan: ");
+                                int pilihGudangTujuan = getUserInput(input, 1, gudang.length) - 1;
+                                System.out.println(pilihGudangTujuan);
+
+                                // Get index of stok in the gudang tujuan
+                                y = -1;
+                                for (int i = 0; i < stok.length; i++) {
+                                    if (stok[i][2] == pilihGudangTujuan && stok[i][0] == pilihStok) {
+                                        y = i;
+                                        break;
+                                    }
+                                }
+
+                                cleanDisplay();
+                                // Show before after
+                                System.out
+                                        .println("============== Gudang " + gudang[pilihGudang] + " ==============\n");
+                                System.out.printf("%d => %d\n", getStokObat(pilihStok),
+                                        getStokObat(pilihStok) - ambilStok);
+
+                                System.out.println(
+                                        "============== Gudang " + gudang[pilihGudangTujuan] + " ==============\n");
+                                System.out.printf("%d => %d\n", (y == -1) ? 0 : getStokObat(y),
+                                        ((y == -1) ? 0 : getStokObat(y)) + ambilStok);
+
+                                // Confirmation Prompt
+                                System.out.print("Apakah anda yakin? (Y/N): ");
+                                String yakin = input.next();
+                                if (yakin.equals("Y") || yakin.equals("y")) {
+                                    // Implement Pindah Gudang
+                                    hasObat = false;
+                                    for (int j = 0; j < stok.length; j++) {
+                                        if (stok[j][2] == pilihGudangTujuan) {
+                                            stok[j][1] += ambilStok;
+                                            hasObat = true;
+                                            break;
+                                        }
+                                    }
+                                    if (!hasObat) {
+                                        addStock(pilihStok, ambilStok, pilihGudangTujuan);
+                                    }
+                                    stok[pilihStok][1] = stok[pilihStok][1] - ambilStok;
+                                }
+
+                                System.out.print("\nMasukkan apapun untuk kembali ke menu ");
+                                x = input.next();
+                                break;                               
 
                             default:
                                 break;
@@ -251,75 +324,8 @@ public class inventarisGudang {
                                 break;
                         }
                         break;
+
                     case 7:
-                        cleanDisplay();
-                        displayWarehouse();
-                        System.out.print("Pilih Gudang : ");
-                        pilihGudang = getUserInput(input, 1, gudang.length) - 1;
-                        cleanDisplay();
-                        System.out.print("============== Gudang " + gudang[pilihGudang] + " ==============\n");
-                        boolean hasObat = false;
-                        for (int j = 0; j < stok.length; j++) {
-                            if (stok[j][2] == pilihGudang) {
-                                System.out.println("(" + j + ") " + getNamaObat(j) + ": " + getStokObat(j));
-                                hasObat = true;
-                            }
-                        }
-                        if (!hasObat) {
-                            System.out.println("- Gudang Kosong -");
-                        }
-                        System.out.print("\nPilih ID Obat : ");
-                        pilihStok = getUserInput(input, 0, stok.length - 1);
-
-                        System.out.print("\nMasukkan Jumlah yang akan dipindah : ");
-                        ambilStok = getUserInput(input, 1, stok[pilihStok][1]);
-
-                        cleanDisplay();
-                        displayWarehouse();
-                        System.out.print("Pilih Gudang Tujuan: ");
-                        int pilihGudangTujuan = getUserInput(input, 1, gudang.length) - 1;
-                        System.out.println(pilihGudangTujuan);
-
-                        // Get index of stok in the gudang tujuan
-                        y = -1;
-                        for (int i = 0; i < stok.length; i++) {
-                            if (stok[i][2] == pilihGudangTujuan && stok[i][0] == pilihStok) {
-                                y = i;
-                                break;
-                            }     
-                        }
-
-                        cleanDisplay();
-                        // Show before after
-                        System.out.println("============== Gudang " + gudang[pilihGudang] + " ==============\n");
-                        System.out.printf("%d => %d\n", getStokObat(pilihStok), getStokObat(pilihStok) - ambilStok);
-
-                        System.out.println("============== Gudang " + gudang[pilihGudangTujuan] + " ==============\n");
-                        System.out.printf("%d => %d\n", (y == -1) ? 0 : getStokObat(y), ((y == -1) ? 0 : getStokObat(y)) + ambilStok);
-
-                        // Confirmation Prompt
-                        System.out.print("Apakah anda yakin? (Y/N): ");
-                        String yakin = input.next();
-                        if (yakin.equals("Y") || yakin.equals("y")) {
-                            // Implement Pindah Gudang
-                            hasObat = false;
-                            for (int j = 0; j < stok.length; j++) {
-                                if (stok[j][2] == pilihGudangTujuan) {
-                                    stok[j][1] += ambilStok;
-                                    hasObat = true;
-                                    break;
-                                }
-                            }
-                            if (!hasObat) {
-                                addStock(pilihStok, ambilStok, pilihGudangTujuan);
-                            }
-                            stok[pilihStok][1] = stok[pilihStok][1] - ambilStok;
-                        }
-
-                        System.out.print("\nMasukkan apapun untuk kembali ke menu ");
-                        x = input.next();
-                        break;
-                    case 8:
                         cleanDisplay();
                         // Exit Menu
                         System.out.println("1. Keluar Akun");
@@ -428,8 +434,7 @@ public class inventarisGudang {
         System.out.println("4. Data Keseluruhan");
         System.out.println("5. Konfigurasi Obat");
         System.out.println("6. Konfigurasi Gudang");
-        System.out.println("7. Pindah Gudang");
-        System.out.println("8. Keluar");
+        System.out.println("7. Keluar");
     }
 
     static String getNamaObat(int index) {
