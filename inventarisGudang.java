@@ -62,7 +62,7 @@ public class inventarisGudang {
                                 System.out.println(getNamaObat(i) + ": " + getStokObat(i));
                             }
                         }
-                        System.out.println("Masukkan apapun untuk kembali ke menu");
+                        System.out.print("Masukkan apapun untuk kembali ke menu ");
                         x = input.next();
                         break;
 
@@ -204,6 +204,74 @@ public class inventarisGudang {
                                 System.out.print("\nMasukkan apapun untuk kembali ke menu ");
                                 x = input.next();
                                 break;
+                            case 4:
+                                cleanDisplay();
+                                displayWarehouse();
+                                System.out.print("Pilih Gudang : ");
+                                int pilihPenambahanGudang = input.nextInt() - 1;
+                                cleanDisplay();
+                                displayMedicine();
+                                System.out.print("Pilih Obat : ");
+                                int pilihPenambahanObat = input.nextInt() - 1;
+                                boolean obatSudahAda = false;
+                                for (int i = 0; i < stok.length; i++) {
+                                    if (stok[i][2] == pilihPenambahanGudang && stok[i][0] == pilihPenambahanObat) {
+                                        obatSudahAda = true;
+                                        System.out.println("Obat sudah tersedia!");
+                                        System.out.print("\nMasukkan apapun untuk kembali ke menu ");
+                                        x = input.next();
+                                        break;
+                                    }
+                                }
+                                if (!obatSudahAda) {
+
+                                    int[][] stokBaru = new int[stok.length + 1][3];
+                                    for (int i = 0; i < stok.length; i++) {
+                                        stokBaru[i] = stok[i];
+                                    }
+                                    stokBaru[stok.length][0] = pilihPenambahanObat;
+                                    stokBaru[stok.length][1] = 0;
+                                    stokBaru[stok.length][2] = pilihPenambahanGudang;
+
+                                    stok = stokBaru;
+                                    System.out.println("Obat berhasil ditambahkan ke gudang!");
+                                    System.out.print("\nMasukkan apapun untuk kembali ke menu ");
+                                    x = input.next();
+                                    break;
+                                }
+                                break;
+                            case 5:
+                                cleanDisplay();
+                                displayWarehouse();
+                                System.out.print("Pilih Gudang : ");
+                                int pilihPenghapusanGudang = input.nextInt() - 1;
+                                cleanDisplay();
+                                System.out.printf("============== Gudang %s ==============\n",
+                                        gudang[pilihPenghapusanGudang]);
+                                for (int i = 0; i < stok.length; i++) {
+                                    if (stok[i][2] == pilihPenghapusanGudang) {
+                                        System.out.println("(" + i + ") " + getNamaObat(i) + ": " + getStokObat(i));
+                                    }
+                                }
+                                System.out.print("Pilih Obat : ");
+                                int pilihPenghapusanObat = input.nextInt();
+
+                                // Membuat array baru dengan ukuran yang lebih kecil
+                                int[][] stokBaru = new int[stok.length - 1][3];
+                                // Menyalin elemen dari array lama ke array baru, kecuali obat yang akan dihapus
+                                index = 0;
+                                for (int i = 0; i < stok.length; i++) {
+                                    if (i != pilihPenghapusanObat) {
+                                        stokBaru[index] = stok[i];
+                                        index++;
+                                    }
+                                }
+                                // Mengganti array lama dengan array baru
+                                stok = stokBaru;
+                                System.out.println("Obat berhasil dihapus dari gudang!");
+                                System.out.print("Masukkan apapun untuk kembali ke menu ");
+                                x = input.next();
+                                break;
                             case 6:
                                 cleanDisplay();
                                 displayWarehouse();
@@ -275,7 +343,7 @@ public class inventarisGudang {
 
                                 System.out.print("\nMasukkan apapun untuk kembali ke menu ");
                                 x = input.next();
-                                break;                               
+                                break;
 
                             default:
                                 break;
