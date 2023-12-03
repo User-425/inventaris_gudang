@@ -375,7 +375,7 @@ public class inventarisGudang {
                                 cleanDisplay();
                                 displayWarehouse();
                                 System.out.print("Pilih Gudang yang Akan Dihapus : ");
-                                pilihMenu = input.nextInt() - 1;
+                                pilihMenu =  (getUserInput(input, 1, gudang.length) - 1);
                                 tempArray = new String[gudang.length - 1];
                                 int index = 0;
                                 for (int i = 0; i < gudang.length; i++) {
