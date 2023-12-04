@@ -160,14 +160,14 @@ public class inventarisGudang {
                         cleanDisplay();
                         System.out.println("1. Tambah Jenis Obat");
                         System.out.println("2. Hapus Obat");
-                        System.out.println("3. Lihat Keseleruhan Jenis Obat");
+                        System.out.println("3. Lihat Keseluruhan Jenis Obat");
                         System.out.println("4. Tambah Obat di Gudang");
                         System.out.println("5. Hapus Obat di Gudang");
                         System.out.println("6. Transfer Obat");
                         System.out.print("Pilih Menu : ");
                         pilihMenu = input.nextInt();
                         switch (pilihMenu) {
-                            case 1:
+                            case 1: // Tambah Jenis Obat
                                 cleanDisplay();
                                 System.out.print("Masukan Nama Obat Baru : ");
                                 String obatBaru = input.next();
@@ -181,7 +181,7 @@ public class inventarisGudang {
                                     namaObat[i] = tempArray[i];
                                 }
                                 break;
-                            case 2:
+                            case 2: // Hapus Obat
                                 cleanDisplay();
                                 displayMedicine();
                                 System.out.print("Pilih Obat yang Akan Dihapus : ");
@@ -198,13 +198,13 @@ public class inventarisGudang {
                                 }
                                 namaObat = tempArray;
                                 break;
-                            case 3:
+                            case 3: // Lihat Keseluruhan Jenis Obat
                                 cleanDisplay();
                                 displayMedicine();
                                 System.out.print("\nMasukkan apapun untuk kembali ke menu ");
                                 x = input.next();
                                 break;
-                            case 4:
+                            case 4: // Tambah Obat di Gudang
                                 cleanDisplay();
                                 displayWarehouse();
                                 System.out.print("Pilih Gudang : ");
@@ -240,7 +240,7 @@ public class inventarisGudang {
                                     break;
                                 }
                                 break;
-                            case 5:
+                            case 5: // Hapus Obat di Gudang
                                 cleanDisplay();
                                 displayWarehouse();
                                 System.out.print("Pilih Gudang : ");
@@ -272,7 +272,7 @@ public class inventarisGudang {
                                 System.out.print("Masukkan apapun untuk kembali ke menu ");
                                 x = input.next();
                                 break;
-                            case 6:
+                            case 6: // Transfer Obat
                                 cleanDisplay();
                                 displayWarehouse();
                                 System.out.print("Pilih Gudang : ");
@@ -286,7 +286,7 @@ public class inventarisGudang {
                                         hasObat = true;
                                     }
                                 }
-                                if (!hasObat) {
+                                if (!hasObat) { 
                                     System.out.println("- Gudang Kosong -");
                                 }
                                 System.out.print("\nPilih ID Obat : ");
@@ -314,18 +314,20 @@ public class inventarisGudang {
                                 // Show before after
                                 System.out
                                         .println("============== Gudang " + gudang[pilihGudang] + " ==============\n");
+                                System.out.println(getNamaObat(pilihStok)+": ");
                                 System.out.printf("%d => %d\n", getStokObat(pilihStok),
                                         getStokObat(pilihStok) - ambilStok);
 
                                 System.out.println(
                                         "============== Gudang " + gudang[pilihGudangTujuan] + " ==============\n");
+                                System.out.println(getNamaObat(pilihStok)+": ");
                                 System.out.printf("%d => %d\n", (y == -1) ? 0 : getStokObat(y),
                                         ((y == -1) ? 0 : getStokObat(y)) + ambilStok);
 
                                 // Confirmation Prompt
                                 System.out.print("Apakah anda yakin? (Y/N): ");
                                 String yakin = input.next();
-                                if (yakin.equals("Y") || yakin.equals("y")) {
+                                if (yakin.equalsIgnoreCase("y")) {
                                     // Implement Pindah Gudang
                                     hasObat = false;
                                     for (int j = 0; j < stok.length; j++) {
@@ -357,7 +359,7 @@ public class inventarisGudang {
                         System.out.print("Pilih Menu : ");
                         pilihMenu = input.nextInt();
                         switch (pilihMenu) {
-                            case 1:
+                            case 1: // Tambah Gudang
                                 cleanDisplay();
                                 System.out.print("Nama Gudang Baru : ");
                                 String gudangBaru = input.next();
@@ -371,11 +373,11 @@ public class inventarisGudang {
                                     gudang[i] = tempArray[i];
                                 }
                                 break;
-                            case 2:
+                            case 2: // Hapus Gudang
                                 cleanDisplay();
                                 displayWarehouse();
                                 System.out.print("Pilih Gudang yang Akan Dihapus : ");
-                                pilihMenu =  (getUserInput(input, 1, gudang.length) - 1);
+                                pilihMenu = (getUserInput(input, 1, gudang.length) - 1);
                                 tempArray = new String[gudang.length - 1];
                                 int index = 0;
                                 for (int i = 0; i < gudang.length; i++) {
