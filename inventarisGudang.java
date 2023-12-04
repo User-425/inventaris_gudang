@@ -55,8 +55,7 @@ public class inventarisGudang {
                         pilihGudang = getUserInput(input, 1, gudang.length);
                         // Lihat Stok Section
                         cleanDisplay();
-                        System.out.printf("============== Gudang %s ==============\n",
-                                gudang[pilihGudang - 1]);
+                        headLine(" Gudang "+ gudang[pilihGudang - 1]+" ");
                         for (int i = 0; i < stok.length; i++) {
                             if (stok[i][2] == pilihGudang - 1) {
                                 System.out.println(getNamaObat(i) + ": " + getStokObat(i));
@@ -74,8 +73,7 @@ public class inventarisGudang {
                         pilihGudang = (getUserInput(input, 1, gudang.length) - 1);
                         // Tambah Stok Section
                         cleanDisplay();
-                        System.out.printf("============== Gudang %s ==============\n",
-                                gudang[pilihGudang]);
+                        headLine(" Gudang "+gudang[pilihGudang]+" ");
                         for (int i = 0; i < stok.length; i++) {
                             if (stok[i][2] == pilihGudang) {
                                 System.out.println("(" + i + ") " + getNamaObat(i) + ": " + getStokObat(i));
@@ -107,8 +105,7 @@ public class inventarisGudang {
                         pilihGudang = getUserInput(input, 1, gudang.length);
                         cleanDisplay();
                         // Ambil Stok Section
-                        System.out.printf("============== Gudang %s ==============\n",
-                                gudang[pilihGudang - 1]);
+                        headLine(" Gudang "+gudang[pilihGudang - 1]+" ");
                         for (int i = 0; i < stok.length; i++) {
                             if (stok[i][2] == pilihGudang - 1) {
                                 System.out.println("(" + i + ") " + getNamaObat(i) + ": " + getStokObat(i));
@@ -139,7 +136,7 @@ public class inventarisGudang {
                     // Show Every Data
                     case 4:
                         cleanDisplay();
-                        System.out.println("============== Data Seluruh Obat ==============");
+                        headLine(" Data Seluruh Obat ");
                         for (int i = 0; i < gudang.length; i++) {
                             System.out.println("\nData Obat Gudang " + gudang[i] + ": ");
                             boolean hasObat = false;
@@ -246,8 +243,7 @@ public class inventarisGudang {
                                 System.out.print("Pilih Gudang : ");
                                 int pilihPenghapusanGudang = input.nextInt() - 1;
                                 cleanDisplay();
-                                System.out.printf("============== Gudang %s ==============\n",
-                                        gudang[pilihPenghapusanGudang]);
+                                headLine(" Gudang "+gudang[pilihPenghapusanGudang]+" ");
                                 for (int i = 0; i < stok.length; i++) {
                                     if (stok[i][2] == pilihPenghapusanGudang) {
                                         System.out.println("(" + i + ") " + getNamaObat(i) + ": " + getStokObat(i));
@@ -268,7 +264,7 @@ public class inventarisGudang {
                                 System.out.print("Pilih Gudang : ");
                                 pilihGudang = getUserInput(input, 1, gudang.length) - 1;
                                 cleanDisplay();
-                                System.out.print("============== Gudang " + gudang[pilihGudang] + " ==============\n");
+                                headLine(" Gudang "+gudang[pilihGudang]+" ");
                                 boolean hasObat = false;
                                 for (int j = 0; j < stok.length; j++) {
                                     if (stok[j][2] == pilihGudang) {
@@ -302,14 +298,12 @@ public class inventarisGudang {
 
                                 cleanDisplay();
                                 // Show before after
-                                System.out
-                                        .println("============== Gudang " + gudang[pilihGudang] + " ==============\n");
+                                headLine(" Gudang " + gudang[pilihGudang]+" ");
                                 System.out.println(getNamaObat(pilihStok) + ": ");
                                 System.out.printf("%d => %d\n", getStokObat(pilihStok),
                                         getStokObat(pilihStok) - ambilStok);
 
-                                System.out.println(
-                                        "============== Gudang " + gudang[pilihGudangTujuan] + " ==============\n");
+                                headLine(" Gudang " + gudang[pilihGudangTujuan]+" ");
                                 System.out.println(getNamaObat(pilihStok) + ": ");
                                 System.out.printf("%d => %d\n", (y == -1) ? 0 : getStokObat(y),
                                         ((y == -1) ? 0 : getStokObat(y)) + ambilStok);
@@ -458,14 +452,14 @@ public class inventarisGudang {
     }
 
     static void displayWarehouse() {
-        System.out.print("============== Gudang ==============\n");
+        headLine(" GUDANG ");
         for (int i = 0; i < gudang.length; i++) {
             System.out.println((i + 1) + "." + gudang[i] + " ");
         }
     }
 
     static void displayMedicine() {
-        System.out.print("============== Jenis Obat ==============\n");
+        headLine(" JENIS OBAT ");
         for (int i = 0; i < namaObat.length; i++) {
             System.out.println((i + 1) + "." + namaObat[i] + " ");
         }
@@ -482,7 +476,7 @@ public class inventarisGudang {
         Scanner input = new Scanner(System.in);
         short loginAttempt = 1;
         while (loginAttempt <= 3) {
-            System.out.print("============== GUDANG ==============\n");
+            headLine(" GUDANG OBAT ");
             System.out.print("Masukan Username : ");
             String user = input.next();
             System.out.print("Masukan Password : ");
@@ -496,7 +490,7 @@ public class inventarisGudang {
                 System.out.println("Akses Ditolak!");
             } else {
                 cleanDisplay();
-                System.out.println("============== NOTIFIKASI ==============");
+                headLine(" !NOTIFIKASI! ");
                 System.out.printf(
                         "Username atau Password yang Anda Masukan Salah!\nPercobaan yang tersisa adalah %d \n",
                         (3 - loginAttempt));
@@ -537,5 +531,9 @@ public class inventarisGudang {
             }
         } while (input < min || input > max);
         return input;
+    }
+    static void headLine(String title){
+        System.out.println("=============|"+title+"|===============");  
+
     }
 }
