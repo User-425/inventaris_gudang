@@ -257,17 +257,7 @@ public class inventarisGudang {
                                 int pilihPenghapusanObat = input.nextInt();
 
                                 // Membuat array baru dengan ukuran yang lebih kecil
-                                int[][] stokBaru = new int[stok.length - 1][3];
-                                // Menyalin elemen dari array lama ke array baru, kecuali obat yang akan dihapus
-                                index = 0;
-                                for (int i = 0; i < stok.length; i++) {
-                                    if (i != pilihPenghapusanObat) {
-                                        stokBaru[index] = stok[i];
-                                        index++;
-                                    }
-                                }
-                                // Mengganti array lama dengan array baru
-                                stok = stokBaru;
+                                deleteStock(pilihPenghapusanObat);
                                 System.out.println("Obat berhasil dihapus dari gudang!");
                                 System.out.print("Masukkan apapun untuk kembali ke menu ");
                                 x = input.next();
@@ -286,7 +276,7 @@ public class inventarisGudang {
                                         hasObat = true;
                                     }
                                 }
-                                if (!hasObat) { 
+                                if (!hasObat) {
                                     System.out.println("- Gudang Kosong -");
                                 }
                                 System.out.print("\nPilih ID Obat : ");
@@ -314,13 +304,13 @@ public class inventarisGudang {
                                 // Show before after
                                 System.out
                                         .println("============== Gudang " + gudang[pilihGudang] + " ==============\n");
-                                System.out.println(getNamaObat(pilihStok)+": ");
+                                System.out.println(getNamaObat(pilihStok) + ": ");
                                 System.out.printf("%d => %d\n", getStokObat(pilihStok),
                                         getStokObat(pilihStok) - ambilStok);
 
                                 System.out.println(
                                         "============== Gudang " + gudang[pilihGudangTujuan] + " ==============\n");
-                                System.out.println(getNamaObat(pilihStok)+": ");
+                                System.out.println(getNamaObat(pilihStok) + ": ");
                                 System.out.printf("%d => %d\n", (y == -1) ? 0 : getStokObat(y),
                                         ((y == -1) ? 0 : getStokObat(y)) + ambilStok);
 
@@ -380,6 +370,13 @@ public class inventarisGudang {
                                 pilihMenu = (getUserInput(input, 1, gudang.length) - 1);
                                 tempArray = new String[gudang.length - 1];
                                 int index = 0;
+                                for (int i = stok.length - 1; i >= 0; i--) {
+                                    if (stok[i][2] > pilihMenu) {
+                                        stok[i][2] -= 1;
+                                    } else if (stok[i][2] == pilihMenu) {
+                                        deleteStock(i);
+                                    }
+                                }
                                 for (int i = 0; i < gudang.length; i++) {
                                     if (i == pilihMenu) {
                                         continue;
@@ -441,6 +438,18 @@ public class inventarisGudang {
             tempArray[i] = stok[i];
         }
         tempArray[tempArray.length - 1] = new int[] { gudang, obat, stokObat };
+        stok = tempArray;
+    }
+
+    static void deleteStock(int idObat) {
+        int[][] tempArray = newArray(stok.length - 1);
+        int index = 0;
+        for (int i = 0; i < stok.length; i++) {
+            if (i != idObat) {
+                tempArray[index] = stok[i];
+                index++;
+            }
+        }
         stok = tempArray;
     }
 
