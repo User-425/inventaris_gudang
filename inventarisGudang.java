@@ -136,7 +136,7 @@ public class inventarisGudang {
                         System.out.print("Masukkan apapun untuk kembali ke menu : ");
                         x = input.next();
                         break;
-                    // Show Every Data
+                    // Data Keseluruhan
                     case 4:
                         cleanDisplay();
                         System.out.println("============== Data Seluruh Obat ==============");
@@ -185,9 +185,16 @@ public class inventarisGudang {
                                 cleanDisplay();
                                 displayMedicine();
                                 System.out.print("Pilih Obat yang Akan Dihapus : ");
-                                pilihMenu = input.nextInt() - 1;
+                                pilihMenu = (getUserInput(input, 1, namaObat.length) - 1);
                                 tempArray = new String[namaObat.length - 1];
                                 int index = 0;
+                                for (int i = stok.length - 1; i >= 0; i--) {
+                                    if (stok[i][0] > pilihMenu) {
+                                        stok[i][0] -= 1;
+                                    } else if (stok[i][0] == pilihMenu) {
+                                        deleteStock(i);
+                                    }
+                                }
                                 for (int i = 0; i < namaObat.length; i++) {
                                     if (i == pilihMenu) {
                                         continue;
@@ -321,16 +328,16 @@ public class inventarisGudang {
                                     // Implement Pindah Gudang
                                     hasObat = false;
                                     for (int j = 0; j < stok.length; j++) {
-                                        if (stok[j][2] == pilihGudangTujuan) {
+                                        if (stok[j][2] == pilihGudangTujuan && stok[j][0] == pilihStok) {
                                             stok[j][1] += ambilStok;
                                             hasObat = true;
                                             break;
                                         }
                                     }
                                     if (!hasObat) {
-                                        addStock(pilihStok, ambilStok, pilihGudangTujuan);
+                                        addStock(stok[pilihStok][0], ambilStok, pilihGudangTujuan);
                                     }
-                                    stok[pilihStok][1] = stok[pilihStok][1] - ambilStok;
+                                    stok[pilihStok][1] -= ambilStok;
                                 }
 
                                 System.out.print("\nMasukkan apapun untuk kembali ke menu ");
@@ -432,12 +439,12 @@ public class inventarisGudang {
         }
     }
 
-    static void addStock(int gudang, int obat, int stokObat) {
+    static void addStock(int nama, int stokObat, int gudang) {
         int[][] tempArray = newArray(stok.length + 1);
         for (int i = 0; i < stok.length; i++) {
             tempArray[i] = stok[i];
         }
-        tempArray[tempArray.length - 1] = new int[] { gudang, obat, stokObat };
+        tempArray[tempArray.length - 1] = new int[] { nama, stokObat, gudang};
         stok = tempArray;
     }
 
