@@ -485,9 +485,9 @@ public class inventarisGudang {
         while (loginAttempt <= 3) {
             headLine(" GUDANG OBAT ");
             System.out.print("Masukan Username : ");
-            String user = input.next();
+            String user = input.nextLine();
             System.out.print("Masukan Password : ");
-            String pass = input.next();
+            String pass = input.nextLine();
             if (userData.equals(user) && userPass.equals(pass)) {
                 isLoggedIn = true;
                 break;
