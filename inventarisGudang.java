@@ -4,6 +4,9 @@ import java.util.Scanner;
  * inventarisGudang
  */
 public class inventarisGudang {
+    static String[][] substrings = new String[100][100];
+    static int[][] weights = new int[100][100];
+    static int indexDatabase = 0;
     static String x;
     static int y, z;
     static boolean isLoggedIn = false, isRunning = true;
@@ -30,7 +33,7 @@ public class inventarisGudang {
         Scanner input = new Scanner(System.in);
         int pilihMenu, pilihMenuKeluar;
         int pilihGudang, pilihStok, ambilStok;
-
+        populateDatabase();
         // Main Program
         while (isRunning) {
             if (isLoggedIn != true) {
@@ -136,8 +139,27 @@ public class inventarisGudang {
                         System.out.print("Masukkan apapun untuk kembali ke menu : ");
                         x = input.next();
                         break;
-                    // Data Keseluruhan
+                    // Cari Obat
                     case 4:
+                        cleanDisplay();
+                        System.out.println("Masukkan Obat yang ingin dicari : ");
+                        String cariObat = input.next()
+                        int searchIndex = searchSubstrings(cariObat);
+                        for (int i = 0; i < gudang.length; i++) {
+                            boolean hasObat = false;
+                            for (int j = 0; j < stok.length; j++) {
+                                if (stok[j][2] == i && stok[j][0] == searchIndex) {
+                                    System.out.println("\nData Obat Gudang " + gudang[i] + ": ");
+                                    System.out.println("(" + j + ") " + getNamaObat(j) + ": " + getStokObat(j));
+                                    hasObat = true;
+                                }
+                            }
+                        }
+                        System.out.print("\nMasukkan apapun untuk kembali ke menu ");
+                        x = input.next();
+                        break;
+                    // Data Keseluruhan
+                    case 5:
                         cleanDisplay();
                         System.out.println("============== Data Seluruh Obat ==============");
                         for (int i = 0; i < gudang.length; i++) {
@@ -156,7 +178,7 @@ public class inventarisGudang {
                         System.out.print("\nMasukkan apapun untuk kembali ke menu ");
                         x = input.next();
                         break;
-                    case 5:
+                    case 6:
                         cleanDisplay();
                         System.out.println("1. Tambah Jenis Obat");
                         System.out.println("2. Hapus Obat");
@@ -180,6 +202,8 @@ public class inventarisGudang {
                                 for (int i = 0; i < tempArray.length; i++) {
                                     namaObat[i] = tempArray[i];
                                 }
+                                indexDatabase = 0;
+                                populateDatabase();
                                 break;
                             case 2: // Hapus Obat
                                 cleanDisplay();
@@ -204,6 +228,8 @@ public class inventarisGudang {
                                     }
                                 }
                                 namaObat = tempArray;
+                                indexDatabase = 0;
+                                populateDatabase();
                                 break;
                             case 3: // Lihat Keseluruhan Jenis Obat
                                 cleanDisplay();
@@ -349,7 +375,7 @@ public class inventarisGudang {
                         }
                         break;
                     // Exit Section
-                    case 6:
+                    case 7:
                         cleanDisplay();
                         System.out.println("1. Tambah Gudang");
                         System.out.println("2. Hapus Gudang");
@@ -399,7 +425,7 @@ public class inventarisGudang {
                         }
                         break;
 
-                    case 7:
+                    case 8:
                         cleanDisplay();
                         // Exit Menu
                         System.out.println("1. Keluar Akun");
@@ -517,10 +543,11 @@ public class inventarisGudang {
         System.out.println("1. Lihat Stok");
         System.out.println("2. Tambah Stok");
         System.out.println("3. Ambil Stok");
-        System.out.println("4. Data Keseluruhan");
-        System.out.println("5. Konfigurasi Obat");
-        System.out.println("6. Konfigurasi Gudang");
-        System.out.println("7. Keluar");
+        System.out.println("4. Cari Obat");
+        System.out.println("5. Data Keseluruhan");
+        System.out.println("6. Konfigurasi Obat");
+        System.out.println("7. Konfigurasi Gudang");
+        System.out.println("8. Keluar");
     }
 
     static String getNamaObat(int index) {
@@ -544,5 +571,64 @@ public class inventarisGudang {
             }
         } while (input < min || input > max);
         return input;
+    }
+
+    public static void splitWordWithConstantWeights(String word) {
+        int length = word.length();
+        int indexY = 0;
+        // Generate all substrings and calculate weights
+        for (int i = 0; i < length; i++) {
+            for (int j = i + 1; j <= length; j++) {
+                substrings[indexDatabase][indexY] = word.substring(i, j);
+                // Calculate weight based on the number of letters
+                int weight = (j - i)*100/length;
+                weights[indexDatabase][indexY] = weight;
+                indexY++;
+            }
+        }
+        indexDatabase++;
+    }
+
+    public static int searchSubstrings(String userInput) {
+        int length = userInput.length();
+        String[] userQuerySubstrings = new String[100];
+        int[] queryWeight = new int[100]; // weight per data in the database
+        int highestWeight = 0;
+        String highestQuery = "";
+        int x = 0;
+        // Generate all substrings and calculate weights
+        for (int i = 0; i < length; i++) {
+            for (int j = i + 1; j <= length; j++) {
+                userQuerySubstrings[x] = userInput.substring(i, j);
+                x++;
+            }
+        }
+        int searchIndex = 0;
+        for (int i = 0; i < namaObat.length; i++) { // repeat per database
+            for (int k = 0; k < userQuerySubstrings.length; k++) { // repeat per query's substrings
+                if (userQuerySubstrings[k] != null) {
+                    for (int j = 0; j < substrings[i].length; j++) { // repeat per database's substrings
+                        // System.out.println( queryWeight[i] + " " + substrings[i][j] + " " +
+                        // userQuerySubstrings[k]);
+                        if (substrings[i][j] != null && substrings[i][j].equalsIgnoreCase(userQuerySubstrings[k])) {
+                            queryWeight[i] += weights[i][j];
+                        }
+                    }
+                }
+            }
+            if (highestWeight < queryWeight[i]) {
+                highestWeight = queryWeight[i];
+                highestQuery = namaObat[i];
+                searchIndex = i;
+            }
+        }
+
+        return searchIndex;
+    }
+
+    static void populateDatabase() {
+        for (String string : namaObat) {
+            splitWordWithConstantWeights(string);
+        }
     }
 }
