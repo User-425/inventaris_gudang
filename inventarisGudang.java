@@ -139,7 +139,7 @@ public class inventarisGudang {
                     // Cari Obat
                     case 4:
                         cleanDisplay();
-                        System.out.println("Masukkan Obat yang ingin dicari : ");
+                        System.out.print("Masukkan Obat yang ingin dicari : ");
                         String cariObat = input.next();
                         int searchIndex = searchSubstrings(cariObat);
                         for (int i = 0; i < gudang.length; i++) {
@@ -243,6 +243,8 @@ public class inventarisGudang {
                                 displayMedicine();
                                 System.out.print("Pilih Obat : ");
                                 int pilihPenambahanObat = input.nextInt() - 1;
+                                System.out.print("Masukan Jumlah Obat : ");
+                                int jumlahObat = input.nextInt();
                                 boolean obatSudahAda = false;
                                 for (int i = 0; i < stok.length; i++) {
                                     if (stok[i][2] == pilihPenambahanGudang && stok[i][0] == pilihPenambahanObat) {
@@ -260,7 +262,7 @@ public class inventarisGudang {
                                         stokBaru[i] = stok[i];
                                     }
                                     stokBaru[stok.length][0] = pilihPenambahanObat;
-                                    stokBaru[stok.length][1] = 0;
+                                    stokBaru[stok.length][1] = jumlahObat;
                                     stokBaru[stok.length][2] = pilihPenambahanGudang;
 
                                     stok = stokBaru;
