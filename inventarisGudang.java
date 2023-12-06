@@ -140,7 +140,7 @@ public class inventarisGudang {
                     case 4:
                         cleanDisplay();
                         System.out.println("Masukkan Obat yang ingin dicari : ");
-                        String cariObat = input.next()
+                        String cariObat = input.next();
                         int searchIndex = searchSubstrings(cariObat);
                         for (int i = 0; i < gudang.length; i++) {
                             boolean hasObat = false;
