@@ -7,7 +7,7 @@ public class inventarisGudang {
     static String[][] substrings = new String[100][100];
     static int[][] weights = new int[100][100];
     static int indexDatabase = 0;
-    static String x;
+    static String userInput;
     static int y, z;
     static boolean isLoggedIn = false, isRunning = true;
     static String[] namaObat = { "Pfizer", "Promag", "Paracetamol", "Amoxicillin", "Decolgen" };
@@ -65,7 +65,7 @@ public class inventarisGudang {
                             }
                         }
                         System.out.print("Masukkan apapun untuk kembali ke menu ");
-                        x = input.next();
+                        userInput = input.next();
                         break;
 
                     // Pilih Gudang
@@ -97,7 +97,7 @@ public class inventarisGudang {
                         }
 
                         System.out.print("Masukkan apapun untuk kembali ke menu : ");
-                        x = input.next();
+                        userInput = input.next();
                         break;
 
                     // Pilih Gudang
@@ -134,7 +134,7 @@ public class inventarisGudang {
                         }
 
                         System.out.print("Masukkan apapun untuk kembali ke menu : ");
-                        x = input.next();
+                        userInput = input.next();
                         break;
                     // Cari Obat
                     case 4:
@@ -153,7 +153,7 @@ public class inventarisGudang {
                             }
                         }
                         System.out.print("\nMasukkan apapun untuk kembali ke menu ");
-                        x = input.next();
+                        userInput = input.next();
                         break;
                     // Data Keseluruhan
                     case 5:
@@ -173,7 +173,7 @@ public class inventarisGudang {
                             }
                         }
                         System.out.print("\nMasukkan apapun untuk kembali ke menu ");
-                        x = input.next();
+                        userInput = input.next();
                         break;
                     case 6:
                         cleanDisplay();
@@ -232,7 +232,7 @@ public class inventarisGudang {
                                 cleanDisplay();
                                 displayMedicine();
                                 System.out.print("\nMasukkan apapun untuk kembali ke menu ");
-                                x = input.next();
+                                userInput = input.next();
                                 break;
                             case 4: // Tambah Obat di Gudang
                                 cleanDisplay();
@@ -251,7 +251,7 @@ public class inventarisGudang {
                                         obatSudahAda = true;
                                         System.out.println("Obat sudah tersedia!");
                                         System.out.print("\nMasukkan apapun untuk kembali ke menu ");
-                                        x = input.next();
+                                        userInput = input.next();
                                         break;
                                     }
                                 }
@@ -268,7 +268,7 @@ public class inventarisGudang {
                                     stok = stokBaru;
                                     System.out.println("Obat berhasil ditambahkan ke gudang!");
                                     System.out.print("\nMasukkan apapun untuk kembali ke menu ");
-                                    x = input.next();
+                                    userInput = input.next();
                                     break;
                                 }
                                 break;
@@ -291,7 +291,7 @@ public class inventarisGudang {
                                 deleteStock(pilihPenghapusanObat);
                                 System.out.println("Obat berhasil dihapus dari gudang!");
                                 System.out.print("Masukkan apapun untuk kembali ke menu ");
-                                x = input.next();
+                                userInput = input.next();
                                 break;
                             case 6: // Transfer Obat
                                 cleanDisplay();
@@ -363,7 +363,7 @@ public class inventarisGudang {
                                 }
 
                                 System.out.print("\nMasukkan apapun untuk kembali ke menu ");
-                                x = input.next();
+                                userInput = input.next();
                                 break;
 
                             default:
@@ -447,14 +447,14 @@ public class inventarisGudang {
                             default:
                                 System.out.println("Error: Invalid User Input!");
                                 System.out.print("Masukkan apapun untuk kembali ke menu ");
-                                x = input.next();
+                                userInput = input.next();
                                 break;
                         }
                         break;
                     default:
                         System.out.println("Error: Invalid User Input!");
                         System.out.print("Masukkan apapun untuk kembali ke menu ");
-                        x = input.next();
+                        userInput = input.next();
                         break;
                 }
             }
