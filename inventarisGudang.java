@@ -202,6 +202,12 @@ public class inventarisGudang {
                             for (int j = 0; j < stok.length; j++) {
                                 if ((int) stok[j][2] == i && (int) stok[j][0] == searchIndex) {
                                     System.out.println("\nData Obat Gudang " + gudang[i] + ": ");
+                                    hasObat = true;
+                                    break;
+                                }
+                            }
+                            for (int j = 0; j < stok.length; j++) {
+                                if ((int) stok[j][2] == i && (int) stok[j][0] == searchIndex) {
                                     System.out.println("(" + j + ") " + getNamaObat(j) + ": " + getStokObat(j));
                                     hasObat = true;
                                 }
