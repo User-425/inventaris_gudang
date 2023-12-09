@@ -1,0 +1,26 @@
+1. exitPrompt()
+2. modularize
+3. table
+4. Expired
+    - Tambah Obat di Gudang 
+
+    - Hapus Obat di Gudang
+
+    -  Transfer Obat
+        - Jika ada batch , tambah stok
+        - Jika tidak, add new batch
+    
+5. Hapus Obat Handle
+6. Duplicate Obat Handle
+7. Confirmation Prompt
+
+
+========================================================================================
+|                                                                                      |
+========================================================================================
+
+id / kode :
+nama      :
+stok      :
+batch     :
+exp       :

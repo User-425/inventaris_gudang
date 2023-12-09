@@ -14,17 +14,18 @@ public class inventarisGudang {
     static String[] gudang = { "Malang", "Jakarta", "Kediri", "Surabaya", "Gresik" };
     static String userData = "admin";
     static String userPass = "test";
-    static int[][] stok = {
-            { 0, 113, 0 },
-            { 1, 57, 1 },
-            { 2, 73, 2 },
-            { 3, 59, 1 },
-            { 4, 34, 3 },
-            { 0, 82, 1 },
-            { 2, 141, 3 },
-            { 3, 42, 0 },
-            { 4, 29, 2 },
-            { 1, 65, 2 }
+    // Stok keseluruhan
+    static Object[][] stok = {
+            { 0, 113, 0, "Batch123", "2023-12-31"},
+            { 1, 57, 1 , "Batch123", "2023-12-31"},
+            { 2, 73, 2 , "Batch123", "2023-12-31"},
+            { 3, 59, 1 , "Batch123", "2023-12-31"},
+            { 4, 34, 3 , "Batch123", "2023-12-31"},
+            { 0, 82, 1 , "Batch123", "2023-12-31"},
+            { 2, 141, 3 , "Batch123", "2023-12-31"},
+            { 3, 42, 0 , "Batch123", "2023-12-31"},
+            { 4, 29, 2 , "Batch123", "2023-12-31"},
+            { 1, 65, 2 , "Batch123", "2023-12-31"}
     };
 
     public static void main(String[] args) {
@@ -58,9 +59,9 @@ public class inventarisGudang {
                         pilihGudang = getUserInput(input, 1, gudang.length);
                         // Lihat Stok Section
                         cleanDisplay();
-                        headLine(" Gudang "+ gudang[pilihGudang - 1]+" ");
+                        headLine(" Gudang " + gudang[pilihGudang - 1] + " ");
                         for (int i = 0; i < stok.length; i++) {
-                            if (stok[i][2] == pilihGudang - 1) {
+                            if ((int) stok[i][2] == pilihGudang - 1) {
                                 System.out.println(getNamaObat(i) + ": " + getStokObat(i));
                             }
                         }
@@ -76,18 +77,18 @@ public class inventarisGudang {
                         pilihGudang = (getUserInput(input, 1, gudang.length) - 1);
                         // Tambah Stok Section
                         cleanDisplay();
-                        headLine(" Gudang "+gudang[pilihGudang]+" ");
+                        headLine(" Gudang " + gudang[pilihGudang] + " ");
                         for (int i = 0; i < stok.length; i++) {
-                            if (stok[i][2] == pilihGudang) {
+                            if ((int) stok[i][2] == pilihGudang) {
                                 System.out.println("(" + i + ") " + getNamaObat(i) + ": " + getStokObat(i));
                             }
                         }
                         System.out.print("Masukkan ID Obat : ");
                         pilihStok = getUserInput(input, 0, stok.length - 1);
 
-                        if (stok[pilihStok][2] == pilihGudang) {
+                        if ((int) stok[pilihStok][2] == pilihGudang) {
                             System.out.print("Masukkan Jumlah Tambah Stok Obat : ");
-                            stok[pilihStok][1] += input.nextInt();
+                            stok[pilihStok][1] = (int) stok[pilihStok][1] + input.nextInt();
 
                             System.out.println(
                                     "Jumlah stok obat " + getNamaObat(pilihStok) + " saat ini adalah "
@@ -108,20 +109,20 @@ public class inventarisGudang {
                         pilihGudang = getUserInput(input, 1, gudang.length);
                         cleanDisplay();
                         // Ambil Stok Section
-                        headLine(" Gudang "+gudang[pilihGudang - 1]+" ");
+                        headLine(" Gudang " + gudang[pilihGudang - 1] + " ");
                         for (int i = 0; i < stok.length; i++) {
-                            if (stok[i][2] == pilihGudang - 1) {
+                            if ((int) stok[i][2] == pilihGudang - 1) {
                                 System.out.println("(" + i + ") " + getNamaObat(i) + ": " + getStokObat(i));
                             }
                         }
                         System.out.print("Masukkan ID Obat : ");
                         pilihStok = getUserInput(input, 0, stok.length - 1);
 
-                        if (stok[pilihStok][2] == pilihGudang - 1) {
+                        if ((int)stok[pilihStok][2] == pilihGudang - 1) {
                             System.out.print("Masukkan Jumlah Ambil Stok Obat : ");
                             ambilStok = input.nextInt();
                             if (ambilStok <= getStokObat(pilihStok)) {
-                                stok[pilihStok][1] -= ambilStok;
+                                stok[pilihStok][1] = (int) stok[pilihStok][1] - ambilStok;
                             } else if (ambilStok > getStokObat(pilihStok)) {
                                 System.out.println("ERROR! Stok Tidak Mencukupi!");
                             }
@@ -145,7 +146,7 @@ public class inventarisGudang {
                         for (int i = 0; i < gudang.length; i++) {
                             boolean hasObat = false;
                             for (int j = 0; j < stok.length; j++) {
-                                if (stok[j][2] == i && stok[j][0] == searchIndex) {
+                                if ((int) stok[j][2] == i && (int) stok[j][0] == searchIndex) {
                                     System.out.println("\nData Obat Gudang " + gudang[i] + ": ");
                                     System.out.println("(" + j + ") " + getNamaObat(j) + ": " + getStokObat(j));
                                     hasObat = true;
@@ -163,7 +164,7 @@ public class inventarisGudang {
                             System.out.println("\nData Obat Gudang " + gudang[i] + ": ");
                             boolean hasObat = false;
                             for (int j = 0; j < stok.length; j++) {
-                                if (stok[j][2] == i) {
+                                if ((int) stok[j][2] == i) {
                                     System.out.println("(" + j + ") " + getNamaObat(j) + ": " + getStokObat(j));
                                     hasObat = true;
                                 }
@@ -210,9 +211,9 @@ public class inventarisGudang {
                                 tempArray = new String[namaObat.length - 1];
                                 int index = 0;
                                 for (int i = stok.length - 1; i >= 0; i--) {
-                                    if (stok[i][0] > pilihMenu) {
-                                        stok[i][0] -= 1;
-                                    } else if (stok[i][0] == pilihMenu) {
+                                    if ((int) stok[i][0] > pilihMenu) {
+                                        stok[i][0] = (int)stok[i][0] - 1;
+                                    } else if ((int)stok[i][0] == pilihMenu) {
                                         deleteStock(i);
                                     }
                                 }
@@ -247,7 +248,7 @@ public class inventarisGudang {
                                 int jumlahObat = input.nextInt();
                                 boolean obatSudahAda = false;
                                 for (int i = 0; i < stok.length; i++) {
-                                    if (stok[i][2] == pilihPenambahanGudang && stok[i][0] == pilihPenambahanObat) {
+                                    if ((int)stok[i][2] == pilihPenambahanGudang && (int)stok[i][0] == pilihPenambahanObat) {
                                         obatSudahAda = true;
                                         System.out.println("Obat sudah tersedia!");
                                         System.out.print("\nMasukkan apapun untuk kembali ke menu ");
@@ -257,7 +258,7 @@ public class inventarisGudang {
                                 }
                                 if (!obatSudahAda) {
 
-                                    int[][] stokBaru = new int[stok.length + 1][3];
+                                    Object[][] stokBaru = new Object[stok.length + 1][5];
                                     for (int i = 0; i < stok.length; i++) {
                                         stokBaru[i] = stok[i];
                                     }
@@ -278,9 +279,9 @@ public class inventarisGudang {
                                 System.out.print("Pilih Gudang : ");
                                 int pilihPenghapusanGudang = input.nextInt() - 1;
                                 cleanDisplay();
-                                headLine(" Gudang "+gudang[pilihPenghapusanGudang]+" ");
+                                headLine(" Gudang " + gudang[pilihPenghapusanGudang] + " ");
                                 for (int i = 0; i < stok.length; i++) {
-                                    if (stok[i][2] == pilihPenghapusanGudang) {
+                                    if ((int)stok[i][2] == pilihPenghapusanGudang) {
                                         System.out.println("(" + i + ") " + getNamaObat(i) + ": " + getStokObat(i));
                                     }
                                 }
@@ -299,10 +300,10 @@ public class inventarisGudang {
                                 System.out.print("Pilih Gudang : ");
                                 pilihGudang = getUserInput(input, 1, gudang.length) - 1;
                                 cleanDisplay();
-                                headLine(" Gudang "+gudang[pilihGudang]+" ");
+                                headLine(" Gudang " + gudang[pilihGudang] + " ");
                                 boolean hasObat = false;
                                 for (int j = 0; j < stok.length; j++) {
-                                    if (stok[j][2] == pilihGudang) {
+                                    if ((int)stok[j][2] == pilihGudang) {
                                         System.out.println("(" + j + ") " + getNamaObat(j) + ": " + getStokObat(j));
                                         hasObat = true;
                                     }
@@ -314,7 +315,7 @@ public class inventarisGudang {
                                 pilihStok = getUserInput(input, 0, stok.length - 1);
 
                                 System.out.print("\nMasukkan Jumlah yang akan dipindah : ");
-                                ambilStok = getUserInput(input, 1, stok[pilihStok][1]);
+                                ambilStok = getUserInput(input, 1, (int)stok[pilihStok][1]);
 
                                 cleanDisplay();
                                 displayWarehouse();
@@ -325,7 +326,7 @@ public class inventarisGudang {
                                 // Get index of stok in the gudang tujuan
                                 y = -1;
                                 for (int i = 0; i < stok.length; i++) {
-                                    if (stok[i][2] == pilihGudangTujuan && stok[i][0] == pilihStok) {
+                                    if ((int) stok[i][2] == pilihGudangTujuan && (int) stok[i][0] == pilihStok) {
                                         y = i;
                                         break;
                                     }
@@ -333,12 +334,12 @@ public class inventarisGudang {
 
                                 cleanDisplay();
                                 // Show before after
-                                headLine(" Gudang " + gudang[pilihGudang]+" ");
+                                headLine(" Gudang " + gudang[pilihGudang] + " ");
                                 System.out.println(getNamaObat(pilihStok) + ": ");
                                 System.out.printf("%d => %d\n", getStokObat(pilihStok),
                                         getStokObat(pilihStok) - ambilStok);
 
-                                headLine(" Gudang " + gudang[pilihGudangTujuan]+" ");
+                                headLine(" Gudang " + gudang[pilihGudangTujuan] + " ");
                                 System.out.println(getNamaObat(pilihStok) + ": ");
                                 System.out.printf("%d => %d\n", (y == -1) ? 0 : getStokObat(y),
                                         ((y == -1) ? 0 : getStokObat(y)) + ambilStok);
@@ -346,21 +347,23 @@ public class inventarisGudang {
                                 // Confirmation Prompt
                                 System.out.print("Apakah anda yakin? (Y/N): ");
                                 String yakin = input.next();
-                                if (yakin.equalsIgnoreCase("y")) {
-                                    // Implement Pindah Gudang
-                                    hasObat = false;
-                                    for (int j = 0; j < stok.length; j++) {
-                                        if (stok[j][2] == pilihGudangTujuan && stok[j][0] == pilihStok) {
-                                            stok[j][1] += ambilStok;
-                                            hasObat = true;
-                                            break;
-                                        }
-                                    }
-                                    if (!hasObat) {
-                                        addStock(stok[pilihStok][0], ambilStok, pilihGudangTujuan);
-                                    }
-                                    stok[pilihStok][1] -= ambilStok;
-                                }
+
+                                System.err.println("MASIH MAINTENANCE -Valk");
+                                // if (yakin.equalsIgnoreCase("y")) {
+                                //     // Implement Pindah Gudang
+                                //     hasObat = false;
+                                //     for (int j = 0; j < stok.length; j++) {
+                                //         if ((int) stok[j][2] == pilihGudangTujuan && (int) stok[j][0] == pilihStok) {
+                                //             stok[j][1] = (int)stok[j][1] + ambilStok;
+                                //             hasObat = true;
+                                //             break;
+                                //         }
+                                //     }
+                                //     if (!hasObat) {
+                                //         addStock((int) stok[pilihStok][0], ambilStok, pilihGudangTujuan);
+                                //     }
+                                //     stok[pilihStok][1] = (int) stok[pilihStok][1] - ambilStok;
+                                // }
 
                                 System.out.print("\nMasukkan apapun untuk kembali ke menu ");
                                 userInput = input.next();
@@ -400,9 +403,9 @@ public class inventarisGudang {
                                 tempArray = new String[gudang.length - 1];
                                 int index = 0;
                                 for (int i = stok.length - 1; i >= 0; i--) {
-                                    if (stok[i][2] > pilihMenu) {
-                                        stok[i][2] -= 1;
-                                    } else if (stok[i][2] == pilihMenu) {
+                                    if ((int)stok[i][2] > pilihMenu) {
+                                        stok[i][2] = (int) stok [i][2] - 1;
+                                    } else if ((int)stok[i][2] == pilihMenu) {
                                         deleteStock(i);
                                     }
                                 }
@@ -461,17 +464,17 @@ public class inventarisGudang {
         }
     }
 
-    static void addStock(int nama, int stokObat, int gudang) {
-        int[][] tempArray = newArray(stok.length + 1);
+    static void addStock(int nama, int stokObat, int gudang, String batch, String expired) {
+        Object[][] tempArray = newArray(stok.length + 1);
         for (int i = 0; i < stok.length; i++) {
             tempArray[i] = stok[i];
         }
-        tempArray[tempArray.length - 1] = new int[] { nama, stokObat, gudang};
+        tempArray[tempArray.length - 1] = new Object[] {nama, stokObat, gudang, batch, expired };
         stok = tempArray;
     }
 
     static void deleteStock(int idObat) {
-        int[][] tempArray = newArray(stok.length - 1);
+        Object[][] tempArray = newArray(stok.length - 1);
         int index = 0;
         for (int i = 0; i < stok.length; i++) {
             if (i != idObat) {
@@ -482,8 +485,8 @@ public class inventarisGudang {
         stok = tempArray;
     }
 
-    static int[][] newArray(int size) {
-        return new int[size][3];
+    static Object[][] newArray(int size) {
+        return new Object[size][5];
     }
 
     static void displayWarehouse() {
@@ -547,11 +550,11 @@ public class inventarisGudang {
     }
 
     static String getNamaObat(int index) {
-        return namaObat[stok[index][0]];
+        return namaObat[(int)stok[index][0]];
     }
 
     static int getStokObat(int index) {
-        return stok[index][1];
+        return (int) stok[index][1];
     }
 
     static int getUserInput(Scanner scanner, int min, int max) {
@@ -568,8 +571,9 @@ public class inventarisGudang {
         } while (input < min || input > max);
         return input;
     }
-    static void headLine(String title){
-        System.out.println("<=============["+title+"]===============>"); 
+
+    static void headLine(String title) {
+        System.out.println("<=============[" + title + "]===============>");
     }
 
     public static void splitWordWithConstantWeights(String word) {
@@ -580,7 +584,7 @@ public class inventarisGudang {
             for (int j = i + 1; j <= length; j++) {
                 substrings[indexDatabase][indexY] = word.substring(i, j);
                 // Calculate weight based on the number of letters
-                int weight = (j - i)*100/length;
+                int weight = (j - i) * 100 / length;
                 weights[indexDatabase][indexY] = weight;
                 indexY++;
             }
