@@ -344,16 +344,34 @@ public class inventarisGudang {
                                 int pilihPenghapusanGudang = input.nextInt() - 1;
                                 cleanDisplay();
                                 headLine(" Gudang " + gudang[pilihPenghapusanGudang] + " ");
-                                for (int i = 0; i < stok.length; i++) {
-                                    if ((int)stok[i][2] == pilihPenghapusanGudang) {
-                                        System.out.println("(" + i + ") " + getNamaObat(i) + ": " + getStokObat(i) + "   " + getBatchObat(i)  + "    Exp: "+ getExpObat(i));
+                                for (int i = 0; i < namaObat.length; i++) { // Repeat per Nama Obat
+                                    int stokCount = 0;
+                                    for (int j = 0; j < stok.length; j++) { // Repeat per Stock
+                                        if ((int) stok[j][2] == pilihPenghapusanGudang && (int) stok[j][0] == i) {
+                                            stokCount += getStokObat(j);
+                                        }
+                                    }
+                                    if (stokCount > 0) {
+                                        System.out.println("(" + i + ") " + namaObat[i] + ": " + stokCount);
                                     }
                                 }
-                                System.out.print("Pilih Obat : ");
-                                int pilihPenghapusanObat = input.nextInt();
+                                System.out.println("Pilih Obat : ");
+                                pilihNamaObat = getUserInput(input, 0, namaObat.length - 1);
+                                cleanDisplay();
+                                headLine(" Gudang " + gudang[pilihPenghapusanGudang] + " ");
+                                for (int i = 0; i < stok.length; i++) {
+                                    if ((int) stok[i][2] == pilihPenghapusanGudang && (int) stok[i][0] == pilihNamaObat) {
+                                        System.out.println(
+                                                "(" + i + ") " + getNamaObat(i) + ": " + getStokObat(i) + "  Batch: "
+                                                        + getBatchObat(i) + "  Exp: " + getExpObat(i));
+                                    }
+                                }
+
+                                System.out.print("Masukkan ID Obat : ");
+                                pilihStok = getUserInput(input, 0, stok.length - 1);
 
                                 // Membuat array baru dengan ukuran yang lebih kecil
-                                deleteStock(pilihPenghapusanObat);
+                                deleteStock(pilihStok);
                                 System.out.println("Obat berhasil dihapus dari gudang!");
                                 System.out.print("Masukkan apapun untuk kembali ke menu ");
                                 userInput = input.next();
