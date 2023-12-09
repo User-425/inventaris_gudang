@@ -82,11 +82,11 @@ public class inventarisGudang {
                                 System.out.println("(" + i + ") " + getNamaObat(i) + ": " + getStokObat(i));
                             }
                         }
-                        System.out.print("Masukan ID Obat : ");
+                        System.out.print("Masukkan ID Obat : ");
                         pilihStok = getUserInput(input, 0, stok.length - 1);
 
                         if (stok[pilihStok][2] == pilihGudang) {
-                            System.out.print("Masukan Jumlah Tambah Stok Obat : ");
+                            System.out.print("Masukkan Jumlah Tambah Stok Obat : ");
                             stok[pilihStok][1] += input.nextInt();
 
                             System.out.println(
@@ -114,11 +114,11 @@ public class inventarisGudang {
                                 System.out.println("(" + i + ") " + getNamaObat(i) + ": " + getStokObat(i));
                             }
                         }
-                        System.out.print("Masukan ID Obat : ");
+                        System.out.print("Masukkan ID Obat : ");
                         pilihStok = getUserInput(input, 0, stok.length - 1);
 
                         if (stok[pilihStok][2] == pilihGudang - 1) {
-                            System.out.print("Masukan Jumlah Ambil Stok Obat : ");
+                            System.out.print("Masukkan Jumlah Ambil Stok Obat : ");
                             ambilStok = input.nextInt();
                             if (ambilStok <= getStokObat(pilihStok)) {
                                 stok[pilihStok][1] -= ambilStok;
@@ -188,7 +188,7 @@ public class inventarisGudang {
                         switch (pilihMenu) {
                             case 1: // Tambah Jenis Obat
                                 cleanDisplay();
-                                System.out.print("Masukan Nama Obat Baru : ");
+                                System.out.print("Masukkan Nama Obat Baru : ");
                                 String obatBaru = input.next();
                                 String[] tempArray = new String[namaObat.length + 1];
                                 for (int i = 0; i < namaObat.length; i++) {
@@ -243,7 +243,7 @@ public class inventarisGudang {
                                 displayMedicine();
                                 System.out.print("Pilih Obat : ");
                                 int pilihPenambahanObat = input.nextInt() - 1;
-                                System.out.print("Masukan Jumlah Obat : ");
+                                System.out.print("Masukkan Jumlah Obat : ");
                                 int jumlahObat = input.nextInt();
                                 boolean obatSudahAda = false;
                                 for (int i = 0; i < stok.length; i++) {
@@ -512,9 +512,9 @@ public class inventarisGudang {
         short loginAttempt = 1;
         while (loginAttempt <= 3) {
             headLine(" GUDANG OBAT ");
-            System.out.print("Masukan Username : ");
+            System.out.print("Masukkan Username : ");
             String user = input.nextLine();
-            System.out.print("Masukan Password : ");
+            System.out.print("Masukkan Password : ");
             String pass = input.nextLine();
             if (userData.equals(user) && userPass.equals(pass)) {
                 isLoggedIn = true;
@@ -527,7 +527,7 @@ public class inventarisGudang {
                 cleanDisplay();
                 headLine(" !NOTIFIKASI! ");
                 System.out.printf(
-                        "Username atau Password yang Anda Masukan Salah!\nPercobaan yang tersisa adalah %d \n",
+                        "Username atau Password yang Anda Masukkan Salah!\nPercobaan yang tersisa adalah %d \n",
                         (3 - loginAttempt));
             }
             loginAttempt++;
@@ -569,7 +569,7 @@ public class inventarisGudang {
         return input;
     }
     static void headLine(String title){
-        System.out.println("=============|"+title+"|==============="); 
+        System.out.println("<=============["+title+"]===============>"); 
     }
 
     public static void splitWordWithConstantWeights(String word) {
