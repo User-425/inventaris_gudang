@@ -16,35 +16,34 @@ public class inventarisGudang {
     static String userPass = "test";
     // Stok keseluruhan
     static Object[][] stok = {
-        { 0, 21, 0, "Batch123", "2024-03-15" },
-        { 0, 98, 0, "Batch56", "2024-07-20" },
-        { 1, 57, 1, "Batch125", "2024-09-10" },
-        { 2, 73, 2, "Batch154", "2024-11-25" },
-        { 3, 59, 1, "Batch175", "2025-01-18" },
-        { 4, 34, 3, "Batch159", "2025-03-02" },
-        { 0, 82, 1, "Batch150", "2024-05-12" },
-        { 2, 141, 3, "Batch135", "2024-08-07" },
-        { 3, 42, 0, "Batch21", "2024-12-30" },
-        { 4, 29, 2, "Batch51", "2024-02-14" },
-        { 1, 65, 2, "Batch71", "2025-04-05" },
-        { 0, 45, 3, "Batch89", "2024-06-23" },
-        { 1, 30, 4, "Batch102", "2024-10-28" },
-        { 3, 87, 1, "Batch33", "2025-02-08" },
-        { 4, 50, 0, "Batch44", "2025-05-17" },
-        { 2, 63, 2, "Batch77", "2024-04-01" },
-        { 0, 76, 1, "Batch95", "2024-09-14" },
-        { 3, 22, 3, "Batch112", "2024-11-02" },
-        { 4, 39, 0, "Batch120", "2025-01-30" },
-        { 1, 54, 2, "Batch132", "2024-03-20" },
-        { 2, 68, 4, "Batch143", "2024-07-09" },
-        { 0, 33, 1, "Batch160", "2024-08-25" },
-        { 1, 78, 3, "Batch175", "2024-05-03" },
-        { 2, 40, 2, "Batch187", "2025-02-18" },
-        { 3, 25, 0, "Batch192", "2024-10-10" },
-        { 4, 62, 4, "Batch205", "2024-12-12" }
+        { 0, 21, 0, "Batch123", "15-03-2024" },
+        { 0, 98, 0, "Batch56", "20-07-2024" },
+        { 1, 57, 1, "Batch125", "10-09-2024" },
+        { 2, 73, 2, "Batch154", "25-11-2024" },
+        { 3, 59, 1, "Batch175", "18-01-2025" },
+        { 4, 34, 3, "Batch159", "02-03-2025" },
+        { 0, 82, 1, "Batch150", "12-05-2024" },
+        { 2, 141, 3, "Batch135", "07-08-2024" },
+        { 3, 42, 0, "Batch21", "30-12-2024" },
+        { 4, 29, 2, "Batch51", "14-02-2024" },
+        { 1, 65, 2, "Batch71", "05-04-2025" },
+        { 0, 45, 3, "Batch89", "23-06-2024" },
+        { 1, 30, 4, "Batch102", "28-10-2024" },
+        { 3, 87, 1, "Batch33", "08-02-2025" },
+        { 4, 50, 0, "Batch44", "17-05-2025" },
+        { 2, 63, 2, "Batch77", "01-04-2024" },
+        { 0, 76, 1, "Batch95", "14-09-2024" },
+        { 3, 22, 3, "Batch112", "02-11-2024" },
+        { 4, 39, 0, "Batch120", "30-01-2025" },
+        { 1, 54, 2, "Batch132", "20-03-2024" },
+        { 2, 68, 4, "Batch143", "09-07-2024" },
+        { 0, 33, 1, "Batch160", "25-08-2024" },
+        { 1, 78, 3, "Batch175", "03-05-2024" },
+        { 2, 40, 2, "Batch187", "18-02-2025" },
+        { 3, 25, 0, "Batch192", "10-10-2024" },
+        { 4, 62, 4, "Batch205", "12-12-2024" }
     };
     
-
     public static void main(String[] args) {
         cleanDisplay();
         // Declaration
@@ -101,9 +100,24 @@ public class inventarisGudang {
                         // Tambah Stok Section
                         cleanDisplay();
                         headLine(" Gudang " + gudang[pilihGudang] + " ");
+                        for (int i = 0; i < namaObat.length; i++) { // Repeat per Nama Obat
+                            int stokCount = 0;
+                            for (int j = 0; j < stok.length; j++) { // Repeat per Stock
+                                if ((int) stok[j][2] == pilihGudang && (int) stok[j][0] == i) {
+                                    stokCount += getStokObat(j);
+                                }
+                            }
+                            if (stokCount > 0) {
+                                System.out.println("("+i+") "+namaObat[i] + ": " + stokCount);
+                            }
+                        }
+                        System.out.println("Pilih Obat : ");
+                        int pilihNamaObat = getUserInput(input, 0, namaObat.length-1);
+                        cleanDisplay();
+                        headLine(" Gudang " + gudang[pilihGudang] + " ");
                         for (int i = 0; i < stok.length; i++) {
-                            if ((int) stok[i][2] == pilihGudang) {
-                                System.out.println("(" + i + ") " + getNamaObat(i) + ": " + getStokObat(i));
+                            if ((int) stok[i][2] == pilihGudang && (int) stok[i][0] == pilihNamaObat) {
+                                System.out.println("(" + i + ") " + getNamaObat(i) + ": " + getStokObat(i) + "  Batch: " + getBatchObat(i) + "  Exp: " + getExpObat(i));
                             }
                         }
                         System.out.print("Masukkan ID Obat : ");
@@ -129,19 +143,36 @@ public class inventarisGudang {
                         cleanDisplay();
                         displayWarehouse();
                         System.out.print("Pilih Gudang : ");
-                        pilihGudang = getUserInput(input, 1, gudang.length);
+                        pilihGudang = getUserInput(input, 1, gudang.length) -1;
                         cleanDisplay();
                         // Ambil Stok Section
-                        headLine(" Gudang " + gudang[pilihGudang - 1] + " ");
-                        for (int i = 0; i < stok.length; i++) {
-                            if ((int) stok[i][2] == pilihGudang - 1) {
-                                System.out.println("(" + i + ") " + getNamaObat(i) + ": " + getStokObat(i));
+                        headLine(" Gudang " + gudang[pilihGudang] + " ");
+                        for (int i = 0; i < namaObat.length; i++) { // Repeat per Nama Obat
+                            int stokCount = 0;
+                            for (int j = 0; j < stok.length; j++) { // Repeat per Stock
+                                if ((int) stok[j][2] == pilihGudang && (int) stok[j][0] == i) {
+                                    stokCount += getStokObat(j);
+                                }
+                            }
+                            if (stokCount > 0) {
+                                System.out.println("(" + i + ") " + namaObat[i] + ": " + stokCount);
                             }
                         }
+                        System.out.println("Pilih Obat : ");
+                        pilihNamaObat = getUserInput(input, 0, namaObat.length - 1);
+                        cleanDisplay();
+                        headLine(" Gudang " + gudang[pilihGudang] + " ");
+                        for (int i = 0; i < stok.length; i++) {
+                            if ((int) stok[i][2] == pilihGudang && (int) stok[i][0] == pilihNamaObat) {
+                                System.out.println("(" + i + ") " + getNamaObat(i) + ": " + getStokObat(i) + "  Batch: "
+                                        + getBatchObat(i) + "  Exp: " + getExpObat(i));
+                            }
+                        }
+
                         System.out.print("Masukkan ID Obat : ");
                         pilihStok = getUserInput(input, 0, stok.length - 1);
 
-                        if ((int)stok[pilihStok][2] == pilihGudang - 1) {
+                        if ((int) stok[pilihStok][2] == pilihGudang) {
                             System.out.print("Masukkan Jumlah Ambil Stok Obat : ");
                             ambilStok = input.nextInt();
                             if (ambilStok <= getStokObat(pilihStok)) {
