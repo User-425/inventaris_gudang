@@ -307,17 +307,21 @@ public class inventarisGudang {
                             case 4: // Tambah Obat di Gudang
                                 cleanDisplay();
                                 displayWarehouse();
-                                System.out.print("Pilih Gudang : ");
+                                System.out.println("Pilih Gudang : ");
                                 int pilihPenambahanGudang = input.nextInt() - 1;
                                 cleanDisplay();
                                 displayMedicine();
-                                System.out.print("Pilih Obat : ");
+                                System.out.println("Pilih Obat : ");
                                 int pilihPenambahanObat = input.nextInt() - 1;
-                                System.out.print("Masukkan Jumlah Obat : ");
+                                System.out.println("Masukkan Jumlah Obat : ");
                                 int jumlahObat = input.nextInt();
+                                System.out.println("Masukkan Batch Obat : ");
+                                String batch = input.next();
+                                System.out.println("Masukkan Expired Obat (DD-MM-YYYY) : ");
+                                String expired = input.next();
                                 boolean obatSudahAda = false;
                                 for (int i = 0; i < stok.length; i++) {
-                                    if ((int)stok[i][2] == pilihPenambahanGudang && (int)stok[i][0] == pilihPenambahanObat) {
+                                    if ((int)stok[i][2] == pilihPenambahanGudang && (int)stok[i][0] == pilihPenambahanObat && batch.equals(getBatchObat(i))) {
                                         obatSudahAda = true;
                                         System.out.println("Obat sudah tersedia!");
                                         System.out.print("\nMasukkan apapun untuk kembali ke menu ");
@@ -326,16 +330,7 @@ public class inventarisGudang {
                                     }
                                 }
                                 if (!obatSudahAda) {
-
-                                    Object[][] stokBaru = new Object[stok.length + 1][5];
-                                    for (int i = 0; i < stok.length; i++) {
-                                        stokBaru[i] = stok[i];
-                                    }
-                                    stokBaru[stok.length][0] = pilihPenambahanObat;
-                                    stokBaru[stok.length][1] = jumlahObat;
-                                    stokBaru[stok.length][2] = pilihPenambahanGudang;
-
-                                    stok = stokBaru;
+                                    addStock(pilihPenambahanObat, jumlahObat,pilihPenambahanGudang, batch, expired);
                                     System.out.println("Obat berhasil ditambahkan ke gudang!");
                                     System.out.print("\nMasukkan apapun untuk kembali ke menu ");
                                     userInput = input.next();
@@ -351,7 +346,7 @@ public class inventarisGudang {
                                 headLine(" Gudang " + gudang[pilihPenghapusanGudang] + " ");
                                 for (int i = 0; i < stok.length; i++) {
                                     if ((int)stok[i][2] == pilihPenghapusanGudang) {
-                                        System.out.println("(" + i + ") " + getNamaObat(i) + ": " + getStokObat(i));
+                                        System.out.println("(" + i + ") " + getNamaObat(i) + ": " + getStokObat(i) + "   " + getBatchObat(i)  + "    Exp: "+ getExpObat(i));
                                     }
                                 }
                                 System.out.print("Pilih Obat : ");
