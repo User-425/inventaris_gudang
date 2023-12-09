@@ -28,7 +28,7 @@ public class inventarisGudang {
         { 4, 29, 2, "Batch51", "14-02-2024" },
         { 1, 65, 2, "Batch71", "05-04-2025" },
         { 0, 45, 3, "Batch89", "23-06-2024" },
-        { 1, 30, 4, "Batch102", "28-10-2024" },
+        { 1, 30, 3, "Batch102", "28-10-2024" },
         { 3, 87, 1, "Batch33", "08-02-2025" },
         { 4, 50, 0, "Batch44", "17-05-2025" },
         { 2, 63, 2, "Batch77", "01-04-2024" },
@@ -36,12 +36,12 @@ public class inventarisGudang {
         { 3, 22, 3, "Batch112", "02-11-2024" },
         { 4, 39, 0, "Batch120", "30-01-2025" },
         { 1, 54, 2, "Batch132", "20-03-2024" },
-        { 2, 68, 4, "Batch143", "09-07-2024" },
+        { 2, 68, 2, "Batch143", "09-07-2024" },
         { 0, 33, 1, "Batch160", "25-08-2024" },
         { 1, 78, 3, "Batch175", "03-05-2024" },
         { 2, 40, 2, "Batch187", "18-02-2025" },
         { 3, 25, 0, "Batch192", "10-10-2024" },
-        { 4, 62, 4, "Batch205", "12-12-2024" }
+        { 4, 62, 0, "Batch205", "12-12-2024" }
     };
     
     public static void main(String[] args) {
@@ -220,13 +220,22 @@ public class inventarisGudang {
                     case 5:
                         cleanDisplay();
                         headLine(" Data Seluruh Obat ");
+
                         for (int i = 0; i < gudang.length; i++) {
                             System.out.println("\nData Obat Gudang " + gudang[i] + ": ");
                             boolean hasObat = false;
-                            for (int j = 0; j < stok.length; j++) {
-                                if ((int) stok[j][2] == i) {
-                                    System.out.println("(" + j + ") " + getNamaObat(j) + ": " + getStokObat(j));
-                                    hasObat = true;
+                            for (int j = 0; j < namaObat.length; j++) {
+                                int stockCount = 0;
+                                boolean hasStok = false;
+                                for (int k = 0; k < stok.length; k++) {
+                                    if ((int) stok[k][2] == i && (int) stok[k][0] == j) {
+                                        stockCount += getStokObat(k);
+                                        hasStok = true;
+                                        hasObat = true;
+                                    }
+                                }
+                                if (hasStok) {
+                                    System.out.println(namaObat[j] + ": " + stockCount);
                                 }
                             }
                             if (!hasObat) {
