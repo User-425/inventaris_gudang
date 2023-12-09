@@ -16,16 +16,17 @@ public class inventarisGudang {
     static String userPass = "test";
     // Stok keseluruhan
     static Object[][] stok = {
-            { 0, 113, 0, "Batch123", "2023-12-31"},
-            { 1, 57, 1 , "Batch123", "2023-12-31"},
-            { 2, 73, 2 , "Batch123", "2023-12-31"},
-            { 3, 59, 1 , "Batch123", "2023-12-31"},
-            { 4, 34, 3 , "Batch123", "2023-12-31"},
-            { 0, 82, 1 , "Batch123", "2023-12-31"},
-            { 2, 141, 3 , "Batch123", "2023-12-31"},
-            { 3, 42, 0 , "Batch123", "2023-12-31"},
-            { 4, 29, 2 , "Batch123", "2023-12-31"},
-            { 1, 65, 2 , "Batch123", "2023-12-31"}
+            { 0, 21, 0, "Batch123", "2023-12-31"},
+            { 0, 98, 0, "Batch56", "2023-12-31"},
+            { 1, 57, 1 , "Batch125", "2023-12-31"},
+            { 2, 73, 2 , "Batch154", "2023-12-31"},
+            { 3, 59, 1 , "Batch175", "2023-12-31"},
+            { 4, 34, 3 , "Batch159", "2023-12-31"},
+            { 0, 82, 1 , "Batch150", "2023-12-31"},
+            { 2, 141, 3 , "Batch135", "2023-12-31"},
+            { 3, 42, 0 , "Batch21", "2023-12-31"},
+            { 4, 29, 2 , "Batch51", "2023-12-31"},
+            { 1, 65, 2 , "Batch71", "2023-12-31"}
     };
 
     public static void main(String[] args) {
@@ -301,13 +302,28 @@ public class inventarisGudang {
                                 pilihGudang = getUserInput(input, 1, gudang.length) - 1;
                                 cleanDisplay();
                                 headLine(" Gudang " + gudang[pilihGudang] + " ");
+                                for (int i = 0; i < namaObat.length; i++) { // repeat per obat name
+                                    int stokCount = 0;
+                                    for (int j = 0; j < stok.length; j++) { // repeat per obat batch
+                                        if ((int) stok[j][2] == pilihGudang && (int) stok[j][0] == i) { // if the gudang is same then
+                                            stokCount += (int) stok[j][1];
+                                        }
+                                    }
+                                    if (stokCount > 0) {
+                                     System.out.println("("+i+") "+namaObat[i]+": " + stokCount);    
+                                    } 
+                                }
+                                System.out.println("Pilih Obat yang Akan ditransfer:");
+                                int pilihObatTransfer = getUserInput(input, 0, namaObat.length - 1);
+                                cleanDisplay();
+                                headLine(" Data Obat " + namaObat[pilihObatTransfer] + " di Gudang " + gudang[pilihGudang] + " ");
                                 boolean hasObat = false;
                                 for (int j = 0; j < stok.length; j++) {
-                                    if ((int)stok[j][2] == pilihGudang) {
-                                        System.out.println("(" + j + ") " + getNamaObat(j) + ": " + getStokObat(j));
+                                    if ((int)stok[j][2] == pilihGudang && (int)stok[j][0] == pilihObatTransfer) {
+                                        System.out.println("(" + j + ") " + getNamaObat(j) + ": " + getStokObat(j) + " Batch: " + getBatchObat(j) + " Exp: " + getExpObat(j));
                                         hasObat = true;
                                     }
-                                }
+                                }   
                                 if (!hasObat) {
                                     System.out.println("- Gudang Kosong -");
                                 }
@@ -348,22 +364,21 @@ public class inventarisGudang {
                                 System.out.print("Apakah anda yakin? (Y/N): ");
                                 String yakin = input.next();
 
-                                System.err.println("MASIH MAINTENANCE -Valk");
-                                // if (yakin.equalsIgnoreCase("y")) {
-                                //     // Implement Pindah Gudang
-                                //     hasObat = false;
-                                //     for (int j = 0; j < stok.length; j++) {
-                                //         if ((int) stok[j][2] == pilihGudangTujuan && (int) stok[j][0] == pilihStok) {
-                                //             stok[j][1] = (int)stok[j][1] + ambilStok;
-                                //             hasObat = true;
-                                //             break;
-                                //         }
-                                //     }
-                                //     if (!hasObat) {
-                                //         addStock((int) stok[pilihStok][0], ambilStok, pilihGudangTujuan);
-                                //     }
-                                //     stok[pilihStok][1] = (int) stok[pilihStok][1] - ambilStok;
-                                // }
+                                if (yakin.equalsIgnoreCase("y")) {
+                                    // Implement Pindah Gudang
+                                    hasObat = false;
+                                    for (int j = 0; j < stok.length; j++) {
+                                        if ((int) stok[j][2] == pilihGudangTujuan && (int) stok[j][0] == pilihStok && getBatchObat(pilihStok).equals(getBatchObat(j))) {
+                                            stok[j][1] = (int)stok[j][1] + ambilStok;
+                                            hasObat = true;
+                                            break;
+                                        }
+                                    }
+                                    if (!hasObat) {
+                                        addStock((int) stok[pilihStok][0], ambilStok, pilihGudangTujuan, getBatchObat(pilihStok), getExpObat(pilihStok));
+                                    }
+                                    stok[pilihStok][1] = (int) stok[pilihStok][1] - ambilStok;
+                                }
 
                                 System.out.print("\nMasukkan apapun untuk kembali ke menu ");
                                 userInput = input.next();
@@ -555,6 +570,14 @@ public class inventarisGudang {
 
     static int getStokObat(int index) {
         return (int) stok[index][1];
+    }
+
+    static String getBatchObat(int index) {
+        return (String) stok[index][3];
+    }
+
+    static String getExpObat(int index) {
+        return (String) stok[index][4];
     }
 
     static int getUserInput(Scanner scanner, int min, int max) {
