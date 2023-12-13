@@ -1,4 +1,7 @@
+import java.text.SimpleDateFormat;
 import java.util.Scanner;
+import java.text.ParseException;
+import java.util.Date;
 
 /**
  * inventarisGudang
@@ -16,35 +19,35 @@ public class inventarisGudang {
     static String userPass = "test";
     // Stok keseluruhan
     static Object[][] stok = {
-        { 0, 21, 0, "Batch123", "15-03-2024" },
-        { 0, 98, 0, "Batch56", "20-07-2024" },
-        { 1, 57, 1, "Batch125", "10-09-2024" },
-        { 2, 73, 2, "Batch154", "25-11-2024" },
-        { 3, 59, 1, "Batch175", "18-01-2025" },
-        { 4, 34, 3, "Batch159", "02-03-2025" },
-        { 0, 82, 1, "Batch150", "12-05-2024" },
-        { 2, 141, 3, "Batch135", "07-08-2024" },
-        { 3, 42, 0, "Batch21", "30-12-2024" },
-        { 4, 29, 2, "Batch51", "14-02-2024" },
-        { 1, 65, 2, "Batch71", "05-04-2025" },
-        { 0, 45, 3, "Batch89", "23-06-2024" },
-        { 1, 30, 3, "Batch102", "28-10-2024" },
-        { 3, 87, 1, "Batch33", "08-02-2025" },
-        { 4, 50, 0, "Batch44", "17-05-2025" },
-        { 2, 63, 2, "Batch77", "01-04-2024" },
-        { 0, 76, 1, "Batch95", "14-09-2024" },
-        { 3, 22, 3, "Batch112", "02-11-2024" },
-        { 4, 39, 0, "Batch120", "30-01-2025" },
-        { 1, 54, 2, "Batch132", "20-03-2024" },
-        { 2, 68, 2, "Batch143", "09-07-2024" },
-        { 0, 33, 1, "Batch160", "25-08-2024" },
-        { 1, 78, 3, "Batch175", "03-05-2024" },
-        { 2, 40, 2, "Batch187", "18-02-2025" },
-        { 3, 25, 0, "Batch192", "10-10-2024" },
-        { 4, 62, 0, "Batch205", "12-12-2024" }
+            { 0, 21, 0, "Batch001", "15-03-2024" },
+            { 0, 98, 0, "Batch002", "20-02-2023" },
+            { 1, 57, 1, "Batch003", "10-09-2024" },
+            { 2, 73, 2, "Batch004", "25-11-2024" },
+            { 3, 59, 1, "Batch005", "18-01-2025" },
+            { 4, 34, 3, "Batch006", "02-03-2025" },
+            { 0, 82, 1, "Batch001", "12-03-2024" },
+            { 2, 141, 3, "Batch008", "07-08-2024" },
+            { 3, 42, 0, "Batch009", "30-12-2024" },
+            { 4, 29, 2, "Batch010", "14-02-2024" },
+            { 1, 65, 2, "Batch012", "05-04-2025" },
+            { 0, 45, 3, "Batch015", "23-06-2024" },
+            { 1, 30, 3, "Batch016", "28-10-2024" },
+            { 3, 87, 1, "Batch017", "08-02-2025" },
+            { 4, 50, 0, "Batch018", "17-05-2025" },
+            { 2, 63, 2, "Batch019", "01-04-2024" },
+            { 0, 76, 1, "Batch020", "14-09-2024" },
+            { 3, 22, 3, "Batch021", "02-11-2024" },
+            { 4, 39, 0, "Batch022", "30-01-2025" },
+            { 1, 54, 2, "Batch023", "20-03-2024" },
+            { 2, 68, 2, "Batch024", "09-07-2024" },
+            { 0, 33, 1, "Batch025", "25-08-2024" },
+            { 1, 78, 3, "Batch026", "03-05-2024" },
+            { 2, 40, 2, "Batch027", "18-02-2025" },
+            { 3, 25, 0, "Batch028", "10-10-2024" },
+            { 4, 62, 0, "Batch029", "12-12-2024" }
     };
-    
-    public static void main(String[] args) {
+
+    public static void main(String[] args) throws ParseException {
         cleanDisplay();
         // Declaration
         Scanner input = new Scanner(System.in);
@@ -72,19 +75,31 @@ public class inventarisGudang {
                         cleanDisplay();
                         displayWarehouse();
                         System.out.print("Pilih Gudang : ");
-                        pilihGudang = getUserInput(input, 1, gudang.length);
+                        pilihGudang = getUserInput(input, 1, gudang.length) - 1;
                         // Lihat Stok Section
                         cleanDisplay();
-                        headLine(" Gudang " + gudang[pilihGudang - 1] + " ");
-                        for (int i = 0; i < namaObat.length; i++) {
+                        headLine(" Gudang " + gudang[pilihGudang] + " ");
+                        for (int i = 0; i < namaObat.length; i++) { // Repeat per Nama Obat
                             int stokCount = 0;
-                            for (int j = 0; j < stok.length; j++) {
-                                if ((int) stok[j][2] == pilihGudang - 1 && (int) stok[j][0] == i) {
+                            for (int j = 0; j < stok.length; j++) { // Repeat per Stock
+                                if ((int) stok[j][2] == pilihGudang && (int) stok[j][0] == i) {
                                     stokCount += getStokObat(j);
                                 }
                             }
                             if (stokCount > 0) {
-                                System.out.println(namaObat[i] + ": " + stokCount);
+                                System.out.println("(" + i + ") " + namaObat[i] + ": " + stokCount);
+                            }
+                        }
+                        System.out.println("Pilih Obat : ");
+                        int pilihNamaObat = getUserInput(input, 0, namaObat.length - 1);
+                        cleanDisplay();
+                        headLine(" Gudang " + gudang[pilihGudang] + " ");
+                        for (int i = 0; i < stok.length; i++) {
+                            if ((int) stok[i][2] == pilihGudang && (int) stok[i][0] == pilihNamaObat) {
+                                boolean isExpired = checkExpiry(getExpObat(i));
+                                System.out.println("(" + i + ") " + getNamaObat(i) + ": " + getStokObat(i) + "  Batch: "
+                                        + getBatchObat(i) + "  Exp: " + getExpObat(i) + " Status: "
+                                        + (isExpired ? "Expired" : "Aman"));
                             }
                         }
                         System.out.print("Masukkan apapun untuk kembali ke menu ");
@@ -108,16 +123,19 @@ public class inventarisGudang {
                                 }
                             }
                             if (stokCount > 0) {
-                                System.out.println("("+i+") "+namaObat[i] + ": " + stokCount);
+                                System.out.println("(" + i + ") " + namaObat[i] + ": " + stokCount);
                             }
                         }
                         System.out.println("Pilih Obat : ");
-                        int pilihNamaObat = getUserInput(input, 0, namaObat.length-1);
+                        pilihNamaObat = getUserInput(input, 0, namaObat.length - 1);
                         cleanDisplay();
                         headLine(" Gudang " + gudang[pilihGudang] + " ");
                         for (int i = 0; i < stok.length; i++) {
                             if ((int) stok[i][2] == pilihGudang && (int) stok[i][0] == pilihNamaObat) {
-                                System.out.println("(" + i + ") " + getNamaObat(i) + ": " + getStokObat(i) + "  Batch: " + getBatchObat(i) + "  Exp: " + getExpObat(i));
+                                boolean isExpired = checkExpiry(getExpObat(i));
+                                System.out.println("(" + i + ") " + getNamaObat(i) + ": " + getStokObat(i) + "  Batch: "
+                                        + getBatchObat(i) + "  Exp: " + getExpObat(i) + " Status: "
+                                        + (isExpired ? "Expired" : "Aman"));
                             }
                         }
                         System.out.print("Masukkan ID Obat : ");
@@ -143,7 +161,7 @@ public class inventarisGudang {
                         cleanDisplay();
                         displayWarehouse();
                         System.out.print("Pilih Gudang : ");
-                        pilihGudang = getUserInput(input, 1, gudang.length) -1;
+                        pilihGudang = getUserInput(input, 1, gudang.length) - 1;
                         cleanDisplay();
                         // Ambil Stok Section
                         headLine(" Gudang " + gudang[pilihGudang] + " ");
@@ -164,11 +182,12 @@ public class inventarisGudang {
                         headLine(" Gudang " + gudang[pilihGudang] + " ");
                         for (int i = 0; i < stok.length; i++) {
                             if ((int) stok[i][2] == pilihGudang && (int) stok[i][0] == pilihNamaObat) {
+                                boolean isExpired = checkExpiry(getExpObat(i));
                                 System.out.println("(" + i + ") " + getNamaObat(i) + ": " + getStokObat(i) + "  Batch: "
-                                        + getBatchObat(i) + "  Exp: " + getExpObat(i));
+                                        + getBatchObat(i) + "  Exp: " + getExpObat(i) + " Status: "
+                                        + (isExpired ? "Expired" : "Aman"));
                             }
                         }
-
                         System.out.print("Masukkan ID Obat : ");
                         pilihStok = getUserInput(input, 0, stok.length - 1);
 
@@ -281,8 +300,8 @@ public class inventarisGudang {
                                 int index = 0;
                                 for (int i = stok.length - 1; i >= 0; i--) {
                                     if ((int) stok[i][0] > pilihMenu) {
-                                        stok[i][0] = (int)stok[i][0] - 1;
-                                    } else if ((int)stok[i][0] == pilihMenu) {
+                                        stok[i][0] = (int) stok[i][0] - 1;
+                                    } else if ((int) stok[i][0] == pilihMenu) {
                                         deleteStock(i);
                                     }
                                 }
@@ -321,7 +340,9 @@ public class inventarisGudang {
                                 String expired = input.next();
                                 boolean obatSudahAda = false;
                                 for (int i = 0; i < stok.length; i++) {
-                                    if ((int)stok[i][2] == pilihPenambahanGudang && (int)stok[i][0] == pilihPenambahanObat && batch.equals(getBatchObat(i))) {
+                                    if ((int) stok[i][2] == pilihPenambahanGudang
+                                            && (int) stok[i][0] == pilihPenambahanObat
+                                            && batch.equals(getBatchObat(i))) {
                                         obatSudahAda = true;
                                         System.out.println("Obat sudah tersedia!");
                                         System.out.print("\nMasukkan apapun untuk kembali ke menu ");
@@ -330,7 +351,7 @@ public class inventarisGudang {
                                     }
                                 }
                                 if (!obatSudahAda) {
-                                    addStock(pilihPenambahanObat, jumlahObat,pilihPenambahanGudang, batch, expired);
+                                    addStock(pilihPenambahanObat, jumlahObat, pilihPenambahanGudang, batch, expired);
                                     System.out.println("Obat berhasil ditambahkan ke gudang!");
                                     System.out.print("\nMasukkan apapun untuk kembali ke menu ");
                                     userInput = input.next();
@@ -360,7 +381,8 @@ public class inventarisGudang {
                                 cleanDisplay();
                                 headLine(" Gudang " + gudang[pilihPenghapusanGudang] + " ");
                                 for (int i = 0; i < stok.length; i++) {
-                                    if ((int) stok[i][2] == pilihPenghapusanGudang && (int) stok[i][0] == pilihNamaObat) {
+                                    if ((int) stok[i][2] == pilihPenghapusanGudang
+                                            && (int) stok[i][0] == pilihNamaObat) {
                                         System.out.println(
                                                 "(" + i + ") " + getNamaObat(i) + ": " + getStokObat(i) + "  Batch: "
                                                         + getBatchObat(i) + "  Exp: " + getExpObat(i));
@@ -386,25 +408,28 @@ public class inventarisGudang {
                                 for (int i = 0; i < namaObat.length; i++) { // repeat per obat name
                                     int stokCount = 0;
                                     for (int j = 0; j < stok.length; j++) { // repeat per obat batch
-                                        if ((int) stok[j][2] == pilihGudang && (int) stok[j][0] == i) { // if the gudang is same then
+                                        if ((int) stok[j][2] == pilihGudang && (int) stok[j][0] == i) { // if the gudang
+                                                                                                        // is same then
                                             stokCount += (int) stok[j][1];
                                         }
                                     }
                                     if (stokCount > 0) {
-                                     System.out.println("("+i+") "+namaObat[i]+": " + stokCount);    
-                                    } 
+                                        System.out.println("(" + i + ") " + namaObat[i] + ": " + stokCount);
+                                    }
                                 }
                                 System.out.println("Pilih Obat yang Akan ditransfer:");
                                 int pilihObatTransfer = getUserInput(input, 0, namaObat.length - 1);
                                 cleanDisplay();
-                                headLine(" Data Obat " + namaObat[pilihObatTransfer] + " di Gudang " + gudang[pilihGudang] + " ");
+                                headLine(" Data Obat " + namaObat[pilihObatTransfer] + " di Gudang "
+                                        + gudang[pilihGudang] + " ");
                                 boolean hasObat = false;
                                 for (int j = 0; j < stok.length; j++) {
-                                    if ((int)stok[j][2] == pilihGudang && (int)stok[j][0] == pilihObatTransfer) {
-                                        System.out.println("(" + j + ") " + getNamaObat(j) + ": " + getStokObat(j) + " Batch: " + getBatchObat(j) + " Exp: " + getExpObat(j));
+                                    if ((int) stok[j][2] == pilihGudang && (int) stok[j][0] == pilihObatTransfer) {
+                                        System.out.println("(" + j + ") " + getNamaObat(j) + ": " + getStokObat(j)
+                                                + " Batch: " + getBatchObat(j) + " Exp: " + getExpObat(j));
                                         hasObat = true;
                                     }
-                                }   
+                                }
                                 if (!hasObat) {
                                     System.out.println("- Gudang Kosong -");
                                 }
@@ -412,7 +437,7 @@ public class inventarisGudang {
                                 pilihStok = getUserInput(input, 0, stok.length - 1);
 
                                 System.out.print("\nMasukkan Jumlah yang akan dipindah : ");
-                                ambilStok = getUserInput(input, 1, (int)stok[pilihStok][1]);
+                                ambilStok = getUserInput(input, 1, (int) stok[pilihStok][1]);
 
                                 cleanDisplay();
                                 displayWarehouse();
@@ -449,14 +474,16 @@ public class inventarisGudang {
                                     // Implement Pindah Gudang
                                     hasObat = false;
                                     for (int j = 0; j < stok.length; j++) {
-                                        if ((int) stok[j][2] == pilihGudangTujuan && (int) stok[j][0] == pilihStok && getBatchObat(pilihStok).equals(getBatchObat(j))) {
-                                            stok[j][1] = (int)stok[j][1] + ambilStok;
+                                        if ((int) stok[j][2] == pilihGudangTujuan && (int) stok[j][0] == pilihStok
+                                                && getBatchObat(pilihStok).equals(getBatchObat(j))) {
+                                            stok[j][1] = (int) stok[j][1] + ambilStok;
                                             hasObat = true;
                                             break;
                                         }
                                     }
                                     if (!hasObat) {
-                                        addStock((int) stok[pilihStok][0], ambilStok, pilihGudangTujuan, getBatchObat(pilihStok), getExpObat(pilihStok));
+                                        addStock((int) stok[pilihStok][0], ambilStok, pilihGudangTujuan,
+                                                getBatchObat(pilihStok), getExpObat(pilihStok));
                                     }
                                     stok[pilihStok][1] = (int) stok[pilihStok][1] - ambilStok;
                                 }
@@ -499,9 +526,9 @@ public class inventarisGudang {
                                 tempArray = new String[gudang.length - 1];
                                 int index = 0;
                                 for (int i = stok.length - 1; i >= 0; i--) {
-                                    if ((int)stok[i][2] > pilihMenu) {
-                                        stok[i][2] = (int) stok [i][2] - 1;
-                                    } else if ((int)stok[i][2] == pilihMenu) {
+                                    if ((int) stok[i][2] > pilihMenu) {
+                                        stok[i][2] = (int) stok[i][2] - 1;
+                                    } else if ((int) stok[i][2] == pilihMenu) {
                                         deleteStock(i);
                                     }
                                 }
@@ -565,7 +592,7 @@ public class inventarisGudang {
         for (int i = 0; i < stok.length; i++) {
             tempArray[i] = stok[i];
         }
-        tempArray[tempArray.length - 1] = new Object[] {nama, stokObat, gudang, batch, expired };
+        tempArray[tempArray.length - 1] = new Object[] { nama, stokObat, gudang, batch, expired };
         stok = tempArray;
     }
 
@@ -646,7 +673,7 @@ public class inventarisGudang {
     }
 
     static String getNamaObat(int index) {
-        return namaObat[(int)stok[index][0]];
+        return namaObat[(int) stok[index][0]];
     }
 
     static int getStokObat(int index) {
@@ -736,5 +763,13 @@ public class inventarisGudang {
         for (String string : namaObat) {
             splitWordWithConstantWeights(string);
         }
+    }
+
+    static boolean checkExpiry(String expiryDate) throws ParseException {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+        Date today = new Date();
+        Date expiry = sdf.parse(expiryDate);
+
+        return today.after(expiry);
     }
 }
