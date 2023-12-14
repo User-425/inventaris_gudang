@@ -1,6 +1,7 @@
 import java.text.SimpleDateFormat;
 import java.util.Scanner;
 import java.text.ParseException;
+import java.util.Arrays;
 import java.util.Date;
 
 /**
@@ -213,25 +214,25 @@ public class inventarisGudang {
                     // Cari Obat
                     case 4:
                         cleanDisplay();
-                        System.out.print("Masukkan Obat yang ingin dicari : ");
-                        String cariObat = input.next();
-                        int searchIndex = searchSubstrings(cariObat);
-                        for (int i = 0; i < gudang.length; i++) {
-                            boolean hasObat = false;
-                            for (int j = 0; j < stok.length; j++) {
-                                if ((int) stok[j][2] == i && (int) stok[j][0] == searchIndex) {
-                                    System.out.println("\nData Obat Gudang " + gudang[i] + ": ");
-                                    hasObat = true;
-                                    break;
-                                }
-                            }
-                            for (int j = 0; j < stok.length; j++) {
-                                if ((int) stok[j][2] == i && (int) stok[j][0] == searchIndex) {
-                                    System.out.println("(" + j + ") " + getNamaObat(j) + ": " + getStokObat(j));
-                                    hasObat = true;
-                                }
-                            }
-                        }
+                        // System.out.print("Masukkan Obat yang ingin dicari : ");
+                        // String cariObat = input.next();
+                        // int searchIndex = search(cariObat);
+                        // for (int i = 0; i < gudang.length; i++) {
+                        //     boolean hasObat = false;
+                        //     for (int j = 0; j < stok.length; j++) {
+                        //         if ((int) stok[j][2] == i && (int) stok[j][0] == searchIndex) {
+                        //             System.out.println("\nData Obat Gudang " + gudang[i] + ": ");
+                        //             hasObat = true;
+                        //             break;
+                        //         }
+                        //     }
+                        //     for (int j = 0; j < stok.length; j++) {
+                        //         if ((int) stok[j][2] == i && (int) stok[j][0] == searchIndex) {
+                        //             System.out.println("(" + j + ") " + getNamaObat(j) + ": " + getStokObat(j));
+                        //             hasObat = true;
+                        //         }
+                        //     }
+                        // }
                         System.out.print("\nMasukkan apapun untuk kembali ke menu ");
                         userInput = input.next();
                         break;
@@ -279,15 +280,7 @@ public class inventarisGudang {
                                 cleanDisplay();
                                 System.out.print("Masukkan Nama Obat Baru : ");
                                 String obatBaru = input.next();
-                                String[] tempArray = new String[namaObat.length + 1];
-                                for (int i = 0; i < namaObat.length; i++) {
-                                    tempArray[i] = namaObat[i];
-                                }
-                                tempArray[tempArray.length - 1] = obatBaru;
-                                namaObat = new String[tempArray.length];
-                                for (int i = 0; i < tempArray.length; i++) {
-                                    namaObat[i] = tempArray[i];
-                                }
+                                namaObat = addElement(namaObat, obatBaru);
                                 indexDatabase = 0;
                                 populateDatabase();
                                 break;
@@ -296,7 +289,6 @@ public class inventarisGudang {
                                 displayMedicine();
                                 System.out.print("Pilih Obat yang Akan Dihapus : ");
                                 pilihMenu = (getUserInput(input, 1, namaObat.length) - 1);
-                                tempArray = new String[namaObat.length - 1];
                                 int index = 0;
                                 for (int i = stok.length - 1; i >= 0; i--) {
                                     if ((int) stok[i][0] > pilihMenu) {
@@ -305,15 +297,7 @@ public class inventarisGudang {
                                         deleteStock(i);
                                     }
                                 }
-                                for (int i = 0; i < namaObat.length; i++) {
-                                    if (i == pilihMenu) {
-                                        continue;
-                                    } else {
-                                        tempArray[index] = namaObat[i];
-                                        index++;
-                                    }
-                                }
-                                namaObat = tempArray;
+                                namaObat = deleteElement(namaObat, pilihMenu);
                                 indexDatabase = 0;
                                 populateDatabase();
                                 break;
@@ -508,22 +492,13 @@ public class inventarisGudang {
                                 cleanDisplay();
                                 System.out.print("Nama Gudang Baru : ");
                                 String gudangBaru = input.next();
-                                String[] tempArray = new String[gudang.length + 1];
-                                for (int i = 0; i < gudang.length; i++) {
-                                    tempArray[i] = gudang[i];
-                                }
-                                tempArray[tempArray.length - 1] = gudangBaru;
-                                gudang = new String[tempArray.length];
-                                for (int i = 0; i < tempArray.length; i++) {
-                                    gudang[i] = tempArray[i];
-                                }
+                                gudang = addElement(gudang, gudangBaru);
                                 break;
                             case 2: // Hapus Gudang
                                 cleanDisplay();
                                 displayWarehouse();
                                 System.out.print("Pilih Gudang yang Akan Dihapus : ");
                                 pilihMenu = (getUserInput(input, 1, gudang.length) - 1);
-                                tempArray = new String[gudang.length - 1];
                                 int index = 0;
                                 for (int i = stok.length - 1; i >= 0; i--) {
                                     if ((int) stok[i][2] > pilihMenu) {
@@ -532,15 +507,7 @@ public class inventarisGudang {
                                         deleteStock(i);
                                     }
                                 }
-                                for (int i = 0; i < gudang.length; i++) {
-                                    if (i == pilihMenu) {
-                                        continue;
-                                    } else {
-                                        tempArray[index] = gudang[i];
-                                        index++;
-                                    }
-                                }
-                                gudang = tempArray;
+                                gudang = deleteElement(gudang, pilihMenu);
                                 break;
                             default:
                                 break;
@@ -587,25 +554,15 @@ public class inventarisGudang {
         }
     }
 
+
     static void addStock(int nama, int stokObat, int gudang, String batch, String expired) {
-        Object[][] tempArray = newArray(stok.length + 1);
-        for (int i = 0; i < stok.length; i++) {
-            tempArray[i] = stok[i];
-        }
-        tempArray[tempArray.length - 1] = new Object[] { nama, stokObat, gudang, batch, expired };
-        stok = tempArray;
+        Object[] elementToAdd = new Object[] { nama, stokObat, gudang, batch, expired };
+        stok = addElement(stok, elementToAdd);
     }
 
+
     static void deleteStock(int idObat) {
-        Object[][] tempArray = newArray(stok.length - 1);
-        int index = 0;
-        for (int i = 0; i < stok.length; i++) {
-            if (i != idObat) {
-                tempArray[index] = stok[i];
-                index++;
-            }
-        }
-        stok = tempArray;
+        stok = deleteElement(stok, idObat);
     }
 
     static Object[][] newArray(int size) {
@@ -723,12 +680,32 @@ public class inventarisGudang {
         indexDatabase++;
     }
 
+    // public static int[] searchFull(String word) {
+    // int searchIndex = -1;
+    // for (int i = 0; i < namaObat.length; i++) { // repeat per database
+    // for (int j = 0; j < substrings[i].length; j++) { // repeat per database's
+    // substrings
+    // if (substrings[i][j] != null && substrings[i][j].equalsIgnoreCase(word)) {
+    // return i;
+    // }
+    // }
+    // }
+    // return searchIndex;
+    // }
+
+    // public static int[] search(String word) {
+    // if (searchFull(word) != -1) {
+    // return searchFull(word);
+    // } else {
+    // return searchSubstrings(word);
+    // }
+    // }
+
     public static int searchSubstrings(String userInput) {
         int length = userInput.length();
         String[] userQuerySubstrings = new String[100];
         int[] queryWeight = new int[100]; // weight per data in the database
         int highestWeight = 0;
-        String highestQuery = "";
         int x = 0;
         // Generate all substrings and calculate weights
         for (int i = 0; i < length; i++) {
@@ -752,7 +729,6 @@ public class inventarisGudang {
             }
             if (highestWeight < queryWeight[i]) {
                 highestWeight = queryWeight[i];
-                highestQuery = namaObat[i];
                 searchIndex = i;
             }
         }
@@ -771,5 +747,53 @@ public class inventarisGudang {
         Date expiry = sdf.parse(expiryDate);
 
         return today.after(expiry);
+    }
+
+    public static int[] addElement(int[] originalArray, int elementToAdd) {
+        int[] newArray = Arrays.copyOf(originalArray, originalArray.length + 1);
+        newArray[newArray.length - 1] = elementToAdd;
+        return newArray;
+    }
+
+    public static String[] addElement(String[] originalArray, String elementToAdd) {
+        String[] newArray = Arrays.copyOf(originalArray, originalArray.length + 1);
+        newArray[newArray.length - 1] = elementToAdd;
+        return newArray;
+    }
+
+    public static Object[][] addElement(Object[][] originalArray, Object[] elementToAdd) {
+        Object[][] newArray = Arrays.copyOf(originalArray, originalArray.length + 1);
+        newArray[newArray.length - 1] = elementToAdd;
+        return newArray;
+    }
+
+    public static int[] deleteElement(int[] originalArray, int indexToDelete) {
+        if (indexToDelete < 0 || indexToDelete >= originalArray.length) {
+            return originalArray;
+        }
+        int[] newArray = new int[originalArray.length - 1];
+        System.arraycopy(originalArray, 0, newArray, 0, indexToDelete);
+        System.arraycopy(originalArray, indexToDelete + 1, newArray, indexToDelete, newArray.length - indexToDelete);
+        return newArray;
+    }
+
+    public static String[] deleteElement(String[] originalArray, int indexToDelete) {
+        if (indexToDelete < 0 || indexToDelete >= originalArray.length) {
+            return originalArray;
+        }
+        String[] newArray = new String[originalArray.length - 1];
+        System.arraycopy(originalArray, 0, newArray, 0, indexToDelete);
+        System.arraycopy(originalArray, indexToDelete + 1, newArray, indexToDelete, newArray.length - indexToDelete);
+        return newArray;
+    }
+
+    public static Object[][] deleteElement(Object[][] originalArray, int indexToDelete) {
+        if (indexToDelete < 0 || indexToDelete >= originalArray.length) {
+            return originalArray;
+        }
+        Object[][] newArray = new Object[originalArray.length - 1][];
+        System.arraycopy(originalArray, 0, newArray, 0, indexToDelete);
+        System.arraycopy(originalArray, indexToDelete + 1, newArray, indexToDelete, newArray.length - indexToDelete);
+        return newArray;
     }
 }
