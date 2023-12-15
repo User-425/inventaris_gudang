@@ -50,10 +50,6 @@ public class inventarisGudang {
 
     public static void main(String[] args) throws ParseException {
         cleanDisplay();
-        // Declaration
-        Scanner input = new Scanner(System.in);
-        int pilihMenu, pilihMenuKeluar;
-        int pilihGudang, pilihStok, ambilStok;
         populateDatabase();
         // Main Program
         run();
@@ -83,17 +79,15 @@ public class inventarisGudang {
         int pilihMenu = input.nextInt();
 
         switch (pilihMenu) {
-            // Pilih Gudang
+            // Lihat Stok
             case 1:
                 lihatStockPage();
                 break;
-
-            // Pilih Gudang
+            // Tambah Stok
             case 2:
                 tambahStockPage();
                 break;
-
-            // Pilih Gudang
+            // Ambil Stok
             case 3:
                 ambilStockPage();
                 break;
@@ -105,14 +99,15 @@ public class inventarisGudang {
             case 5:
                 allDatasPage();
                 break;
+            // Setting Obat
             case 6:
                 obatSettingPage();
                 break;
-            // Exit Section
+            // Setting Gudang
             case 7:
                 gudangSettingPage();
                 break;
-
+            // Menu Keluar   
             case 8:
                 exitPage();
                 break;
@@ -294,7 +289,6 @@ public class inventarisGudang {
     static void allDatasPage() {
         cleanDisplay();
         headLine(" Data Seluruh Obat ");
-
         for (int i = 0; i < gudang.length; i++) {
             System.out.println("\nData Obat Gudang " + gudang[i] + ": ");
             boolean hasObat = false;
@@ -943,4 +937,4 @@ public class inventarisGudang {
         System.arraycopy(originalArray, indexToDelete + 1, newArray, indexToDelete, newArray.length - indexToDelete);
         return newArray;
     }
-}
+}  
