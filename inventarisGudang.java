@@ -80,6 +80,10 @@ public class inventarisGudang {
 
         switch (pilihMenu) {
             // Kelola Obat
+            case 99:
+                tableHeader("OBAT", 72);
+                exitPrompt();
+                break;
             case 1:
                 kelolaObatPage();
                 break;
@@ -1015,12 +1019,16 @@ public class inventarisGudang {
         return today.after(expiry);
     }
 
-    static void displaytableHeader(String word) {
-        int length = word.length();
-        int sisiHeadline = (118 - length) / 2;
+    static void tableHeader(String title, int width) {
+        int length = title.length();
+        int sisiHeadline = (width - length) / 2;
+
         String leftSide = " ".repeat(sisiHeadline);
-        String rightSide = " ".repeat(118 - length - sisiHeadline);
-        System.out.print("-".repeat(120));
+        String rightSide = " ".repeat(width - length - sisiHeadline);
+
+        System.out.println("-".repeat(width + 2));
+        System.out.println("|" + leftSide + title + rightSide + "|");
+        System.out.println("-".repeat(width + 2));
     }
 
     public static int[] addElement(int[] originalArray, int elementToAdd) {
