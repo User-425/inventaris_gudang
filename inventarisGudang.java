@@ -81,8 +81,11 @@ public class inventarisGudang {
         switch (pilihMenu) {
             // Kelola Obat
             case 99:
-                tableHeader("OBAT", 72);
-                columnHeader(new Object[][]{{"NO", 10}, {"OBAT", 35}, {"STOK", 12}, {"STATUS", 12}});
+                tableHeader("DATA OBAT", 72);
+                columnHeader(new Object[][] { { "NO", 10 }, { "OBAT", 35 }, { "STOK", 12 }, { "STATUS", 12 } });
+                tableRow(new Object[][]{{"1", 10}, {"Paracetamol", 35}, {"4", 12}, {"Aman", 12}});
+                tableRow(new Object[][]{{"2", 10}, {"Pzifer", 35}, {"22", 12}, {"Aman", 12}});
+                tableLine(74);
                 exitPrompt();
                 break;
             case 1:
@@ -167,7 +170,9 @@ public class inventarisGudang {
 
     static void lihatStockExpiredPage() throws ParseException {
         for (int i = 0; i < gudang.length; i++) {
-            System.out.println("\nData Obat Gudang " + gudang[i] + ": ");
+            tableHeader("DATA OBAT EXPIRED" + " GUDANG " + gudang[i].toUpperCase(), 72);
+            columnHeader(new Object[][] { { "ID", 13 }, { "NAMA OBAT", 40 }, { "STOK", 17 }});
+            // System.out.println("\nData Obat Gudang " + gudang[i] + ": ");
             boolean hasObat = false;
             for (int j = 0; j < namaObat.length; j++) {
                 int stockCount = 0;
@@ -180,13 +185,16 @@ public class inventarisGudang {
                     }
                 }
                 if (hasStok) {
-                    System.out.println(namaObat[j] + ": " + stockCount);
+                    tableRow(new Object[][]{{ Integer.toString(j), 13}, {namaObat[j], 40}, {Integer.toString(getStokObat(j)), 17}});
+                    // System.out.println(namaObat[j] + ": " + stockCount);                   
                 }
+                
             }
             if (!hasObat) {
-                System.out.println("- Gudang Kosong -");
+                System.out.println("- Gudang Kosong -");                                
             }
         }
+        tableLine(74);
         exitPrompt();
     }
 
@@ -216,7 +224,7 @@ public class inventarisGudang {
         System.out.println("Apakah anda ingin menghapus stok expired? (Y/N)");
         char confirm = input.next().charAt(0);
         if (confirm == 'Y' || confirm == 'y') {
-            for (int i = stok.length-1; i > 0; i--) {
+            for (int i = stok.length - 1; i > 0; i--) {
                 if (checkExpiry(getExpObat(i)) == true) {
                     deleteStock(i);
                 }
@@ -233,7 +241,9 @@ public class inventarisGudang {
         int pilihGudang = (getUserInput(input, 1, gudang.length) - 1);
         // Tambah Stok Section
         cleanDisplay();
-        headLine(" Gudang " + gudang[pilihGudang] + " ");
+        // headLine(" Gudang " + gudang[pilihGudang] + " ");
+        tableHeader("DATA OBAT" + " GUDANG " + gudang[pilihGudang].toUpperCase(), 57);
+        columnHeader(new Object[][] { { "ID", 8 }, { "NAMA OBAT", 35 }, { "STOK", 12 }});
         for (int i = 0; i < namaObat.length; i++) { // Repeat per Nama Obat
             int stokCount = 0;
             for (int j = 0; j < stok.length; j++) { // Repeat per Stock
@@ -242,21 +252,27 @@ public class inventarisGudang {
                 }
             }
             if (stokCount > 0) {
-                System.out.println("(" + i + ") " + namaObat[i] + ": " + stokCount);
+                tableRow(new Object[][]{{ Integer.toString(i), 8}, {namaObat[i], 35}, {Integer.toString(stokCount), 12}});
+                // System.out.println("(" + i + ") " + namaObat[i] + ": " + stokCount);
             }
         }
+        tableLine(59);
         System.out.println("Pilih Obat : ");
         int pilihNamaObat = getUserInput(input, 0, namaObat.length - 1);
         cleanDisplay();
-        headLine(" Gudang " + gudang[pilihGudang] + " ");
+        // headLine(" Gudang " + gudang[pilihGudang] + " ");
+        tableHeader("DATA OBAT" + " GUDANG " + gudang[pilihGudang].toUpperCase(), 117);
+        columnHeader(new Object[][] { { "ID", 8 }, { "NAMA OBAT", 35 }, { "STOK", 12 }, {"BATCH", 35}, {"EXPIRED", 12}, {"STATUS", 10}});
         for (int i = 0; i < stok.length; i++) {
             if ((int) stok[i][2] == pilihGudang && (int) stok[i][0] == pilihNamaObat) {
                 boolean isExpired = checkExpiry(getExpObat(i));
-                System.out.println("(" + i + ") " + getNamaObat(i) + ": " + getStokObat(i) + "  Batch: "
-                        + getBatchObat(i) + "  Exp: " + getExpObat(i) + " Status: "
-                        + getStatusObat(i));
+                tableRow(new Object[][]{{ Integer.toString(i), 8}, {getNamaObat(i), 35}, {Integer.toString(getStokObat(i)), 12},{getBatchObat(i), 35}, {getExpObat(i), 12}, {getStatusObat(i), 10}});
+                // System.out.println("(" + i + ") " + getNamaObat(i) + ": " + getStokObat(i) + "  Batch: "
+                //         + getBatchObat(i) + "  Exp: " + getExpObat(i) + " Status: "
+                //         + getStatusObat(i));
             }
         }
+        tableLine(119);
         System.out.print("Masukkan ID Obat : ");
         int pilihStok = getUserInput(input, 0, stok.length - 1);
 
@@ -293,7 +309,9 @@ public class inventarisGudang {
         int pilihGudang = getUserInput(input, 1, gudang.length) - 1;
         // Lihat Stok Section
         cleanDisplay();
-        headLine(" Gudang " + gudang[pilihGudang] + " ");
+        // headLine(" Gudang " + gudang[pilihGudang] + " ");
+        tableHeader("DATA OBAT" + " GUDANG " + gudang[pilihGudang].toUpperCase(), 57);
+        columnHeader(new Object[][] { { "ID", 8 }, { "NAMA OBAT", 35 }, { "STOK", 12 }});
         for (int i = 0; i < namaObat.length; i++) { // Repeat per Nama Obat
             int stokCount = 0;
             for (int j = 0; j < stok.length; j++) { // Repeat per Stock
@@ -302,21 +320,27 @@ public class inventarisGudang {
                 }
             }
             if (stokCount > 0) {
-                System.out.println("(" + i + ") " + namaObat[i] + ": " + stokCount);
+                tableRow(new Object[][]{{ Integer.toString(i), 8}, {namaObat[i], 35}, {Integer.toString(stokCount), 12}});
+                // System.out.println("(" + i + ") " + namaObat[i] + ": " + stokCount);
             }
         }
+        tableLine(59);
         System.out.println("Pilih Obat : ");
         int pilihNamaObat = getUserInput(input, 0, namaObat.length - 1);
         cleanDisplay();
-        headLine(" Gudang " + gudang[pilihGudang] + " ");
+        // headLine(" Gudang " + gudang[pilihGudang] + " ");
+        tableHeader("DATA OBAT" + " GUDANG " + gudang[pilihGudang].toUpperCase(), 117);
+        columnHeader(new Object[][] { { "ID", 8 }, { "NAMA OBAT", 35 }, { "STOK", 12 }, {"BATCH", 35}, {"EXPIRED", 12}, {"STATUS", 10}});
         for (int i = 0; i < stok.length; i++) {
             if ((int) stok[i][2] == pilihGudang && (int) stok[i][0] == pilihNamaObat) {
                 boolean isExpired = checkExpiry(getExpObat(i));
-                System.out.println("(" + i + ") " + getNamaObat(i) + ": " + getStokObat(i) + "  Batch: "
-                        + getBatchObat(i) + "  Exp: " + getExpObat(i) + " Status: "
-                        + getStatusObat(i));
+                tableRow(new Object[][]{{ Integer.toString(i), 8}, {getNamaObat(i), 35}, {Integer.toString(getStokObat(i)), 12},{getBatchObat(i), 35}, {getExpObat(i), 12}, {getStatusObat(i), 10}});
+                // System.out.println("(" + i + ") " + getNamaObat(i) + ": " + getStokObat(i) + "  Batch: "
+                //         + getBatchObat(i) + "  Exp: " + getExpObat(i) + " Status: "
+                //         + getStatusObat(i));
             }
         }
+        tableLine(119);
         exitPrompt();
     }
 
@@ -328,7 +352,9 @@ public class inventarisGudang {
         int pilihGudang = getUserInput(input, 1, gudang.length) - 1;
         cleanDisplay();
         // Ambil Stok Section
-        headLine(" Gudang " + gudang[pilihGudang] + " ");
+        // headLine(" Gudang " + gudang[pilihGudang] + " ");
+        tableHeader("DATA OBAT" + " GUDANG " + gudang[pilihGudang].toUpperCase(), 57);
+        columnHeader(new Object[][] { { "ID", 8 }, { "NAMA OBAT", 35 }, { "STOK", 12 }});
         for (int i = 0; i < namaObat.length; i++) { // Repeat per Nama Obat
             int stokCount = 0;
             for (int j = 0; j < stok.length; j++) { // Repeat per Stock
@@ -337,21 +363,27 @@ public class inventarisGudang {
                 }
             }
             if (stokCount > 0) {
-                System.out.println("(" + i + ") " + namaObat[i] + ": " + stokCount);
+                tableRow(new Object[][]{{ Integer.toString(i), 8}, {namaObat[i], 35}, {Integer.toString(stokCount), 12}});
+                // System.out.println("(" + i + ") " + namaObat[i] + ": " + stokCount);
             }
         }
+        tableLine(59);
         System.out.println("Pilih Obat : ");
         int pilihNamaObat = getUserInput(input, 0, namaObat.length - 1);
         cleanDisplay();
-        headLine(" Gudang " + gudang[pilihGudang] + " ");
+        // headLine(" Gudang " + gudang[pilihGudang] + " ");
+        tableHeader("DATA OBAT" + " GUDANG " + gudang[pilihGudang].toUpperCase(), 117);
+        columnHeader(new Object[][] { { "ID", 8 }, { "NAMA OBAT", 35 }, { "STOK", 12 }, {"BATCH", 35}, {"EXPIRED", 12}, {"STATUS", 10}});
         for (int i = 0; i < stok.length; i++) {
             if ((int) stok[i][2] == pilihGudang && (int) stok[i][0] == pilihNamaObat) {
                 boolean isExpired = checkExpiry(getExpObat(i));
-                System.out.println("(" + i + ") " + getNamaObat(i) + ": " + getStokObat(i) + "  Batch: "
-                        + getBatchObat(i) + "  Exp: " + getExpObat(i) + " Status: "
-                        + getStatusObat(i));
+                tableRow(new Object[][]{{ Integer.toString(i), 8}, {getNamaObat(i), 35}, {Integer.toString(getStokObat(i)), 12},{getBatchObat(i), 35}, {getExpObat(i), 12}, {getStatusObat(i), 10}});
+                // System.out.println("(" + i + ") " + getNamaObat(i) + ": " + getStokObat(i) + "  Batch: "
+                //         + getBatchObat(i) + "  Exp: " + getExpObat(i) + " Status: "
+                //         + getStatusObat(i));
             }
         }
+        tableLine(119);
         System.out.print("Masukkan ID Obat : ");
         int pilihStok = getUserInput(input, 0, stok.length - 1);
 
@@ -794,10 +826,12 @@ public class inventarisGudang {
     }
 
     static void displayMedicine() {
-        headLine(" JENIS OBAT ");
+        tableHeader("JENIS OBAT", 28);
+        columnHeader(new Object[][] { { "NO", 4 }, { "NAMA OBAT", 23 }});
         for (int i = 0; i < namaObat.length; i++) {
-            System.out.println((i + 1) + "." + namaObat[i] + " ");
+            tableRow(new Object[][]{{ Integer.toString(i + 1), 4}, {namaObat[i], 23}});
         }
+        tableLine(30);
     }
 
     static void cleanDisplay() {
@@ -1032,20 +1066,40 @@ public class inventarisGudang {
         System.out.println("-".repeat(width + 2));
     }
 
-    static void columnHeader(Object[][]...columns){
+    static void columnHeader(Object[][]... columns) {
         int totalWidth = 0;
         System.out.print("|");
-            for (int i = 0; i < columns[0].length; i++ ){
-                int width = (int) columns[0][i][1];
-                int length = ((String) columns[0][i][0]).length();
-                int sidePadding = (width - length) / 2;
-                totalWidth += width;
-                String leftSide = " ".repeat(sidePadding);
-                String rightSide = " ".repeat(width-length-sidePadding);
+        for (int i = 0; i < columns[0].length; i++) {
+            int width = (int) columns[0][i][1];
+            int length = ((String) columns[0][i][0]).length();
+            int sidePadding = (width - length) / 2;
+            totalWidth += width;
+            String leftSide = " ".repeat(sidePadding);
+            String rightSide = " ".repeat(width - length - sidePadding);
 
-                System.out.print(leftSide + (String) columns[0][i][0] + rightSide + "|");
-            }
-            System.out.println("\n" + "-".repeat(totalWidth + columns[0].length + 1));
+            System.out.print(leftSide + (String) columns[0][i][0] + rightSide + "|");
+        }
+        System.out.println("\n" + "-".repeat(totalWidth + columns[0].length + 1));
+    }
+
+    static void tableRow(Object[][]... columns) {
+        int totalWidth = 0;
+        System.out.print("|");
+        for (int i = 0; i < columns[0].length; i++) {
+            int width = (int) columns[0][i][1];
+            int length = ((String) columns[0][i][0]).length();
+            int sidePadding = (width - length) / 2;
+            totalWidth += width;
+            String leftSide = " ".repeat(sidePadding);
+            String rightSide = " ".repeat(width - length - sidePadding);
+
+            System.out.print(leftSide + (String) columns[0][i][0] + rightSide + "|");
+        }
+        System.out.println("");
+    }
+
+    static void tableLine(int width){
+        System.out.println("-".repeat(width));
     }
 
     public static int[] addElement(int[] originalArray, int elementToAdd) {
