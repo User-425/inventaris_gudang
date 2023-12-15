@@ -27,17 +27,17 @@ public class inventarisGudang {
             { 3, 59, 1, "Batch005", "18-01-2025" },
             { 4, 34, 3, "Batch006", "02-03-2025" },
             { 0, 82, 1, "Batch001", "12-03-2024" },
-            { 2, 141, 3, "Batch008", "07-08-2024" },
+            { 2, 141, 3, "Batch008", "07-08-2022" },
             { 3, 42, 0, "Batch009", "30-12-2024" },
             { 4, 29, 2, "Batch010", "14-02-2024" },
             { 1, 65, 2, "Batch012", "05-04-2025" },
             { 0, 45, 3, "Batch015", "23-06-2024" },
-            { 1, 30, 3, "Batch016", "28-10-2024" },
+            { 1, 30, 3, "Batch016", "28-10-2022" },
             { 3, 87, 1, "Batch017", "08-02-2025" },
             { 4, 50, 0, "Batch018", "17-05-2025" },
             { 2, 63, 2, "Batch019", "01-04-2024" },
             { 0, 76, 1, "Batch020", "14-09-2024" },
-            { 3, 22, 3, "Batch021", "02-11-2024" },
+            { 3, 22, 3, "Batch021", "02-11-2022" },
             { 4, 39, 0, "Batch022", "30-01-2025" },
             { 1, 54, 2, "Batch023", "20-03-2024" },
             { 2, 68, 2, "Batch024", "09-07-2024" },
@@ -45,7 +45,7 @@ public class inventarisGudang {
             { 1, 78, 3, "Batch026", "03-05-2024" },
             { 2, 40, 2, "Batch027", "18-02-2025" },
             { 3, 25, 0, "Batch028", "10-10-2024" },
-            { 4, 62, 0, "Batch029", "12-12-2024" }
+            { 4, 62, 0, "Batch029", "12-12-2022" }
     };
 
     public static void main(String[] args) throws ParseException {
@@ -79,36 +79,28 @@ public class inventarisGudang {
         int pilihMenu = input.nextInt();
 
         switch (pilihMenu) {
-            // Lihat Stok
+            // Kelola Obat
             case 1:
-                lihatStockPage();
-                break;
-            // Tambah Stok
-            case 2:
-                tambahStockPage();
-                break;
-            // Ambil Stok
-            case 3:
-                ambilStockPage();
+                kelolaObatPage();
                 break;
             // Cari Obat
-            case 4:
+            case 2:
                 searchPage();
                 break;
             // Data Keseluruhan
-            case 5:
+            case 3:
                 allDatasPage();
                 break;
             // Setting Obat
-            case 6:
+            case 4:
                 obatSettingPage();
                 break;
             // Setting Gudang
-            case 7:
+            case 5:
                 gudangSettingPage();
                 break;
-            // Menu Keluar   
-            case 8:
+            // Menu Keluar
+            case 6:
                 exitPage();
                 break;
             default:
@@ -118,36 +110,111 @@ public class inventarisGudang {
         }
     }
 
-    static void lihatStockPage() throws ParseException {
+    static void kelolaObatPage() throws ParseException {
         Scanner input = new Scanner(System.in);
         cleanDisplay();
-        displayWarehouse();
-        System.out.print("Pilih Gudang : ");
-        int pilihGudang = getUserInput(input, 1, gudang.length) - 1;
-        // Lihat Stok Section
+        headLine(" Kelola Obat ");
+        System.out.println("1. Lihat Stok");
+        System.out.println("2. Tambah Stok");
+        System.out.println("3. Ambil Stok");
+        System.out.println("4. Kelola Obat Expired");
+        System.out.print("Pilih Menu : ");
+        int pilihMenu = input.nextInt();
         cleanDisplay();
-        headLine(" Gudang " + gudang[pilihGudang] + " ");
-        for (int i = 0; i < namaObat.length; i++) { // Repeat per Nama Obat
-            int stokCount = 0;
-            for (int j = 0; j < stok.length; j++) { // Repeat per Stock
-                if ((int) stok[j][2] == pilihGudang && (int) stok[j][0] == i) {
-                    stokCount += getStokObat(j);
+        switch (pilihMenu) {
+            // Lihat Stok
+            case 1:
+                lihatStockExpiredPage();
+                break;
+            // Tambah Stok
+            case 2:
+                tambahStockPage();
+                break;
+            // Ambil Stok
+            case 3:
+                ambilStockPage();
+                break;
+            // Kelola Stock Expired
+            case 4:
+                kelolaStokExpiredPage();
+                break;
+        }
+    }
+
+    static void kelolaStokExpiredPage() throws ParseException {
+        Scanner input = new Scanner(System.in);
+        cleanDisplay();
+        headLine(" Kelola Stok Expired");
+        System.out.println("1. Lihat Stok Expired");
+        System.out.println("2. Hapus Stok Expired");
+        System.out.print("Pilih Menu : ");
+        int pilihMenu = input.nextInt();
+        cleanDisplay();
+        switch (pilihMenu) {
+            case 1:
+                lihatStockExpiredPage();
+                break;
+            case 2:
+                hapusStockExpiredPage();
+                break;
+        }
+    }
+
+    static void lihatStockExpiredPage() throws ParseException {
+        for (int i = 0; i < gudang.length; i++) {
+            System.out.println("\nData Obat Gudang " + gudang[i] + ": ");
+            boolean hasObat = false;
+            for (int j = 0; j < namaObat.length; j++) {
+                int stockCount = 0;
+                boolean hasStok = false;
+                for (int k = 0; k < stok.length; k++) {
+                    if ((int) stok[k][2] == i && (int) stok[k][0] == j && checkExpiry(getExpObat(k)) == true) {
+                        stockCount += getStokObat(k);
+                        hasStok = true;
+                        hasObat = true;
+                    }
+                }
+                if (hasStok) {
+                    System.out.println(namaObat[j] + ": " + stockCount);
                 }
             }
-            if (stokCount > 0) {
-                System.out.println("(" + i + ") " + namaObat[i] + ": " + stokCount);
+            if (!hasObat) {
+                System.out.println("- Gudang Kosong -");
             }
         }
-        System.out.println("Pilih Obat : ");
-        int pilihNamaObat = getUserInput(input, 0, namaObat.length - 1);
-        cleanDisplay();
-        headLine(" Gudang " + gudang[pilihGudang] + " ");
-        for (int i = 0; i < stok.length; i++) {
-            if ((int) stok[i][2] == pilihGudang && (int) stok[i][0] == pilihNamaObat) {
-                boolean isExpired = checkExpiry(getExpObat(i));
-                System.out.println("(" + i + ") " + getNamaObat(i) + ": " + getStokObat(i) + "  Batch: "
-                        + getBatchObat(i) + "  Exp: " + getExpObat(i) + " Status: "
-                        + getStatusObat(i));
+        exitPrompt();
+    }
+
+    static void hapusStockExpiredPage() throws ParseException {
+        Scanner input = new Scanner(System.in);
+        for (int i = 0; i < gudang.length; i++) {
+            System.out.println("\nData Obat Gudang " + gudang[i] + ": ");
+            boolean hasObat = false;
+            for (int j = 0; j < namaObat.length; j++) {
+                int stockCount = 0;
+                boolean hasStok = false;
+                for (int k = 0; k < stok.length; k++) {
+                    if ((int) stok[k][2] == i && (int) stok[k][0] == j && checkExpiry(getExpObat(k)) == true) {
+                        stockCount += getStokObat(k);
+                        hasStok = true;
+                        hasObat = true;
+                    }
+                }
+                if (hasStok) {
+                    System.out.println(namaObat[j] + ": " + stockCount);
+                }
+            }
+            if (!hasObat) {
+                System.out.println("- Gudang Kosong -");
+            }
+        }
+        System.out.println("Apakah anda ingin menghapus stok expired? (Y/N)");
+        char confirm = input.next().charAt(0);
+        if (confirm == 'Y' || confirm == 'y') {
+            for (int i = stok.length-1; i > 0; i--) {
+                if (checkExpiry(getExpObat(i)) == true) {
+                    deleteStock(i);
+                }
             }
         }
         exitPrompt();
@@ -274,6 +341,31 @@ public class inventarisGudang {
             System.out.println("ERROR! Masukkan Nomor ID obat yang benar!");
         }
 
+        exitPrompt();
+    }
+
+    static void lihatObatExpiredPage() throws ParseException {
+        for (int i = 0; i < gudang.length; i++) {
+            System.out.println("\nData Obat Expired Gudang " + gudang[i] + ": ");
+            boolean hasObat = false;
+            for (int j = 0; j < namaObat.length; j++) {
+                int stockCount = 0;
+                boolean hasStok = false;
+                for (int k = 0; k < stok.length; k++) {
+                    if ((int) stok[k][2] == i && (int) stok[k][0] == j && checkExpiry(getExpObat(k)) == true) {
+                        stockCount += getStokObat(k);
+                        hasStok = true;
+                        hasObat = true;
+                    }
+                }
+                if (hasStok) {
+                    System.out.println(namaObat[j] + ": " + stockCount);
+                }
+            }
+            if (!hasObat) {
+                System.out.println("- Gudang Kosong -");
+            }
+        }
         exitPrompt();
     }
 
@@ -710,14 +802,12 @@ public class inventarisGudang {
 
     static void displayMenu() {
         System.out.println("Menu:");
-        System.out.println("1. Lihat Stok");
-        System.out.println("2. Tambah Stok");
-        System.out.println("3. Ambil Stok");
-        System.out.println("4. Cari Obat");
-        System.out.println("5. Data Keseluruhan");
-        System.out.println("6. Konfigurasi Obat");
-        System.out.println("7. Konfigurasi Gudang");
-        System.out.println("8. Keluar");
+        System.out.println("1. Kelola Obat");
+        System.out.println("2. Cari Obat");
+        System.out.println("3. Data Keseluruhan");
+        System.out.println("4. Konfigurasi Obat");
+        System.out.println("5. Konfigurasi Gudang");
+        System.out.println("6. Keluar");
     }
 
     static String getNamaObat(int index) {
@@ -890,6 +980,14 @@ public class inventarisGudang {
         return today.after(expiry);
     }
 
+    static void displaytableHeader(String word) {
+        int length = word.length();
+        int sisiHeadline = (118 - length) / 2;
+        String leftSide = " ".repeat(sisiHeadline);
+        String rightSide = " ".repeat(118 - length - sisiHeadline);
+        System.out.print("-".repeat(120));
+    }
+
     public static int[] addElement(int[] originalArray, int elementToAdd) {
         int[] newArray = Arrays.copyOf(originalArray, originalArray.length + 1);
         newArray[newArray.length - 1] = elementToAdd;
@@ -937,4 +1035,4 @@ public class inventarisGudang {
         System.arraycopy(originalArray, indexToDelete + 1, newArray, indexToDelete, newArray.length - indexToDelete);
         return newArray;
     }
-}  
+}
