@@ -124,7 +124,7 @@ public class inventarisGudang {
         switch (pilihMenu) {
             // Lihat Stok
             case 1:
-                lihatStockExpiredPage();
+                lihatStockPage();
                 break;
             // Tambah Stok
             case 2:
@@ -277,6 +277,41 @@ public class inventarisGudang {
             System.out.println("ERROR! Masukkan Nomor ID obat yang benar!");
         }
 
+        exitPrompt();
+    }
+
+    static void lihatStockPage() throws ParseException {
+        Scanner input = new Scanner(System.in);
+        cleanDisplay();
+        displayWarehouse();
+        System.out.print("Pilih Gudang : ");
+        int pilihGudang = getUserInput(input, 1, gudang.length) - 1;
+        // Lihat Stok Section
+        cleanDisplay();
+        headLine(" Gudang " + gudang[pilihGudang] + " ");
+        for (int i = 0; i < namaObat.length; i++) { // Repeat per Nama Obat
+            int stokCount = 0;
+            for (int j = 0; j < stok.length; j++) { // Repeat per Stock
+                if ((int) stok[j][2] == pilihGudang && (int) stok[j][0] == i) {
+                    stokCount += getStokObat(j);
+                }
+            }
+            if (stokCount > 0) {
+                System.out.println("(" + i + ") " + namaObat[i] + ": " + stokCount);
+            }
+        }
+        System.out.println("Pilih Obat : ");
+        int pilihNamaObat = getUserInput(input, 0, namaObat.length - 1);
+        cleanDisplay();
+        headLine(" Gudang " + gudang[pilihGudang] + " ");
+        for (int i = 0; i < stok.length; i++) {
+            if ((int) stok[i][2] == pilihGudang && (int) stok[i][0] == pilihNamaObat) {
+                boolean isExpired = checkExpiry(getExpObat(i));
+                System.out.println("(" + i + ") " + getNamaObat(i) + ": " + getStokObat(i) + "  Batch: "
+                        + getBatchObat(i) + "  Exp: " + getExpObat(i) + " Status: "
+                        + getStatusObat(i));
+            }
+        }
         exitPrompt();
     }
 
