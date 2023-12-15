@@ -56,509 +56,585 @@ public class inventarisGudang {
         int pilihGudang, pilihStok, ambilStok;
         populateDatabase();
         // Main Program
+        run();
+    }
+
+    static void run() {
         while (isRunning) {
             if (isLoggedIn != true) {
                 // isLoggedIn = true;
                 loginPage();
             } else {
+                menuPage();
+            }
+        }
+
+    }
+
+    static void menuPage() {
+
+        cleanDisplay();
+        // Notification if login valid
+        System.out.printf("Selamat Datang Kembali %s\n",
+                userData);
+        displayMenu();
+
+        System.out.print("Pilih Menu : ");
+        pilihMenu = input.nextInt();
+
+        switch (pilihMenu) {
+            // Pilih Gudang
+            case 1:
+                lihatStockPage();
+                break;
+
+            // Pilih Gudang
+            case 2:
+                tambahStockPage();
+                break;
+
+            // Pilih Gudang
+            case 3:
+                ambilStockPage();
+                break;
+            // Cari Obat
+            case 4:
+                searchPage();
+                break;
+            // Data Keseluruhan
+            case 5:
+                allDatasPage();
+                break;
+            case 6:
+                obatSettingPage();
+                break;
+            // Exit Section
+            case 7:
+                gudangSettingPage();
+                break;
+
+            case 8:
+                exitPage();
+                break;
+        }
+    }
+
+    }
+
+    static void lihatStockPage() {
+        cleanDisplay();
+        displayWarehouse();
+        System.out.print("Pilih Gudang : ");
+        pilihGudang = getUserInput(input, 1, gudang.length) - 1;
+        // Lihat Stok Section
+        cleanDisplay();
+        headLine(" Gudang " + gudang[pilihGudang] + " ");
+        for (int i = 0; i < namaObat.length; i++) { // Repeat per Nama Obat
+            int stokCount = 0;
+            for (int j = 0; j < stok.length; j++) { // Repeat per Stock
+                if ((int) stok[j][2] == pilihGudang && (int) stok[j][0] == i) {
+                    stokCount += getStokObat(j);
+                }
+            }
+            if (stokCount > 0) {
+                System.out.println("(" + i + ") " + namaObat[i] + ": " + stokCount);
+            }
+        }
+        System.out.println("Pilih Obat : ");
+        int pilihNamaObat = getUserInput(input, 0, namaObat.length - 1);
+        cleanDisplay();
+        headLine(" Gudang " + gudang[pilihGudang] + " ");
+        for (int i = 0; i < stok.length; i++) {
+            if ((int) stok[i][2] == pilihGudang && (int) stok[i][0] == pilihNamaObat) {
+                boolean isExpired = checkExpiry(getExpObat(i));
+                System.out.println("(" + i + ") " + getNamaObat(i) + ": " + getStokObat(i) + "  Batch: "
+                        + getBatchObat(i) + "  Exp: " + getExpObat(i) + " Status: "
+                        + getStatusObat(i));
+            }
+        }
+        exitPrompt();
+    }
+
+    static void tambahStockPage() {
+        cleanDisplay();
+        displayWarehouse();
+        System.out.print("Pilih Gudang : ");
+        pilihGudang = (getUserInput(input, 1, gudang.length) - 1);
+        // Tambah Stok Section
+        cleanDisplay();
+        headLine(" Gudang " + gudang[pilihGudang] + " ");
+        for (int i = 0; i < namaObat.length; i++) { // Repeat per Nama Obat
+            int stokCount = 0;
+            for (int j = 0; j < stok.length; j++) { // Repeat per Stock
+                if ((int) stok[j][2] == pilihGudang && (int) stok[j][0] == i) {
+                    stokCount += getStokObat(j);
+                }
+            }
+            if (stokCount > 0) {
+                System.out.println("(" + i + ") " + namaObat[i] + ": " + stokCount);
+            }
+        }
+        System.out.println("Pilih Obat : ");
+        pilihNamaObat = getUserInput(input, 0, namaObat.length - 1);
+        cleanDisplay();
+        headLine(" Gudang " + gudang[pilihGudang] + " ");
+        for (int i = 0; i < stok.length; i++) {
+            if ((int) stok[i][2] == pilihGudang && (int) stok[i][0] == pilihNamaObat) {
+                boolean isExpired = checkExpiry(getExpObat(i));
+                System.out.println("(" + i + ") " + getNamaObat(i) + ": " + getStokObat(i) + "  Batch: "
+                        + getBatchObat(i) + "  Exp: " + getExpObat(i) + " Status: "
+                        + getStatusObat(i));
+            }
+        }
+        System.out.print("Masukkan ID Obat : ");
+        pilihStok = getUserInput(input, 0, stok.length - 1);
+
+        if ((int) stok[pilihStok][2] == pilihGudang) {
+            System.out.print("Masukkan Jumlah Tambah Stok Obat : ");
+            int jumlahTambah = input.nextInt();
+            boolean isExpired = checkExpiry(getExpObat(pilihStok));
+            cleanDisplay();
+            headLine(" Tambah Obat ");
+            System.out.println("ID Obat       : " + stok[pilihStok][0]);
+            System.out.println("Nama Obat     : " + getNamaObat(pilihStok));
+            System.out.println("Batch         : " + getBatchObat(pilihStok));
+            System.out.println("Expired       : " + getExpObat(pilihStok));
+            System.out.println("Status        : " + getStatusObat(pilihStok));
+            System.out.println("Gudang        : " + gudang[(int) stok[pilihStok][2]]);
+            System.out.println("Stok awal     : " + stok[pilihStok][1]);
+            System.out.println("Stok akhir    : " + ((int) stok[pilihStok][1] + jumlahTambah));
+            System.out.println("Jumlah tambah : " + jumlahTambah);
+            if (confirmationPrompt()) {
+                stok[pilihStok][1] = (int) stok[pilihStok][1] + jumlahTambah;
+            }
+        } else {
+            System.out.println("ERROR! Masukkan Nomor ID obat yang benar!");
+        }
+
+        exitPrompt();
+    }
+
+    static void ambilStockPage() {
+        cleanDisplay();
+        displayWarehouse();
+        System.out.print("Pilih Gudang : ");
+        pilihGudang = getUserInput(input, 1, gudang.length) - 1;
+        cleanDisplay();
+        // Ambil Stok Section
+        headLine(" Gudang " + gudang[pilihGudang] + " ");
+        for (int i = 0; i < namaObat.length; i++) { // Repeat per Nama Obat
+            int stokCount = 0;
+            for (int j = 0; j < stok.length; j++) { // Repeat per Stock
+                if ((int) stok[j][2] == pilihGudang && (int) stok[j][0] == i) {
+                    stokCount += getStokObat(j);
+                }
+            }
+            if (stokCount > 0) {
+                System.out.println("(" + i + ") " + namaObat[i] + ": " + stokCount);
+            }
+        }
+        System.out.println("Pilih Obat : ");
+        pilihNamaObat = getUserInput(input, 0, namaObat.length - 1);
+        cleanDisplay();
+        headLine(" Gudang " + gudang[pilihGudang] + " ");
+        for (int i = 0; i < stok.length; i++) {
+            if ((int) stok[i][2] == pilihGudang && (int) stok[i][0] == pilihNamaObat) {
+                boolean isExpired = checkExpiry(getExpObat(i));
+                System.out.println("(" + i + ") " + getNamaObat(i) + ": " + getStokObat(i) + "  Batch: "
+                        + getBatchObat(i) + "  Exp: " + getExpObat(i) + " Status: "
+                        + getStatusObat(i));
+            }
+        }
+        System.out.print("Masukkan ID Obat : ");
+        pilihStok = getUserInput(input, 0, stok.length - 1);
+
+        if ((int) stok[pilihStok][2] == pilihGudang) {
+            System.out.print("Masukkan Jumlah Ambil Stok Obat : ");
+            ambilStok = input.nextInt();
+            boolean isExpired = checkExpiry(getExpObat(pilihStok));
+            if (ambilStok <= getStokObat(pilihStok)) {
                 cleanDisplay();
-                // Notification if login valid
-                System.out.printf("Selamat Datang Kembali %s\n",
-                        userData);
-                displayMenu();
+                headLine(" Ambil Obat ");
+                System.out.println("ID Obat       : " + stok[pilihStok][0]);
+                System.out.println("Nama Obat     : " + getNamaObat(pilihStok));
+                System.out.println("Batch         : " + getBatchObat(pilihStok));
+                System.out.println("Expired       : " + getExpObat(pilihStok));
+                System.out.println("Status        : " + getStatusObat(pilihStok));
+                System.out.println("Gudang        : " + gudang[(int) stok[pilihStok][2]]);
+                System.out.println("Stok awal     : " + stok[pilihStok][1]);
+                System.out.println("Stok akhir    : " + ((int) stok[pilihStok][1] - ambilStok));
+                System.out.println("Jumlah Ambil  : " + ambilStok);
+                if (confirmationPrompt()) {
+                    stok[pilihStok][1] = (int) stok[pilihStok][1] - ambilStok;
+                }
+            } else if (ambilStok > getStokObat(pilihStok)) {
+                System.out.println("ERROR! Stok Tidak Mencukupi!");
+            }
+        } else {
+            System.out.println("ERROR! Masukkan Nomor ID obat yang benar!");
+        }
 
+        exitPrompt();
+    }
+
+    static void searchPage() {
+        cleanDisplay();
+        System.out.print("Masukkan Obat yang ingin dicari : ");
+        String cariObat = input.next();
+        search(cariObat);
+        exitPrompt();
+    }
+
+    static void allDatasPage() {
+        cleanDisplay();
+        headLine(" Data Seluruh Obat ");
+
+        for (int i = 0; i < gudang.length; i++) {
+            System.out.println("\nData Obat Gudang " + gudang[i] + ": ");
+            boolean hasObat = false;
+            for (int j = 0; j < namaObat.length; j++) {
+                int stockCount = 0;
+                boolean hasStok = false;
+                for (int k = 0; k < stok.length; k++) {
+                    if ((int) stok[k][2] == i && (int) stok[k][0] == j) {
+                        stockCount += getStokObat(k);
+                        hasStok = true;
+                        hasObat = true;
+                    }
+                }
+                if (hasStok) {
+                    System.out.println(namaObat[j] + ": " + stockCount);
+                }
+            }
+            if (!hasObat) {
+                System.out.println("- Gudang Kosong -");
+            }
+        }
+        exitPrompt();
+    }
+
+    static void obatSettingPage() {
+        cleanDisplay();
+        System.out.println("1. Tambah Jenis Obat");
+        System.out.println("2. Hapus Obat");
+        System.out.println("3. Lihat Keseluruhan Jenis Obat");
+        System.out.println("4. Tambah Obat di Gudang");
+        System.out.println("5. Hapus Obat di Gudang");
+        System.out.println("6. Transfer Obat");
+        System.out.print("Pilih Menu : ");
+        pilihMenu = input.nextInt();
+        switch (pilihMenu) {
+            case 1: // Tambah Jenis Obat
+                addObatTypePage();
+                break;
+            case 2: // Hapus jenis Obat
+                deleteObatTypePage();
+                break;
+            case 3: // Lihat Keseluruhan Jenis Obat
+                allObatTypePage();
+                break;
+            case 4: // Tambah Obat di Gudang
+                addObatToGudangPage();
+                break;
+            case 5: // Hapus Obat di Gudang
+                deleteObatInGudangPage();
+                break;
+            case 6: // Transfer Obat
+                obatTransferPage();
+                break;
+
+            default:
+                break;
+        }
+    }
+
+    static void addObatTypePage() {
+        cleanDisplay();
+        System.out.print("Masukkan Nama Obat Baru : ");
+        String obatBaru = input.next();
+        if (confirmationPrompt()) {
+            namaObat = addElement(namaObat, obatBaru);
+            indexDatabase = 0;
+            populateDatabase();
+        }
+        exitPrompt();
+    }
+
+    static void deleteObatTypePage() {
+        cleanDisplay();
+        displayMedicine();
+        System.out.print("Pilih Obat yang Akan Dihapus : ");
+        pilihMenu = (getUserInput(input, 1, namaObat.length) - 1);
+        int index = 0;
+        if (confirmationPrompt()) {
+            for (int i = stok.length - 1; i >= 0; i--) {
+                if ((int) stok[i][0] > pilihMenu) {
+                    stok[i][0] = (int) stok[i][0] - 1;
+                } else if ((int) stok[i][0] == pilihMenu) {
+                    deleteStock(i);
+                }
+            }
+            namaObat = deleteElement(namaObat, pilihMenu);
+            indexDatabase = 0;
+            populateDatabase();
+        }
+        exitPrompt();
+    }
+
+    static void allObatTypePage() {
+        cleanDisplay();
+        displayMedicine();
+        exitPrompt();
+    }
+
+    static void addObatToGudangPage() {
+        cleanDisplay();
+        displayWarehouse();
+        System.out.println("Pilih Gudang : ");
+        int pilihPenambahanGudang = input.nextInt() - 1;
+        cleanDisplay();
+        displayMedicine();
+        System.out.println("Pilih Obat : ");
+        int pilihPenambahanObat = input.nextInt() - 1;
+        System.out.println("Masukkan Jumlah Obat : ");
+        int jumlahObat = input.nextInt();
+        System.out.println("Masukkan Batch Obat : ");
+        String batch = input.next();
+        System.out.println("Masukkan Expired Obat (DD-MM-YYYY) : ");
+        String expired = input.next();
+        boolean obatSudahAda = false;
+        for (int i = 0; i < stok.length; i++) {
+            if ((int) stok[i][2] == pilihPenambahanGudang
+                    && (int) stok[i][0] == pilihPenambahanObat
+                    && batch.equals(getBatchObat(i))) {
+                obatSudahAda = true;
+                System.out.println("Obat sudah tersedia!");
+                exitPrompt();
+                break;
+            }
+        }
+        if (!obatSudahAda) {
+            if (confirmationPrompt()) {
+                addStock(pilihPenambahanObat, jumlahObat, pilihPenambahanGudang, batch,
+                        expired);
+                System.out.println("Obat berhasil ditambahkan ke gudang!");
+            }
+            exitPrompt();
+            break;
+        }
+    }
+
+    static void deleteObatInGudangPage() {
+        cleanDisplay();
+        displayWarehouse();
+        System.out.print("Pilih Gudang : ");
+        int pilihPenghapusanGudang = input.nextInt() - 1;
+        cleanDisplay();
+        headLine(" Gudang " + gudang[pilihPenghapusanGudang] + " ");
+        for (int i = 0; i < namaObat.length; i++) { // Repeat per Nama Obat
+            int stokCount = 0;
+            for (int j = 0; j < stok.length; j++) { // Repeat per Stock
+                if ((int) stok[j][2] == pilihPenghapusanGudang && (int) stok[j][0] == i) {
+                    stokCount += getStokObat(j);
+                }
+            }
+            if (stokCount > 0) {
+                System.out.println("(" + i + ") " + namaObat[i] + ": " + stokCount);
+            }
+        }
+        System.out.println("Pilih Obat : ");
+        pilihNamaObat = getUserInput(input, 0, namaObat.length - 1);
+        cleanDisplay();
+        headLine(" Gudang " + gudang[pilihPenghapusanGudang] + " ");
+        for (int i = 0; i < stok.length; i++) {
+            if ((int) stok[i][2] == pilihPenghapusanGudang
+                    && (int) stok[i][0] == pilihNamaObat) {
+                System.out.println(
+                        "(" + i + ") " + getNamaObat(i) + ": " + getStokObat(i) + "  Batch: "
+                                + getBatchObat(i) + "  Exp: " + getExpObat(i));
+            }
+        }
+
+        System.out.print("Masukkan ID Obat : ");
+        pilihStok = getUserInput(input, 0, stok.length - 1);
+
+        // Menghapus obat
+        if (confirmationPrompt()) {
+            deleteStock(pilihStok);
+            System.out.println("Obat berhasil dihapus dari gudang!");
+        }
+        exitPrompt();
+    }
+
+    static void obatTransferPage() {
+        cleanDisplay();
+        displayWarehouse();
+        System.out.print("Pilih Gudang : ");
+        pilihGudang = getUserInput(input, 1, gudang.length) - 1;
+        cleanDisplay();
+        headLine(" Gudang " + gudang[pilihGudang] + " ");
+        for (int i = 0; i < namaObat.length; i++) { // repeat per obat name
+            int stokCount = 0;
+            for (int j = 0; j < stok.length; j++) { // repeat per obat batch
+                if ((int) stok[j][2] == pilihGudang && (int) stok[j][0] == i) { // if the gudang
+                                                                                // is same then
+                    stokCount += (int) stok[j][1];
+                }
+            }
+            if (stokCount > 0) {
+                System.out.println("(" + i + ") " + namaObat[i] + ": " + stokCount);
+            }
+        }
+        System.out.println("Pilih Obat yang Akan ditransfer:");
+        int pilihObatTransfer = getUserInput(input, 0, namaObat.length - 1);
+        cleanDisplay();
+        headLine(" Data Obat " + namaObat[pilihObatTransfer] + " di Gudang "
+                + gudang[pilihGudang] + " ");
+        boolean hasObat = false;
+        for (int j = 0; j < stok.length; j++) {
+            if ((int) stok[j][2] == pilihGudang && (int) stok[j][0] == pilihObatTransfer) {
+                System.out.println("(" + j + ") " + getNamaObat(j) + ": " + getStokObat(j)
+                        + " Batch: " + getBatchObat(j) + " Exp: " + getExpObat(j));
+                hasObat = true;
+            }
+        }
+        if (!hasObat) {
+            System.out.println("- Gudang Kosong -");
+        }
+        System.out.print("\nPilih ID Obat : ");
+        pilihStok = getUserInput(input, 0, stok.length - 1);
+
+        System.out.print("\nMasukkan Jumlah yang akan dipindah : ");
+        ambilStok = getUserInput(input, 1, (int) stok[pilihStok][1]);
+
+        cleanDisplay();
+        displayWarehouse();
+        System.out.print("Pilih Gudang Tujuan: ");
+        int pilihGudangTujuan = getUserInput(input, 1, gudang.length) - 1;
+        System.out.println(pilihGudangTujuan);
+
+        // Get index of stok in the gudang tujuan
+        y = -1;
+        for (int i = 0; i < stok.length; i++) {
+            if ((int) stok[i][2] == pilihGudangTujuan && (int) stok[i][0] == pilihStok) {
+                y = i;
+                break;
+            }
+        }
+
+        cleanDisplay();
+        // Show before after
+        headLine(" Gudang " + gudang[pilihGudang] + " ");
+        System.out.println(getNamaObat(pilihStok) + ": ");
+        System.out.printf("%d => %d\n", getStokObat(pilihStok),
+                getStokObat(pilihStok) - ambilStok);
+
+        headLine(" Gudang " + gudang[pilihGudangTujuan] + " ");
+        System.out.println(getNamaObat(pilihStok) + ": ");
+        System.out.printf("%d => %d\n", (y == -1) ? 0 : getStokObat(y),
+                ((y == -1) ? 0 : getStokObat(y)) + ambilStok);
+
+        // Confirmation Prompt
+        if (confirmationPrompt()) {
+            // Implement Pindah Gudang
+            hasObat = false;
+            for (int j = 0; j < stok.length; j++) {
+                if ((int) stok[j][2] == pilihGudangTujuan && (int) stok[j][0] == pilihStok
+                        && getBatchObat(pilihStok).equals(getBatchObat(j))) {
+                    stok[j][1] = (int) stok[j][1] + ambilStok;
+                    hasObat = true;
+                    break;
+                }
+            }
+            if (!hasObat) {
+                addStock((int) stok[pilihStok][0], ambilStok, pilihGudangTujuan,
+                        getBatchObat(pilihStok), getExpObat(pilihStok));
+            }
+            stok[pilihStok][1] = (int) stok[pilihStok][1] - ambilStok;
+        }
+
+        exitPrompt();
+    }
+
+    static void gudangSettingPage() {
+        cleanDisplay();
+        System.out.println("1. Tambah Gudang");
+        System.out.println("2. Hapus Gudang");
+        System.out.print("Pilih Menu : ");
+        pilihMenu = input.nextInt();
+        switch (pilihMenu) {
+            case 1: // Tambah Gudang
+                addGudangPage();
+                break;
+            case 2: // Hapus Gudang
+                deleteGudangPage();
+                break;
+            default:
+                break;
+        }
+    }
+
+    static void addGudangPage() {
+        cleanDisplay();
+        System.out.print("Nama Gudang Baru : ");
+        String gudangBaru = input.next();
+        if (confirmationPrompt()) {
+            gudang = addElement(gudang, gudangBaru);
+        }
+        exitPrompt();
+    }
+
+    static void deleteGudangPage() {
+        cleanDisplay();
+        displayWarehouse();
+        System.out.print("Pilih Gudang yang Akan Dihapus : ");
+        pilihMenu = (getUserInput(input, 1, gudang.length) - 1);
+        if (confirmationPrompt()) {
+            int index = 0;
+            for (int i = stok.length - 1; i >= 0; i--) {
+                if ((int) stok[i][2] > pilihMenu) {
+                    stok[i][2] = (int) stok[i][2] - 1;
+                } else if ((int) stok[i][2] == pilihMenu) {
+                    deleteStock(i);
+                }
+            }
+            gudang = deleteElement(gudang, pilihMenu);
+        }
+        exitPrompt();
+    }
+
+    static void exitPage(){
+         cleanDisplay();
+                // Exit Menu
+                System.out.println("1. Keluar Akun");
+                System.out.println("2. Keluar Program");
+                System.out.println("3. Kembali");
                 System.out.print("Pilih Menu : ");
-                pilihMenu = input.nextInt();
-
-                switch (pilihMenu) {
-                    // Pilih Gudang
+                pilihMenuKeluar = input.nextInt();
+                switch (pilihMenuKeluar) {
+                    // Exit Account
                     case 1:
                         cleanDisplay();
-                        displayWarehouse();
-                        System.out.print("Pilih Gudang : ");
-                        pilihGudang = getUserInput(input, 1, gudang.length) - 1;
-                        // Lihat Stok Section
-                        cleanDisplay();
-                        headLine(" Gudang " + gudang[pilihGudang] + " ");
-                        for (int i = 0; i < namaObat.length; i++) { // Repeat per Nama Obat
-                            int stokCount = 0;
-                            for (int j = 0; j < stok.length; j++) { // Repeat per Stock
-                                if ((int) stok[j][2] == pilihGudang && (int) stok[j][0] == i) {
-                                    stokCount += getStokObat(j);
-                                }
-                            }
-                            if (stokCount > 0) {
-                                System.out.println("(" + i + ") " + namaObat[i] + ": " + stokCount);
-                            }
-                        }
-                        System.out.println("Pilih Obat : ");
-                        int pilihNamaObat = getUserInput(input, 0, namaObat.length - 1);
-                        cleanDisplay();
-                        headLine(" Gudang " + gudang[pilihGudang] + " ");
-                        for (int i = 0; i < stok.length; i++) {
-                            if ((int) stok[i][2] == pilihGudang && (int) stok[i][0] == pilihNamaObat) {
-                                boolean isExpired = checkExpiry(getExpObat(i));
-                                System.out.println("(" + i + ") " + getNamaObat(i) + ": " + getStokObat(i) + "  Batch: "
-                                        + getBatchObat(i) + "  Exp: " + getExpObat(i) + " Status: "
-                                        + getStatusObat(i));
-                            }
-                        }
-                        exitPrompt();
+                        isLoggedIn = false;
                         break;
-
-                    // Pilih Gudang
+                    // Exit Program Menu
                     case 2:
-                        cleanDisplay();
-                        displayWarehouse();
-                        System.out.print("Pilih Gudang : ");
-                        pilihGudang = (getUserInput(input, 1, gudang.length) - 1);
-                        // Tambah Stok Section
-                        cleanDisplay();
-                        headLine(" Gudang " + gudang[pilihGudang] + " ");
-                        for (int i = 0; i < namaObat.length; i++) { // Repeat per Nama Obat
-                            int stokCount = 0;
-                            for (int j = 0; j < stok.length; j++) { // Repeat per Stock
-                                if ((int) stok[j][2] == pilihGudang && (int) stok[j][0] == i) {
-                                    stokCount += getStokObat(j);
-                                }
-                            }
-                            if (stokCount > 0) {
-                                System.out.println("(" + i + ") " + namaObat[i] + ": " + stokCount);
-                            }
-                        }
-                        System.out.println("Pilih Obat : ");
-                        pilihNamaObat = getUserInput(input, 0, namaObat.length - 1);
-                        cleanDisplay();
-                        headLine(" Gudang " + gudang[pilihGudang] + " ");
-                        for (int i = 0; i < stok.length; i++) {
-                            if ((int) stok[i][2] == pilihGudang && (int) stok[i][0] == pilihNamaObat) {
-                                boolean isExpired = checkExpiry(getExpObat(i));
-                                System.out.println("(" + i + ") " + getNamaObat(i) + ": " + getStokObat(i) + "  Batch: "
-                                        + getBatchObat(i) + "  Exp: " + getExpObat(i) + " Status: "
-                                        + getStatusObat(i));
-                            }
-                        }
-                        System.out.print("Masukkan ID Obat : ");
-                        pilihStok = getUserInput(input, 0, stok.length - 1);
-
-                        if ((int) stok[pilihStok][2] == pilihGudang) {
-                            System.out.print("Masukkan Jumlah Tambah Stok Obat : ");
-                            int jumlahTambah = input.nextInt();
-                            boolean isExpired = checkExpiry(getExpObat(pilihStok));
-                            cleanDisplay();
-                            headLine(" Tambah Obat ");
-                            System.out.println("ID Obat       : " + stok[pilihStok][0]);
-                            System.out.println("Nama Obat     : " + getNamaObat(pilihStok));
-                            System.out.println("Batch         : " + getBatchObat(pilihStok));
-                            System.out.println("Expired       : " + getExpObat(pilihStok));
-                            System.out.println("Status        : " + getStatusObat(pilihStok));
-                            System.out.println("Gudang        : " + gudang[(int) stok[pilihStok][2]]);
-                            System.out.println("Stok awal     : " + stok[pilihStok][1]);
-                            System.out.println("Stok akhir    : " + ((int) stok[pilihStok][1] + jumlahTambah));
-                            System.out.println("Jumlah tambah : " + jumlahTambah);
-                            if (confirmationPrompt()) {
-                                stok[pilihStok][1] = (int) stok[pilihStok][1] + jumlahTambah;
-                            }
-                        } else {
-                            System.out.println("ERROR! Masukkan Nomor ID obat yang benar!");
-                        }
-
-                        exitPrompt();
+                        isRunning = false;
                         break;
-
-                    // Pilih Gudang
+                    // Back to Menu
                     case 3:
                         cleanDisplay();
-                        displayWarehouse();
-                        System.out.print("Pilih Gudang : ");
-                        pilihGudang = getUserInput(input, 1, gudang.length) - 1;
-                        cleanDisplay();
-                        // Ambil Stok Section
-                        headLine(" Gudang " + gudang[pilihGudang] + " ");
-                        for (int i = 0; i < namaObat.length; i++) { // Repeat per Nama Obat
-                            int stokCount = 0;
-                            for (int j = 0; j < stok.length; j++) { // Repeat per Stock
-                                if ((int) stok[j][2] == pilihGudang && (int) stok[j][0] == i) {
-                                    stokCount += getStokObat(j);
-                                }
-                            }
-                            if (stokCount > 0) {
-                                System.out.println("(" + i + ") " + namaObat[i] + ": " + stokCount);
-                            }
-                        }
-                        System.out.println("Pilih Obat : ");
-                        pilihNamaObat = getUserInput(input, 0, namaObat.length - 1);
-                        cleanDisplay();
-                        headLine(" Gudang " + gudang[pilihGudang] + " ");
-                        for (int i = 0; i < stok.length; i++) {
-                            if ((int) stok[i][2] == pilihGudang && (int) stok[i][0] == pilihNamaObat) {
-                                boolean isExpired = checkExpiry(getExpObat(i));
-                                System.out.println("(" + i + ") " + getNamaObat(i) + ": " + getStokObat(i) + "  Batch: "
-                                        + getBatchObat(i) + "  Exp: " + getExpObat(i) + " Status: "
-                                        + getStatusObat(i));
-                            }
-                        }
-                        System.out.print("Masukkan ID Obat : ");
-                        pilihStok = getUserInput(input, 0, stok.length - 1);
-
-                        if ((int) stok[pilihStok][2] == pilihGudang) {
-                            System.out.print("Masukkan Jumlah Ambil Stok Obat : ");
-                            ambilStok = input.nextInt();
-                            boolean isExpired = checkExpiry(getExpObat(pilihStok));
-                            if (ambilStok <= getStokObat(pilihStok)) {
-                                cleanDisplay();
-                                headLine(" Ambil Obat ");
-                                System.out.println("ID Obat       : " + stok[pilihStok][0]);
-                                System.out.println("Nama Obat     : " + getNamaObat(pilihStok));
-                                System.out.println("Batch         : " + getBatchObat(pilihStok));
-                                System.out.println("Expired       : " + getExpObat(pilihStok));
-                                System.out.println("Status        : " + getStatusObat(pilihStok));
-                                System.out.println("Gudang        : " + gudang[(int) stok[pilihStok][2]]);
-                                System.out.println("Stok awal     : " + stok[pilihStok][1]);
-                                System.out.println("Stok akhir    : " + ((int) stok[pilihStok][1] - ambilStok));
-                                System.out.println("Jumlah Ambil  : " + ambilStok);
-                                if (confirmationPrompt()) {
-                                    stok[pilihStok][1] = (int) stok[pilihStok][1] - ambilStok;
-                                }
-                            } else if (ambilStok > getStokObat(pilihStok)) {
-                                System.out.println("ERROR! Stok Tidak Mencukupi!");
-                            }
-                        } else {
-                            System.out.println("ERROR! Masukkan Nomor ID obat yang benar!");
-                        }
-
-                        exitPrompt();
-                        break;
-                    // Cari Obat
-                    case 4:
-                        cleanDisplay();
-                        System.out.print("Masukkan Obat yang ingin dicari : ");
-                        String cariObat = input.next();
-                        search(cariObat);
-                        exitPrompt();
-                        break;
-                    // Data Keseluruhan
-                    case 5:
-                        cleanDisplay();
-                        headLine(" Data Seluruh Obat ");
-
-                        for (int i = 0; i < gudang.length; i++) {
-                            System.out.println("\nData Obat Gudang " + gudang[i] + ": ");
-                            boolean hasObat = false;
-                            for (int j = 0; j < namaObat.length; j++) {
-                                int stockCount = 0;
-                                boolean hasStok = false;
-                                for (int k = 0; k < stok.length; k++) {
-                                    if ((int) stok[k][2] == i && (int) stok[k][0] == j) {
-                                        stockCount += getStokObat(k);
-                                        hasStok = true;
-                                        hasObat = true;
-                                    }
-                                }
-                                if (hasStok) {
-                                    System.out.println(namaObat[j] + ": " + stockCount);
-                                }
-                            }
-                            if (!hasObat) {
-                                System.out.println("- Gudang Kosong -");
-                            }
-                        }
-                        exitPrompt();
-                        break;
-                    case 6:
-                        cleanDisplay();
-                        System.out.println("1. Tambah Jenis Obat");
-                        System.out.println("2. Hapus Obat");
-                        System.out.println("3. Lihat Keseluruhan Jenis Obat");
-                        System.out.println("4. Tambah Obat di Gudang");
-                        System.out.println("5. Hapus Obat di Gudang");
-                        System.out.println("6. Transfer Obat");
-                        System.out.print("Pilih Menu : ");
-                        pilihMenu = input.nextInt();
-                        switch (pilihMenu) {
-                            case 1: // Tambah Jenis Obat
-                                cleanDisplay();
-                                System.out.print("Masukkan Nama Obat Baru : ");
-                                String obatBaru = input.next();
-                                if (confirmationPrompt()) {
-                                    namaObat = addElement(namaObat, obatBaru);
-                                    indexDatabase = 0;
-                                    populateDatabase();
-                                }
-                                exitPrompt();
-                                break;
-                            case 2: // Hapus Obat
-                                cleanDisplay();
-                                displayMedicine();
-                                System.out.print("Pilih Obat yang Akan Dihapus : ");
-                                pilihMenu = (getUserInput(input, 1, namaObat.length) - 1);
-                                int index = 0;
-                                if (confirmationPrompt()) {
-                                    for (int i = stok.length - 1; i >= 0; i--) {
-                                        if ((int) stok[i][0] > pilihMenu) {
-                                            stok[i][0] = (int) stok[i][0] - 1;
-                                        } else if ((int) stok[i][0] == pilihMenu) {
-                                            deleteStock(i);
-                                        }
-                                    }
-                                    namaObat = deleteElement(namaObat, pilihMenu);
-                                    indexDatabase = 0;
-                                    populateDatabase();
-                                }
-                                exitPrompt();
-                                break;
-                            case 3: // Lihat Keseluruhan Jenis Obat
-                                cleanDisplay();
-                                displayMedicine();
-                                exitPrompt();
-                                break;
-                            case 4: // Tambah Obat di Gudang
-                                cleanDisplay();
-                                displayWarehouse();
-                                System.out.println("Pilih Gudang : ");
-                                int pilihPenambahanGudang = input.nextInt() - 1;
-                                cleanDisplay();
-                                displayMedicine();
-                                System.out.println("Pilih Obat : ");
-                                int pilihPenambahanObat = input.nextInt() - 1;
-                                System.out.println("Masukkan Jumlah Obat : ");
-                                int jumlahObat = input.nextInt();
-                                System.out.println("Masukkan Batch Obat : ");
-                                String batch = input.next();
-                                System.out.println("Masukkan Expired Obat (DD-MM-YYYY) : ");
-                                String expired = input.next();
-                                boolean obatSudahAda = false;
-                                for (int i = 0; i < stok.length; i++) {
-                                    if ((int) stok[i][2] == pilihPenambahanGudang
-                                            && (int) stok[i][0] == pilihPenambahanObat
-                                            && batch.equals(getBatchObat(i))) {
-                                        obatSudahAda = true;
-                                        System.out.println("Obat sudah tersedia!");
-                                        exitPrompt();
-                                        break;
-                                    }
-                                }
-                                if (!obatSudahAda) {
-                                    if (confirmationPrompt()) {
-                                        addStock(pilihPenambahanObat, jumlahObat, pilihPenambahanGudang, batch,
-                                                expired);
-                                        System.out.println("Obat berhasil ditambahkan ke gudang!");
-                                    }
-                                    exitPrompt();
-                                    break;
-                                }
-                                break;
-                            case 5: // Hapus Obat di Gudang
-                                cleanDisplay();
-                                displayWarehouse();
-                                System.out.print("Pilih Gudang : ");
-                                int pilihPenghapusanGudang = input.nextInt() - 1;
-                                cleanDisplay();
-                                headLine(" Gudang " + gudang[pilihPenghapusanGudang] + " ");
-                                for (int i = 0; i < namaObat.length; i++) { // Repeat per Nama Obat
-                                    int stokCount = 0;
-                                    for (int j = 0; j < stok.length; j++) { // Repeat per Stock
-                                        if ((int) stok[j][2] == pilihPenghapusanGudang && (int) stok[j][0] == i) {
-                                            stokCount += getStokObat(j);
-                                        }
-                                    }
-                                    if (stokCount > 0) {
-                                        System.out.println("(" + i + ") " + namaObat[i] + ": " + stokCount);
-                                    }
-                                }
-                                System.out.println("Pilih Obat : ");
-                                pilihNamaObat = getUserInput(input, 0, namaObat.length - 1);
-                                cleanDisplay();
-                                headLine(" Gudang " + gudang[pilihPenghapusanGudang] + " ");
-                                for (int i = 0; i < stok.length; i++) {
-                                    if ((int) stok[i][2] == pilihPenghapusanGudang
-                                            && (int) stok[i][0] == pilihNamaObat) {
-                                        System.out.println(
-                                                "(" + i + ") " + getNamaObat(i) + ": " + getStokObat(i) + "  Batch: "
-                                                        + getBatchObat(i) + "  Exp: " + getExpObat(i));
-                                    }
-                                }
-
-                                System.out.print("Masukkan ID Obat : ");
-                                pilihStok = getUserInput(input, 0, stok.length - 1);
-
-                                // Menghapus obat
-                                if (confirmationPrompt()) {
-                                    deleteStock(pilihStok);
-                                    System.out.println("Obat berhasil dihapus dari gudang!");
-                                }
-                                exitPrompt();
-                                break;
-                            case 6: // Transfer Obat
-                                cleanDisplay();
-                                displayWarehouse();
-                                System.out.print("Pilih Gudang : ");
-                                pilihGudang = getUserInput(input, 1, gudang.length) - 1;
-                                cleanDisplay();
-                                headLine(" Gudang " + gudang[pilihGudang] + " ");
-                                for (int i = 0; i < namaObat.length; i++) { // repeat per obat name
-                                    int stokCount = 0;
-                                    for (int j = 0; j < stok.length; j++) { // repeat per obat batch
-                                        if ((int) stok[j][2] == pilihGudang && (int) stok[j][0] == i) { // if the gudang
-                                                                                                        // is same then
-                                            stokCount += (int) stok[j][1];
-                                        }
-                                    }
-                                    if (stokCount > 0) {
-                                        System.out.println("(" + i + ") " + namaObat[i] + ": " + stokCount);
-                                    }
-                                }
-                                System.out.println("Pilih Obat yang Akan ditransfer:");
-                                int pilihObatTransfer = getUserInput(input, 0, namaObat.length - 1);
-                                cleanDisplay();
-                                headLine(" Data Obat " + namaObat[pilihObatTransfer] + " di Gudang "
-                                        + gudang[pilihGudang] + " ");
-                                boolean hasObat = false;
-                                for (int j = 0; j < stok.length; j++) {
-                                    if ((int) stok[j][2] == pilihGudang && (int) stok[j][0] == pilihObatTransfer) {
-                                        System.out.println("(" + j + ") " + getNamaObat(j) + ": " + getStokObat(j)
-                                                + " Batch: " + getBatchObat(j) + " Exp: " + getExpObat(j));
-                                        hasObat = true;
-                                    }
-                                }
-                                if (!hasObat) {
-                                    System.out.println("- Gudang Kosong -");
-                                }
-                                System.out.print("\nPilih ID Obat : ");
-                                pilihStok = getUserInput(input, 0, stok.length - 1);
-
-                                System.out.print("\nMasukkan Jumlah yang akan dipindah : ");
-                                ambilStok = getUserInput(input, 1, (int) stok[pilihStok][1]);
-
-                                cleanDisplay();
-                                displayWarehouse();
-                                System.out.print("Pilih Gudang Tujuan: ");
-                                int pilihGudangTujuan = getUserInput(input, 1, gudang.length) - 1;
-                                System.out.println(pilihGudangTujuan);
-
-                                // Get index of stok in the gudang tujuan
-                                y = -1;
-                                for (int i = 0; i < stok.length; i++) {
-                                    if ((int) stok[i][2] == pilihGudangTujuan && (int) stok[i][0] == pilihStok) {
-                                        y = i;
-                                        break;
-                                    }
-                                }
-
-                                cleanDisplay();
-                                // Show before after
-                                headLine(" Gudang " + gudang[pilihGudang] + " ");
-                                System.out.println(getNamaObat(pilihStok) + ": ");
-                                System.out.printf("%d => %d\n", getStokObat(pilihStok),
-                                        getStokObat(pilihStok) - ambilStok);
-
-                                headLine(" Gudang " + gudang[pilihGudangTujuan] + " ");
-                                System.out.println(getNamaObat(pilihStok) + ": ");
-                                System.out.printf("%d => %d\n", (y == -1) ? 0 : getStokObat(y),
-                                        ((y == -1) ? 0 : getStokObat(y)) + ambilStok);
-
-                                // Confirmation Prompt
-                                if (confirmationPrompt()) {
-                                    // Implement Pindah Gudang
-                                    hasObat = false;
-                                    for (int j = 0; j < stok.length; j++) {
-                                        if ((int) stok[j][2] == pilihGudangTujuan && (int) stok[j][0] == pilihStok
-                                                && getBatchObat(pilihStok).equals(getBatchObat(j))) {
-                                            stok[j][1] = (int) stok[j][1] + ambilStok;
-                                            hasObat = true;
-                                            break;
-                                        }
-                                    }
-                                    if (!hasObat) {
-                                        addStock((int) stok[pilihStok][0], ambilStok, pilihGudangTujuan,
-                                                getBatchObat(pilihStok), getExpObat(pilihStok));
-                                    }
-                                    stok[pilihStok][1] = (int) stok[pilihStok][1] - ambilStok;
-                                }
-
-                                exitPrompt();
-                                break;
-
-                            default:
-                                break;
-                        }
-                        break;
-                    // Exit Section
-                    case 7:
-                        cleanDisplay();
-                        System.out.println("1. Tambah Gudang");
-                        System.out.println("2. Hapus Gudang");
-                        System.out.print("Pilih Menu : ");
-                        pilihMenu = input.nextInt();
-                        switch (pilihMenu) {
-                            case 1: // Tambah Gudang
-                                cleanDisplay();
-                                System.out.print("Nama Gudang Baru : ");
-                                String gudangBaru = input.next();
-                                if (confirmationPrompt()) {
-                                    gudang = addElement(gudang, gudangBaru);
-                                }
-                                exitPrompt();
-                                break;
-                            case 2: // Hapus Gudang
-                                cleanDisplay();
-                                displayWarehouse();
-                                System.out.print("Pilih Gudang yang Akan Dihapus : ");
-                                pilihMenu = (getUserInput(input, 1, gudang.length) - 1);
-                                if (confirmationPrompt()) {
-                                    int index = 0;
-                                    for (int i = stok.length - 1; i >= 0; i--) {
-                                        if ((int) stok[i][2] > pilihMenu) {
-                                            stok[i][2] = (int) stok[i][2] - 1;
-                                        } else if ((int) stok[i][2] == pilihMenu) {
-                                            deleteStock(i);
-                                        }
-                                    }
-                                    gudang = deleteElement(gudang, pilihMenu);
-                                }
-                                exitPrompt();
-                                break;
-                            default:
-                                break;
-                        }
-                        break;
-
-                    case 8:
-                        cleanDisplay();
-                        // Exit Menu
-                        System.out.println("1. Keluar Akun");
-                        System.out.println("2. Keluar Program");
-                        System.out.println("3. Kembali");
-                        System.out.print("Pilih Menu : ");
-                        pilihMenuKeluar = input.nextInt();
-                        switch (pilihMenuKeluar) {
-                            // Exit Account
-                            case 1:
-                                cleanDisplay();
-                                isLoggedIn = false;
-                                break;
-                            // Exit Program Menu
-                            case 2:
-                                isRunning = false;
-                                break;
-                            // Back to Menu
-                            case 3:
-                                cleanDisplay();
-                                isRunning = true;
-                                break;
-                            default:
-                                System.out.println("Error: Invalid User Input!");
-                                exitPrompt();
-                                break;
-                        }
+                        isRunning = true;
                         break;
                     default:
                         System.out.println("Error: Invalid User Input!");
                         exitPrompt();
                         break;
                 }
-            }
-        }
+                break;
+            default:
+                System.out.println("Error: Invalid User Input!");
+                exitPrompt();
     }
 
     static void addStock(int nama, int stokObat, int gudang, String batch, String expired) {
