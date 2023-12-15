@@ -100,7 +100,7 @@ public class inventarisGudang {
                                 boolean isExpired = checkExpiry(getExpObat(i));
                                 System.out.println("(" + i + ") " + getNamaObat(i) + ": " + getStokObat(i) + "  Batch: "
                                         + getBatchObat(i) + "  Exp: " + getExpObat(i) + " Status: "
-                                        + (isExpired ? "Expired" : "Aman"));
+                                        + getStatusObat(i));
                             }
                         }
                         exitPrompt();
@@ -135,7 +135,7 @@ public class inventarisGudang {
                                 boolean isExpired = checkExpiry(getExpObat(i));
                                 System.out.println("(" + i + ") " + getNamaObat(i) + ": " + getStokObat(i) + "  Batch: "
                                         + getBatchObat(i) + "  Exp: " + getExpObat(i) + " Status: "
-                                        + (isExpired ? "Expired" : "Aman"));
+                                        + getStatusObat(i));
                             }
                         }
                         System.out.print("Masukkan ID Obat : ");
@@ -151,7 +151,7 @@ public class inventarisGudang {
                             System.out.println("Nama Obat     : " + getNamaObat(pilihStok));
                             System.out.println("Batch         : " + getBatchObat(pilihStok));
                             System.out.println("Expired       : " + getExpObat(pilihStok));
-                            System.out.println("Status        : " + (isExpired ? "Expired" : "Aman"));
+                            System.out.println("Status        : " + getStatusObat(pilihStok));
                             System.out.println("Gudang        : " + gudang[(int) stok[pilihStok][2]]);
                             System.out.println("Stok awal     : " + stok[pilihStok][1]);
                             System.out.println("Stok akhir    : " + ((int) stok[pilihStok][1] + jumlahTambah));
@@ -195,7 +195,7 @@ public class inventarisGudang {
                                 boolean isExpired = checkExpiry(getExpObat(i));
                                 System.out.println("(" + i + ") " + getNamaObat(i) + ": " + getStokObat(i) + "  Batch: "
                                         + getBatchObat(i) + "  Exp: " + getExpObat(i) + " Status: "
-                                        + (isExpired ? "Expired" : "Aman"));
+                                        + getStatusObat(i));
                             }
                         }
                         System.out.print("Masukkan ID Obat : ");
@@ -212,7 +212,7 @@ public class inventarisGudang {
                                 System.out.println("Nama Obat     : " + getNamaObat(pilihStok));
                                 System.out.println("Batch         : " + getBatchObat(pilihStok));
                                 System.out.println("Expired       : " + getExpObat(pilihStok));
-                                System.out.println("Status        : " + (isExpired ? "Expired" : "Aman"));
+                                System.out.println("Status        : " + getStatusObat(pilihStok));
                                 System.out.println("Gudang        : " + gudang[(int) stok[pilihStok][2]]);
                                 System.out.println("Stok awal     : " + stok[pilihStok][1]);
                                 System.out.println("Stok akhir    : " + ((int) stok[pilihStok][1] - ambilStok));
@@ -654,6 +654,10 @@ public class inventarisGudang {
 
     static String getExpObat(int index) {
         return (String) stok[index][4];
+    }
+
+    static String getStatusObat(int index) throws ParseException {
+        return (checkExpiry(getExpObat(index)) ? "Expired" : "Aman");
     }
 
     static int getUserInput(Scanner scanner, int min, int max) {
