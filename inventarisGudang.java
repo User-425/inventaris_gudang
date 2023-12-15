@@ -59,7 +59,7 @@ public class inventarisGudang {
         run();
     }
 
-    static void run() {
+    static void run() throws ParseException {
         while (isRunning) {
             if (isLoggedIn != true) {
                 // isLoggedIn = true;
@@ -71,8 +71,8 @@ public class inventarisGudang {
 
     }
 
-    static void menuPage() {
-
+    static void menuPage() throws ParseException {
+        Scanner input = new Scanner(System.in);
         cleanDisplay();
         // Notification if login valid
         System.out.printf("Selamat Datang Kembali %s\n",
@@ -80,7 +80,7 @@ public class inventarisGudang {
         displayMenu();
 
         System.out.print("Pilih Menu : ");
-        pilihMenu = input.nextInt();
+        int pilihMenu = input.nextInt();
 
         switch (pilihMenu) {
             // Pilih Gudang
@@ -116,16 +116,19 @@ public class inventarisGudang {
             case 8:
                 exitPage();
                 break;
+            default:
+                System.out.println("Error: Invalid User Input!");
+                exitPrompt();
+                break;
         }
     }
 
-    }
-
-    static void lihatStockPage() {
+    static void lihatStockPage() throws ParseException {
+        Scanner input = new Scanner(System.in);
         cleanDisplay();
         displayWarehouse();
         System.out.print("Pilih Gudang : ");
-        pilihGudang = getUserInput(input, 1, gudang.length) - 1;
+        int pilihGudang = getUserInput(input, 1, gudang.length) - 1;
         // Lihat Stok Section
         cleanDisplay();
         headLine(" Gudang " + gudang[pilihGudang] + " ");
@@ -155,11 +158,12 @@ public class inventarisGudang {
         exitPrompt();
     }
 
-    static void tambahStockPage() {
+    static void tambahStockPage() throws ParseException {
+        Scanner input = new Scanner(System.in);
         cleanDisplay();
         displayWarehouse();
         System.out.print("Pilih Gudang : ");
-        pilihGudang = (getUserInput(input, 1, gudang.length) - 1);
+        int pilihGudang = (getUserInput(input, 1, gudang.length) - 1);
         // Tambah Stok Section
         cleanDisplay();
         headLine(" Gudang " + gudang[pilihGudang] + " ");
@@ -175,7 +179,7 @@ public class inventarisGudang {
             }
         }
         System.out.println("Pilih Obat : ");
-        pilihNamaObat = getUserInput(input, 0, namaObat.length - 1);
+        int pilihNamaObat = getUserInput(input, 0, namaObat.length - 1);
         cleanDisplay();
         headLine(" Gudang " + gudang[pilihGudang] + " ");
         for (int i = 0; i < stok.length; i++) {
@@ -187,7 +191,7 @@ public class inventarisGudang {
             }
         }
         System.out.print("Masukkan ID Obat : ");
-        pilihStok = getUserInput(input, 0, stok.length - 1);
+        int pilihStok = getUserInput(input, 0, stok.length - 1);
 
         if ((int) stok[pilihStok][2] == pilihGudang) {
             System.out.print("Masukkan Jumlah Tambah Stok Obat : ");
@@ -214,11 +218,12 @@ public class inventarisGudang {
         exitPrompt();
     }
 
-    static void ambilStockPage() {
+    static void ambilStockPage() throws ParseException {
+        Scanner input = new Scanner(System.in);
         cleanDisplay();
         displayWarehouse();
         System.out.print("Pilih Gudang : ");
-        pilihGudang = getUserInput(input, 1, gudang.length) - 1;
+        int pilihGudang = getUserInput(input, 1, gudang.length) - 1;
         cleanDisplay();
         // Ambil Stok Section
         headLine(" Gudang " + gudang[pilihGudang] + " ");
@@ -234,7 +239,7 @@ public class inventarisGudang {
             }
         }
         System.out.println("Pilih Obat : ");
-        pilihNamaObat = getUserInput(input, 0, namaObat.length - 1);
+        int pilihNamaObat = getUserInput(input, 0, namaObat.length - 1);
         cleanDisplay();
         headLine(" Gudang " + gudang[pilihGudang] + " ");
         for (int i = 0; i < stok.length; i++) {
@@ -246,11 +251,11 @@ public class inventarisGudang {
             }
         }
         System.out.print("Masukkan ID Obat : ");
-        pilihStok = getUserInput(input, 0, stok.length - 1);
+        int pilihStok = getUserInput(input, 0, stok.length - 1);
 
         if ((int) stok[pilihStok][2] == pilihGudang) {
             System.out.print("Masukkan Jumlah Ambil Stok Obat : ");
-            ambilStok = input.nextInt();
+            int ambilStok = input.nextInt();
             boolean isExpired = checkExpiry(getExpObat(pilihStok));
             if (ambilStok <= getStokObat(pilihStok)) {
                 cleanDisplay();
@@ -278,6 +283,7 @@ public class inventarisGudang {
     }
 
     static void searchPage() {
+        Scanner input = new Scanner(System.in);
         cleanDisplay();
         System.out.print("Masukkan Obat yang ingin dicari : ");
         String cariObat = input.next();
@@ -314,6 +320,7 @@ public class inventarisGudang {
     }
 
     static void obatSettingPage() {
+        Scanner input = new Scanner(System.in);
         cleanDisplay();
         System.out.println("1. Tambah Jenis Obat");
         System.out.println("2. Hapus Obat");
@@ -322,7 +329,7 @@ public class inventarisGudang {
         System.out.println("5. Hapus Obat di Gudang");
         System.out.println("6. Transfer Obat");
         System.out.print("Pilih Menu : ");
-        pilihMenu = input.nextInt();
+        int pilihMenu = input.nextInt();
         switch (pilihMenu) {
             case 1: // Tambah Jenis Obat
                 addObatTypePage();
@@ -349,6 +356,7 @@ public class inventarisGudang {
     }
 
     static void addObatTypePage() {
+        Scanner input = new Scanner(System.in);
         cleanDisplay();
         System.out.print("Masukkan Nama Obat Baru : ");
         String obatBaru = input.next();
@@ -361,11 +369,11 @@ public class inventarisGudang {
     }
 
     static void deleteObatTypePage() {
+        Scanner input = new Scanner(System.in);
         cleanDisplay();
         displayMedicine();
         System.out.print("Pilih Obat yang Akan Dihapus : ");
-        pilihMenu = (getUserInput(input, 1, namaObat.length) - 1);
-        int index = 0;
+        int pilihMenu = (getUserInput(input, 1, namaObat.length) - 1);
         if (confirmationPrompt()) {
             for (int i = stok.length - 1; i >= 0; i--) {
                 if ((int) stok[i][0] > pilihMenu) {
@@ -388,6 +396,7 @@ public class inventarisGudang {
     }
 
     static void addObatToGudangPage() {
+        Scanner input = new Scanner(System.in);
         cleanDisplay();
         displayWarehouse();
         System.out.println("Pilih Gudang : ");
@@ -420,11 +429,11 @@ public class inventarisGudang {
                 System.out.println("Obat berhasil ditambahkan ke gudang!");
             }
             exitPrompt();
-            break;
         }
     }
 
     static void deleteObatInGudangPage() {
+        Scanner input = new Scanner(System.in);
         cleanDisplay();
         displayWarehouse();
         System.out.print("Pilih Gudang : ");
@@ -443,7 +452,7 @@ public class inventarisGudang {
             }
         }
         System.out.println("Pilih Obat : ");
-        pilihNamaObat = getUserInput(input, 0, namaObat.length - 1);
+        int pilihNamaObat = getUserInput(input, 0, namaObat.length - 1);
         cleanDisplay();
         headLine(" Gudang " + gudang[pilihPenghapusanGudang] + " ");
         for (int i = 0; i < stok.length; i++) {
@@ -456,7 +465,7 @@ public class inventarisGudang {
         }
 
         System.out.print("Masukkan ID Obat : ");
-        pilihStok = getUserInput(input, 0, stok.length - 1);
+        int pilihStok = getUserInput(input, 0, stok.length - 1);
 
         // Menghapus obat
         if (confirmationPrompt()) {
@@ -467,10 +476,11 @@ public class inventarisGudang {
     }
 
     static void obatTransferPage() {
+        Scanner input = new Scanner(System.in);
         cleanDisplay();
         displayWarehouse();
         System.out.print("Pilih Gudang : ");
-        pilihGudang = getUserInput(input, 1, gudang.length) - 1;
+        int pilihGudang = getUserInput(input, 1, gudang.length) - 1;
         cleanDisplay();
         headLine(" Gudang " + gudang[pilihGudang] + " ");
         for (int i = 0; i < namaObat.length; i++) { // repeat per obat name
@@ -502,10 +512,10 @@ public class inventarisGudang {
             System.out.println("- Gudang Kosong -");
         }
         System.out.print("\nPilih ID Obat : ");
-        pilihStok = getUserInput(input, 0, stok.length - 1);
+        int pilihStok = getUserInput(input, 0, stok.length - 1);
 
         System.out.print("\nMasukkan Jumlah yang akan dipindah : ");
-        ambilStok = getUserInput(input, 1, (int) stok[pilihStok][1]);
+        int ambilStok = getUserInput(input, 1, (int) stok[pilihStok][1]);
 
         cleanDisplay();
         displayWarehouse();
@@ -557,11 +567,12 @@ public class inventarisGudang {
     }
 
     static void gudangSettingPage() {
+        Scanner input = new Scanner(System.in);
         cleanDisplay();
         System.out.println("1. Tambah Gudang");
         System.out.println("2. Hapus Gudang");
         System.out.print("Pilih Menu : ");
-        pilihMenu = input.nextInt();
+        int pilihMenu = input.nextInt();
         switch (pilihMenu) {
             case 1: // Tambah Gudang
                 addGudangPage();
@@ -575,6 +586,7 @@ public class inventarisGudang {
     }
 
     static void addGudangPage() {
+        Scanner input = new Scanner(System.in);
         cleanDisplay();
         System.out.print("Nama Gudang Baru : ");
         String gudangBaru = input.next();
@@ -585,10 +597,11 @@ public class inventarisGudang {
     }
 
     static void deleteGudangPage() {
+        Scanner input = new Scanner(System.in);
         cleanDisplay();
         displayWarehouse();
         System.out.print("Pilih Gudang yang Akan Dihapus : ");
-        pilihMenu = (getUserInput(input, 1, gudang.length) - 1);
+        int pilihMenu = (getUserInput(input, 1, gudang.length) - 1);
         if (confirmationPrompt()) {
             int index = 0;
             for (int i = stok.length - 1; i >= 0; i--) {
@@ -603,38 +616,35 @@ public class inventarisGudang {
         exitPrompt();
     }
 
-    static void exitPage(){
-         cleanDisplay();
-                // Exit Menu
-                System.out.println("1. Keluar Akun");
-                System.out.println("2. Keluar Program");
-                System.out.println("3. Kembali");
-                System.out.print("Pilih Menu : ");
-                pilihMenuKeluar = input.nextInt();
-                switch (pilihMenuKeluar) {
-                    // Exit Account
-                    case 1:
-                        cleanDisplay();
-                        isLoggedIn = false;
-                        break;
-                    // Exit Program Menu
-                    case 2:
-                        isRunning = false;
-                        break;
-                    // Back to Menu
-                    case 3:
-                        cleanDisplay();
-                        isRunning = true;
-                        break;
-                    default:
-                        System.out.println("Error: Invalid User Input!");
-                        exitPrompt();
-                        break;
-                }
+    static void exitPage() {
+        Scanner input = new Scanner(System.in);
+        cleanDisplay();
+        // Exit Menu
+        System.out.println("1. Keluar Akun");
+        System.out.println("2. Keluar Program");
+        System.out.println("3. Kembali");
+        System.out.print("Pilih Menu : ");
+        int pilihMenuKeluar = input.nextInt();
+        switch (pilihMenuKeluar) {
+            // Exit Account
+            case 1:
+                cleanDisplay();
+                isLoggedIn = false;
+                break;
+            // Exit Program Menu
+            case 2:
+                isRunning = false;
+                break;
+            // Back to Menu
+            case 3:
+                cleanDisplay();
+                isRunning = true;
                 break;
             default:
                 System.out.println("Error: Invalid User Input!");
                 exitPrompt();
+                break;
+        }
     }
 
     static void addStock(int nama, int stokObat, int gudang, String batch, String expired) {
