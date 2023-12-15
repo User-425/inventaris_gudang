@@ -214,25 +214,9 @@ public class inventarisGudang {
                     // Cari Obat
                     case 4:
                         cleanDisplay();
-                        // System.out.print("Masukkan Obat yang ingin dicari : ");
-                        // String cariObat = input.next();
-                        // int searchIndex = search(cariObat);
-                        // for (int i = 0; i < gudang.length; i++) {
-                        //     boolean hasObat = false;
-                        //     for (int j = 0; j < stok.length; j++) {
-                        //         if ((int) stok[j][2] == i && (int) stok[j][0] == searchIndex) {
-                        //             System.out.println("\nData Obat Gudang " + gudang[i] + ": ");
-                        //             hasObat = true;
-                        //             break;
-                        //         }
-                        //     }
-                        //     for (int j = 0; j < stok.length; j++) {
-                        //         if ((int) stok[j][2] == i && (int) stok[j][0] == searchIndex) {
-                        //             System.out.println("(" + j + ") " + getNamaObat(j) + ": " + getStokObat(j));
-                        //             hasObat = true;
-                        //         }
-                        //     }
-                        // }
+                        System.out.print("Masukkan Obat yang ingin dicari : ");
+                        String cariObat = input.next();
+                        search(cariObat);
                         System.out.print("\nMasukkan apapun untuk kembali ke menu ");
                         userInput = input.next();
                         break;
@@ -680,26 +664,61 @@ public class inventarisGudang {
         indexDatabase++;
     }
 
-    // public static int[] searchFull(String word) {
-    // int searchIndex = -1;
-    // for (int i = 0; i < namaObat.length; i++) { // repeat per database
-    // for (int j = 0; j < substrings[i].length; j++) { // repeat per database's
-    // substrings
-    // if (substrings[i][j] != null && substrings[i][j].equalsIgnoreCase(word)) {
-    // return i;
-    // }
-    // }
-    // }
-    // return searchIndex;
-    // }
+    public static int[] searchFull(String word) {
+        int matchedQuery[] = {};
+        for (int i = 0; i < namaObat.length; i++) { // repeat per database
+            for (int j = 0; j < substrings[i].length; j++) { // repeat per database's substrings
+                if (substrings[i][j] != null && substrings[i][j].equalsIgnoreCase(word)) {
+                    matchedQuery = addElement(matchedQuery, i);
+                    break;
+                }
+            }
+        }
+        return matchedQuery;
+    }
 
-    // public static int[] search(String word) {
-    // if (searchFull(word) != -1) {
-    // return searchFull(word);
-    // } else {
-    // return searchSubstrings(word);
-    // }
-    // }
+    public static void search(String word) {
+        if (searchFull(word).length != 0) {
+            int[] matchedQueries = searchFull(word);
+            for (int i = 0; i < gudang.length; i++) {
+                System.out.println("\nData Obat Gudang " + gudang[i] + ": ");
+                boolean hasObat = false;
+                for (int j = 0; j < matchedQueries.length; j++) { //repeat per matched obat query
+                    int stockCount = 0;
+                    boolean hasStok = false;
+                    for (int k = 0; k < stok.length; k++) {
+                        if ((int) stok[k][2] == i && (int) stok[k][0] == matchedQueries[j]) {
+                            stockCount += getStokObat(k);
+                            hasStok = true;
+                            hasObat = true;
+                        }
+                    }
+                    if (hasStok) {
+                        System.out.println(namaObat[matchedQueries[j]] + ": " + stockCount);
+                    }
+                }
+                if (!hasObat) {
+                    System.out.println("- Gudang Kosong -");
+                }
+            }
+        } else {
+            int matchedQuery = searchSubstrings(word);
+            System.out.println("Tidak ada obat yang sesuai");
+            System.out.println("Mungkin yang anda maksud adalah : +" + namaObat[matchedQuery]+" (Y/N)");
+            Scanner scanner = new Scanner(System.in);
+            char c = scanner.next().charAt(0);
+            if (c == 'Y' || c == 'y') {
+                for (int i = 0; i < stok.length; i++) { // repeat per stok
+                    if ((int) stok[i][0] == matchedQuery) {
+                        System.out.println(
+                                (i + 1) + ". " + getNamaObat(matchedQuery) + " " + getStokObat(matchedQuery)
+                                        + " " + getBatchObat(matchedQuery) + " " + getExpObat(matchedQuery));
+                        
+                    }
+                }
+        }
+    }
+    }
 
     public static int searchSubstrings(String userInput) {
         int length = userInput.length();
