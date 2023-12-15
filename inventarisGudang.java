@@ -82,6 +82,7 @@ public class inventarisGudang {
             // Kelola Obat
             case 99:
                 tableHeader("OBAT", 72);
+                columnHeader(new Object[][]{{"NO", 10}, {"OBAT", 35}, {"STOK", 12}, {"STATUS", 12}});
                 exitPrompt();
                 break;
             case 1:
@@ -1029,6 +1030,22 @@ public class inventarisGudang {
         System.out.println("-".repeat(width + 2));
         System.out.println("|" + leftSide + title + rightSide + "|");
         System.out.println("-".repeat(width + 2));
+    }
+
+    static void columnHeader(Object[][]...columns){
+        int totalWidth = 0;
+        System.out.print("|");
+            for (int i = 0; i < columns[0].length; i++ ){
+                int width = (int) columns[0][i][1];
+                int length = ((String) columns[0][i][0]).length();
+                int sidePadding = (width - length) / 2;
+                totalWidth += width;
+                String leftSide = " ".repeat(sidePadding);
+                String rightSide = " ".repeat(width-length-sidePadding);
+
+                System.out.print(leftSide + (String) columns[0][i][0] + rightSide + "|");
+            }
+            System.out.println("\n" + "-".repeat(totalWidth + columns[0].length + 1));
     }
 
     public static int[] addElement(int[] originalArray, int elementToAdd) {
