@@ -103,8 +103,7 @@ public class inventarisGudang {
                                         + (isExpired ? "Expired" : "Aman"));
                             }
                         }
-                        System.out.print("Masukkan apapun untuk kembali ke menu ");
-                        userInput = input.next();
+                        exitPrompt();
                         break;
 
                     // Pilih Gudang
@@ -164,8 +163,7 @@ public class inventarisGudang {
                             System.out.println("ERROR! Masukkan Nomor ID obat yang benar!");
                         }
 
-                        System.out.print("Masukkan apapun untuk kembali ke menu : ");
-                        userInput = input.next();
+                        exitPrompt();
                         break;
 
                     // Pilih Gudang
@@ -229,8 +227,7 @@ public class inventarisGudang {
                             System.out.println("ERROR! Masukkan Nomor ID obat yang benar!");
                         }
 
-                        System.out.print("Masukkan apapun untuk kembali ke menu : ");
-                        userInput = input.next();
+                        exitPrompt();
                         break;
                     // Cari Obat
                     case 4:
@@ -238,8 +235,7 @@ public class inventarisGudang {
                         System.out.print("Masukkan Obat yang ingin dicari : ");
                         String cariObat = input.next();
                         search(cariObat);
-                        System.out.print("\nMasukkan apapun untuk kembali ke menu ");
-                        userInput = input.next();
+                        exitPrompt();
                         break;
                     // Data Keseluruhan
                     case 5:
@@ -267,8 +263,7 @@ public class inventarisGudang {
                                 System.out.println("- Gudang Kosong -");
                             }
                         }
-                        System.out.print("\nMasukkan apapun untuk kembali ke menu ");
-                        userInput = input.next();
+                        exitPrompt();
                         break;
                     case 6:
                         cleanDisplay();
@@ -290,6 +285,7 @@ public class inventarisGudang {
                                     indexDatabase = 0;
                                     populateDatabase();
                                 }
+                                exitPrompt();
                                 break;
                             case 2: // Hapus Obat
                                 cleanDisplay();
@@ -309,12 +305,12 @@ public class inventarisGudang {
                                     indexDatabase = 0;
                                     populateDatabase();
                                 }
+                                exitPrompt();
                                 break;
                             case 3: // Lihat Keseluruhan Jenis Obat
                                 cleanDisplay();
                                 displayMedicine();
-                                System.out.print("\nMasukkan apapun untuk kembali ke menu ");
-                                userInput = input.next();
+                                exitPrompt();
                                 break;
                             case 4: // Tambah Obat di Gudang
                                 cleanDisplay();
@@ -338,8 +334,7 @@ public class inventarisGudang {
                                             && batch.equals(getBatchObat(i))) {
                                         obatSudahAda = true;
                                         System.out.println("Obat sudah tersedia!");
-                                        System.out.print("\nMasukkan apapun untuk kembali ke menu ");
-                                        userInput = input.next();
+                                        exitPrompt();
                                         break;
                                     }
                                 }
@@ -349,8 +344,7 @@ public class inventarisGudang {
                                                 expired);
                                         System.out.println("Obat berhasil ditambahkan ke gudang!");
                                     }
-                                    System.out.print("\nMasukkan apapun untuk kembali ke menu ");
-                                    userInput = input.next();
+                                    exitPrompt();
                                     break;
                                 }
                                 break;
@@ -393,8 +387,7 @@ public class inventarisGudang {
                                     deleteStock(pilihStok);
                                     System.out.println("Obat berhasil dihapus dari gudang!");
                                 }
-                                System.out.print("Masukkan apapun untuk kembali ke menu ");
-                                userInput = input.next();
+                                exitPrompt();
                                 break;
                             case 6: // Transfer Obat
                                 cleanDisplay();
@@ -483,8 +476,7 @@ public class inventarisGudang {
                                     stok[pilihStok][1] = (int) stok[pilihStok][1] - ambilStok;
                                 }
 
-                                System.out.print("\nMasukkan apapun untuk kembali ke menu ");
-                                userInput = input.next();
+                                exitPrompt();
                                 break;
 
                             default:
@@ -506,23 +498,25 @@ public class inventarisGudang {
                                 if (confirmationPrompt()) {
                                     gudang = addElement(gudang, gudangBaru);
                                 }
+                                exitPrompt();
                                 break;
                             case 2: // Hapus Gudang
                                 cleanDisplay();
                                 displayWarehouse();
                                 System.out.print("Pilih Gudang yang Akan Dihapus : ");
                                 pilihMenu = (getUserInput(input, 1, gudang.length) - 1);
-                                if (confirmationPrompt()){
-                                int index = 0;
-                                for (int i = stok.length - 1; i >= 0; i--) {
-                                    if ((int) stok[i][2] > pilihMenu) {
-                                        stok[i][2] = (int) stok[i][2] - 1;
-                                    } else if ((int) stok[i][2] == pilihMenu) {
-                                        deleteStock(i);
+                                if (confirmationPrompt()) {
+                                    int index = 0;
+                                    for (int i = stok.length - 1; i >= 0; i--) {
+                                        if ((int) stok[i][2] > pilihMenu) {
+                                            stok[i][2] = (int) stok[i][2] - 1;
+                                        } else if ((int) stok[i][2] == pilihMenu) {
+                                            deleteStock(i);
+                                        }
                                     }
+                                    gudang = deleteElement(gudang, pilihMenu);
                                 }
-                                gudang = deleteElement(gudang, pilihMenu);
-                                }
+                                exitPrompt();
                                 break;
                             default:
                                 break;
@@ -554,15 +548,13 @@ public class inventarisGudang {
                                 break;
                             default:
                                 System.out.println("Error: Invalid User Input!");
-                                System.out.print("Masukkan apapun untuk kembali ke menu ");
-                                userInput = input.next();
+                                exitPrompt();
                                 break;
                         }
                         break;
                     default:
                         System.out.println("Error: Invalid User Input!");
-                        System.out.print("Masukkan apapun untuk kembali ke menu ");
-                        userInput = input.next();
+                        exitPrompt();
                         break;
                 }
             }
@@ -628,6 +620,12 @@ public class inventarisGudang {
             }
             loginAttempt++;
         }
+    }
+
+    static void exitPrompt() {
+        Scanner input = new Scanner(System.in);
+        System.out.println("Masukkan apapun untuk kembali ke menu ");
+        userInput = input.next();
     }
 
     static void displayMenu() {
