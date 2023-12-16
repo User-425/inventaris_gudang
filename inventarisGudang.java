@@ -485,7 +485,7 @@ public class inventarisGudang {
         System.out.println();
         for (int i = 0; i < gudang.length; i++) {
             tableHeader("DATA OBAT" + " GUDANG " + gudang[i].toUpperCase(), 58);
-            columnHeader(new Object[][] { { "NAMA OBAT", 40 }, { "JUMLAH STOK", 17 }});
+            columnHeader(new Object[][] { { "NAMA OBAT", 40 }, { "JUMLAH STOK", 17 } });
             boolean hasObat = false;
             for (int j = 0; j < namaObat.length; j++) {
                 int stockCount = 0;
@@ -498,11 +498,11 @@ public class inventarisGudang {
                     }
                 }
                 if (hasStok) {
-                    tableRow(new Object[][] { { namaObat[j], 40 }, { Integer.toString(stockCount), 17 }});
+                    tableRow(new Object[][] { { namaObat[j], 40 }, { Integer.toString(stockCount), 17 } });
                 }
             }
             if (!hasObat) {
-                tableRow(new Object[][] {{"- Gudang Kosong -", 59}});
+                tableRow(new Object[][] { { "- Gudang Kosong -", 59 } });
             }
             tableLine(59);
             System.out.println();
@@ -510,7 +510,7 @@ public class inventarisGudang {
         exitPrompt();
     }
 
-    static void obatSettingPage() {
+    static void obatSettingPage() throws ParseException {
         Scanner input = new Scanner(System.in);
         cleanDisplay();
         System.out.println("1. Tambah Jenis Obat");
@@ -623,14 +623,15 @@ public class inventarisGudang {
         }
     }
 
-    static void deleteObatInGudangPage() {
+    static void deleteObatInGudangPage() throws ParseException {
         Scanner input = new Scanner(System.in);
         cleanDisplay();
         displayWarehouse();
         System.out.print("Pilih Gudang : ");
         int pilihPenghapusanGudang = input.nextInt() - 1;
         cleanDisplay();
-        headLine(" Gudang " + gudang[pilihPenghapusanGudang] + " ");
+        tableHeader("DATA OBAT" + " GUDANG " + gudang[pilihPenghapusanGudang].toUpperCase(), 68);
+        columnHeader(new Object[][] { { "ID", 9 }, { "NAMA OBAT", 40 }, { "JUMLAH STOK", 17 } });
         for (int i = 0; i < namaObat.length; i++) { // Repeat per Nama Obat
             int stokCount = 0;
             for (int j = 0; j < stok.length; j++) { // Repeat per Stock
@@ -639,23 +640,28 @@ public class inventarisGudang {
                 }
             }
             if (stokCount > 0) {
-                System.out.println("(" + i + ") " + namaObat[i] + ": " + stokCount);
+                tableRow(new Object[][] { { Integer.toString(i), 9 }, { namaObat[i], 40 },
+                        { Integer.toString(stokCount), 17 } });
             }
         }
+        tableLine(70);
         System.out.println("Pilih Obat : ");
         int pilihNamaObat = getUserInput(input, 0, namaObat.length - 1);
         cleanDisplay();
-        headLine(" Gudang " + gudang[pilihPenghapusanGudang] + " ");
+        tableHeader("DATA OBAT" + " GUDANG " + gudang[pilihPenghapusanGudang].toUpperCase(), 114);
+        columnHeader(new Object[][] { { "ID", 8 }, { "NAMA OBAT", 35 }, { "STOK", 12 }, { "BATCH", 30 },
+                { "EXPIRED", 12 }, { "STATUS", 12 } });
         for (int i = 0; i < stok.length; i++) {
             if ((int) stok[i][2] == pilihPenghapusanGudang
                     && (int) stok[i][0] == pilihNamaObat) {
-                System.out.println(
-                        "(" + i + ") " + getNamaObat(i) + ": " + getStokObat(i) + "  Batch: "
-                                + getBatchObat(i) + "  Exp: " + getExpObat(i));
+                tableRow(new Object[][] { { Integer.toString(i), 8 }, { getNamaObat(i), 35 },
+                        { Integer.toString(getStokObat(i)), 12 }, { getBatchObat(i), 30 }, { getExpObat(i), 12 },
+                        { getStatusObat(i), 12 } });
             }
         }
+        tableLine(116);
 
-        System.out.print("Masukkan ID Obat : ");
+        System.out.println("Masukkan ID Obat : ");
         int pilihStok = getUserInput(input, 0, stok.length - 1);
 
         // Menghapus obat
@@ -666,14 +672,15 @@ public class inventarisGudang {
         exitPrompt();
     }
 
-    static void obatTransferPage() {
+    static void obatTransferPage() throws ParseException {
         Scanner input = new Scanner(System.in);
         cleanDisplay();
         displayWarehouse();
         System.out.print("Pilih Gudang : ");
         int pilihGudang = getUserInput(input, 1, gudang.length) - 1;
         cleanDisplay();
-        headLine(" Gudang " + gudang[pilihGudang] + " ");
+        tableHeader("DATA OBAT" + " GUDANG " + gudang[pilihGudang].toUpperCase(), 68);
+        columnHeader(new Object[][] { { "ID", 9 }, { "NAMA OBAT", 40 }, { "JUMLAH STOK", 17 } });
         for (int i = 0; i < namaObat.length; i++) { // repeat per obat name
             int stokCount = 0;
             for (int j = 0; j < stok.length; j++) { // repeat per obat batch
@@ -683,25 +690,31 @@ public class inventarisGudang {
                 }
             }
             if (stokCount > 0) {
-                System.out.println("(" + i + ") " + namaObat[i] + ": " + stokCount);
+                               tableRow(new Object[][] { { Integer.toString(i), 9 }, { namaObat[i], 40 },
+                        { Integer.toString(stokCount), 17 } });
             }
         }
-        System.out.println("Pilih Obat yang Akan ditransfer:");
+        tableLine(70);
+        System.out.println("\nPilih Obat yang Akan ditransfer:");
         int pilihObatTransfer = getUserInput(input, 0, namaObat.length - 1);
         cleanDisplay();
-        headLine(" Data Obat " + namaObat[pilihObatTransfer] + " di Gudang "
-                + gudang[pilihGudang] + " ");
+        tableHeader("DATA OBAT " + namaObat[pilihObatTransfer].toUpperCase() + " GUDANG " +  gudang[pilihObatTransfer].toUpperCase() , 114);
+        columnHeader(new Object[][] { { "ID", 8 }, { "NAMA OBAT", 35 }, { "STOK", 12 }, { "BATCH", 30 },
+                { "EXPIRED", 12 }, { "STATUS", 12 } });
         boolean hasObat = false;
-        for (int j = 0; j < stok.length; j++) {
-            if ((int) stok[j][2] == pilihGudang && (int) stok[j][0] == pilihObatTransfer) {
-                System.out.println("(" + j + ") " + getNamaObat(j) + ": " + getStokObat(j)
-                        + " Batch: " + getBatchObat(j) + " Exp: " + getExpObat(j));
+        for (int i = 0; i < stok.length; i++) {
+            if ((int) stok[i][2] == pilihGudang && (int) stok[i][0] == pilihObatTransfer) {
+                tableRow(new Object[][] { { Integer.toString(i), 8 }, { getNamaObat(i), 35 },
+                        { Integer.toString(getStokObat(i)), 12 }, { getBatchObat(i), 30 }, { getExpObat(i), 12 },
+                        { getStatusObat(i), 12 } });
                 hasObat = true;
             }
         }
         if (!hasObat) {
             System.out.println("- Gudang Kosong -");
         }
+        tableLine(116);
+
         System.out.print("\nPilih ID Obat : ");
         int pilihStok = getUserInput(input, 0, stok.length - 1);
 
@@ -974,7 +987,7 @@ public class inventarisGudang {
 
     public static boolean confirmationPrompt(String sentence) {
         Scanner input = new Scanner(System.in);
-        System.out.println(sentence+ " (Y/N)");
+        System.out.println(sentence + " (Y/N)");
         if (input.nextLine().equalsIgnoreCase("y")) {
             return true;
         } else {
