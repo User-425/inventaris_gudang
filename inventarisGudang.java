@@ -600,8 +600,28 @@ public class inventarisGudang {
         int jumlahObat = input.nextInt();
         System.out.println("Masukkan Batch Obat : ");
         String batch = input.next();
-        System.out.println("Masukkan Expired Obat (DD-MM-YYYY) : ");
-        String expired = input.next();
+    
+        // Validate the expiration date
+        String expired = "";
+        boolean validDate = false;
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+        dateFormat.setLenient(false);
+    
+        while (!validDate) {
+            System.out.println("Masukkan Expired Obat (DD-MM-YYYY) : ");
+            expired = input.next();
+    
+            try {
+                Date expirationDate = dateFormat.parse(expired);
+    
+                // If parsing is successful, set validDate to true
+                validDate = true;
+    
+            } catch (ParseException e) {
+                System.out.println("Format tanggal tidak valid atau tanggal tidak valid. Gunakan format DD-MM-YYYY.");
+            }
+        }
+    
         boolean obatSudahAda = false;
         for (int i = 0; i < stok.length; i++) {
             if ((int) stok[i][2] == pilihPenambahanGudang
@@ -613,10 +633,10 @@ public class inventarisGudang {
                 break;
             }
         }
+    
         if (!obatSudahAda) {
             if (confirmationPrompt("Apakah anda yakin ingin menambahkan obat ini?")) {
-                addStock(pilihPenambahanObat, jumlahObat, pilihPenambahanGudang, batch,
-                        expired);
+                addStock(pilihPenambahanObat, jumlahObat, pilihPenambahanGudang, batch, expired);
                 System.out.println("Obat berhasil ditambahkan ke gudang!");
             }
             exitPrompt();
@@ -690,7 +710,7 @@ public class inventarisGudang {
                 }
             }
             if (stokCount > 0) {
-                               tableRow(new Object[][] { { Integer.toString(i), 9 }, { namaObat[i], 40 },
+                tableRow(new Object[][] { { Integer.toString(i), 9 }, { namaObat[i], 40 },
                         { Integer.toString(stokCount), 17 } });
             }
         }
@@ -698,7 +718,8 @@ public class inventarisGudang {
         System.out.println("\nPilih Obat yang Akan ditransfer:");
         int pilihObatTransfer = getUserInput(input, 0, namaObat.length - 1);
         cleanDisplay();
-        tableHeader("DATA OBAT " + namaObat[pilihObatTransfer].toUpperCase() + " GUDANG " +  gudang[pilihObatTransfer].toUpperCase() , 114);
+        tableHeader("DATA OBAT " + namaObat[pilihObatTransfer].toUpperCase() + " GUDANG "
+                + gudang[pilihObatTransfer].toUpperCase(), 114);
         columnHeader(new Object[][] { { "ID", 8 }, { "NAMA OBAT", 35 }, { "STOK", 12 }, { "BATCH", 30 },
                 { "EXPIRED", 12 }, { "STATUS", 12 } });
         boolean hasObat = false;
