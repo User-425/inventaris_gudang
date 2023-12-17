@@ -543,13 +543,23 @@ public class inventarisGudang {
     static void addObatTypePage() {
         Scanner input = new Scanner(System.in);
         cleanDisplay();
+        boolean obatAda = false;
         System.out.print("Masukkan Nama Obat Baru : ");
         String obatBaru = input.next();
-        if (confirmationPrompt("Apakah anda yakin ingin membuat obat baru?")) {
-            namaObat = addElement(namaObat, obatBaru);
-            indexDatabase = 0;
-            populateDatabase();
-        }
+        for (int i = 0; i < namaObat.length; i++) {
+                if (obatBaru.equalsIgnoreCase(namaObat[i])) {
+                    obatAda = true;
+                    System.out.println("Obat dengan jenis " + obatBaru + " telah ada!");
+                    break;
+                }
+            }
+            if (!obatAda) {
+                if (confirmationPrompt("Apakah anda yakin ingin membuat obat baru?")) {
+                namaObat = addElement(namaObat, obatBaru);
+                indexDatabase = 0;
+                populateDatabase();           
+        }                
+            }        
         exitPrompt();
     }
 
