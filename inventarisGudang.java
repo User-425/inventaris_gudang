@@ -266,7 +266,7 @@ public class inventarisGudang {
         }
         tableLine(59);
         System.out.println("Pilih Obat : ");
-        int pilihNamaObat = getUserInput(input, 0, namaObat.length - 1);
+        int pilihNamaObat = checkValidNamaObat(getUserInput(input, 0, namaObat.length - 1), pilihGudang);
         cleanDisplay();
         // headLine(" Gudang " + gudang[pilihGudang] + " ");
         tableHeader("DATA OBAT" + " GUDANG " + gudang[pilihGudang].toUpperCase(), 117);
@@ -286,8 +286,7 @@ public class inventarisGudang {
         }
         tableLine(119);
         System.out.print("Masukkan ID Obat : ");
-        int pilihStok = getUserInput(input, 0, stok.length - 1);
-
+        int pilihStok = checkValidInput(getUserInput(input, 0, stok.length - 1), pilihGudang, pilihNamaObat);
         if ((int) stok[pilihStok][2] == pilihGudang) {
             System.out.print("Masukkan Jumlah Tambah Stok Obat : ");
             int jumlahTambah = input.nextInt();
@@ -387,7 +386,7 @@ public class inventarisGudang {
         }
         tableLine(59);
         System.out.println("Pilih Obat : ");
-        int pilihNamaObat = getUserInput(input, 0, namaObat.length - 1);
+        int pilihNamaObat = checkValidNamaObat(getUserInput(input, 0, namaObat.length - 1), pilihGudang);
         cleanDisplay();
         // headLine(" Gudang " + gudang[pilihGudang] + " ");
         tableHeader("DATA OBAT" + " GUDANG " + gudang[pilihGudang].toUpperCase(), 117);
@@ -407,7 +406,7 @@ public class inventarisGudang {
         }
         tableLine(119);
         System.out.print("Masukkan ID Obat : ");
-        int pilihStok = getUserInput(input, 0, stok.length - 1);
+        int pilihStok = checkValidInput(getUserInput(input, 0, stok.length - 1), pilihGudang, pilihNamaObat);
 
         if ((int) stok[pilihStok][2] == pilihGudang) {
             System.out.print("Masukkan Jumlah Ambil Stok Obat : ");
@@ -547,19 +546,19 @@ public class inventarisGudang {
         System.out.print("Masukkan Nama Obat Baru : ");
         String obatBaru = input.next();
         for (int i = 0; i < namaObat.length; i++) {
-                if (obatBaru.equalsIgnoreCase(namaObat[i])) {
-                    obatAda = true;
-                    System.out.println("Obat dengan jenis " + obatBaru + " telah ada!");
-                    break;
-                }
+            if (obatBaru.equalsIgnoreCase(namaObat[i])) {
+                obatAda = true;
+                System.out.println("Obat dengan jenis " + obatBaru + " telah ada!");
+                break;
             }
-            if (!obatAda) {
-                if (confirmationPrompt("Apakah anda yakin ingin membuat obat baru?")) {
+        }
+        if (!obatAda) {
+            if (confirmationPrompt("Apakah anda yakin ingin membuat obat baru?")) {
                 namaObat = addElement(namaObat, obatBaru);
                 indexDatabase = 0;
-                populateDatabase();           
-        }                
-            }        
+                populateDatabase();
+            }
+        }
         exitPrompt();
     }
 
@@ -604,28 +603,28 @@ public class inventarisGudang {
         int jumlahObat = input.nextInt();
         System.out.println("Masukkan Batch Obat : ");
         String batch = input.next();
-    
+
         // Validate the expiration date
         String expired = "";
         boolean validDate = false;
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
         dateFormat.setLenient(false);
-    
+
         while (!validDate) {
             System.out.println("Masukkan Expired Obat (DD-MM-YYYY) : ");
             expired = input.next();
-    
+
             try {
                 Date expirationDate = dateFormat.parse(expired);
-    
+
                 // If parsing is successful, set validDate to true
                 validDate = true;
-    
+
             } catch (ParseException e) {
                 System.out.println("Format tanggal tidak valid atau tanggal tidak valid. Gunakan format DD-MM-YYYY.");
             }
         }
-    
+
         boolean obatSudahAda = false;
         for (int i = 0; i < stok.length; i++) {
             if ((int) stok[i][2] == pilihPenambahanGudang
@@ -637,7 +636,7 @@ public class inventarisGudang {
                 break;
             }
         }
-    
+
         if (!obatSudahAda) {
             if (confirmationPrompt("Apakah anda yakin ingin menambahkan obat ini?")) {
                 addStock(pilihPenambahanObat, jumlahObat, pilihPenambahanGudang, batch, expired);
@@ -670,7 +669,7 @@ public class inventarisGudang {
         }
         tableLine(70);
         System.out.println("Pilih Obat : ");
-        int pilihNamaObat = getUserInput(input, 0, namaObat.length - 1);
+        int pilihNamaObat = checkValidNamaObat(getUserInput(input, 0, namaObat.length - 1), pilihPenghapusanGudang) ;
         cleanDisplay();
         tableHeader("DATA OBAT" + " GUDANG " + gudang[pilihPenghapusanGudang].toUpperCase(), 114);
         columnHeader(new Object[][] { { "ID", 8 }, { "NAMA OBAT", 35 }, { "STOK", 12 }, { "BATCH", 30 },
@@ -686,7 +685,7 @@ public class inventarisGudang {
         tableLine(116);
 
         System.out.println("Masukkan ID Obat : ");
-        int pilihStok = getUserInput(input, 0, stok.length - 1);
+        int pilihStok = checkValidInput(getUserInput(input, 0, stok.length - 1), pilihPenghapusanGudang, pilihNamaObat);
 
         // Menghapus obat
         if (confirmationPrompt("Apakah anda yakin ingin menghapus obat ini?")) {
@@ -720,7 +719,7 @@ public class inventarisGudang {
         }
         tableLine(70);
         System.out.println("\nPilih Obat yang Akan ditransfer:");
-        int pilihObatTransfer = getUserInput(input, 0, namaObat.length - 1);
+        int pilihObatTransfer = checkValidNamaObat(getUserInput(input, 0, namaObat.length - 1), pilihGudang);
         cleanDisplay();
         tableHeader("DATA OBAT " + namaObat[pilihObatTransfer].toUpperCase() + " GUDANG "
                 + gudang[pilihObatTransfer].toUpperCase(), 114);
@@ -741,8 +740,7 @@ public class inventarisGudang {
         tableLine(116);
 
         System.out.print("\nPilih ID Obat : ");
-        int pilihStok = getUserInput(input, 0, stok.length - 1);
-
+        int pilihStok = checkValidInput(getUserInput(input, 0, stok.length - 1), pilihGudang, pilihObatTransfer);
         System.out.print("\nMasukkan Jumlah yang akan dipindah : ");
         int ambilStok = getUserInput(input, 1, (int) stok[pilihStok][1]);
 
@@ -990,6 +988,35 @@ public class inventarisGudang {
         return input;
     }
 
+    static int checkValidInput(int id, int gudang, int indexNamaObat) {
+        Scanner input = new Scanner(System.in);
+        while (!((int) stok[id][2] == gudang && (int) stok[id][0] == indexNamaObat)) {
+            System.out.println("ID obat tidak valid!");
+            System.out.println("Masukkan id obat: ");
+            id = getUserInput(input, 0, stok.length - 1);
+        }
+        return id;
+    }
+
+    static int checkValidNamaObat(int index, int gudang) {
+        Scanner input = new Scanner(System.in);
+        boolean isValid = false;
+        while (!isValid) {
+            for (int i = 0; i < stok.length; i++) {
+                if ((int) stok[i][0] == index && (int) stok[i][2] == gudang) {
+                    isValid = true;
+                    break;
+                }
+            }
+            if (!isValid) {
+                System.out.println("ID obat tidak valid!");
+                System.out.println("Masukkan id obat: ");
+                index = input.nextInt();
+            }
+        }
+        return index;
+    }
+
     static void headLine(String title) {
         System.out.println("<=============[" + title + "]===============>");
     }
@@ -1173,7 +1200,7 @@ public class inventarisGudang {
         System.out.println("-".repeat(width));
     }
 
-    static void deleteObatHabis(){
+    static void deleteObatHabis() {
         for (int i = stok.length - 1; i >= 0; i--) {
             if ((int) stok[i][1] <= 0) {
                 stok = deleteElement(stok, i);
