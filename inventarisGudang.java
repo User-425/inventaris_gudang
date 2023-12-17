@@ -21,6 +21,7 @@ public class inventarisGudang {
     // Stok keseluruhan
     static Object[][] stok = {
             { 0, 21, 0, "Batch001", "15-03-2024" },
+            { 0, 63, 0, "Batch31", "15-03-2022" },
             { 0, 98, 0, "Batch002", "20-02-2023" },
             { 1, 57, 1, "Batch003", "10-09-2024" },
             { 2, 73, 2, "Batch004", "25-11-2024" },
