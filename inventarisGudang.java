@@ -21,7 +21,6 @@ public class inventarisGudang {
     // Stok keseluruhan
     static Object[][] stok = {
             { 0, 21, 0, "Batch001", "15-03-2024" },
-            { 0, 63, 0, "Batch31", "15-03-2022" },
             { 0, 98, 0, "Batch002", "20-02-2023" },
             { 1, 57, 1, "Batch003", "10-09-2024" },
             { 2, 73, 2, "Batch004", "25-11-2024" },
@@ -46,7 +45,8 @@ public class inventarisGudang {
             { 1, 78, 3, "Batch026", "03-05-2024" },
             { 2, 40, 2, "Batch027", "18-02-2025" },
             { 3, 25, 0, "Batch028", "10-10-2024" },
-            { 4, 62, 0, "Batch029", "12-12-2022" }
+            { 4, 62, 0, "Batch029", "12-12-2022" },
+            { 0, 63, 0, "Batch031", "15-03-2022" }
     };
 
     public static void main(String[] args) throws ParseException {
@@ -70,6 +70,7 @@ public class inventarisGudang {
 
     static void menuPage() throws ParseException {
         Scanner input = new Scanner(System.in);
+        deleteObatHabis();
         cleanDisplay();
         // Notification if login valid
         System.out.printf("Selamat Datang Kembali %s\n",
@@ -81,14 +82,6 @@ public class inventarisGudang {
 
         switch (pilihMenu) {
             // Kelola Obat
-            case 99:
-                tableHeader("DATA OBAT", 72);
-                columnHeader(new Object[][] { { "NO", 10 }, { "OBAT", 35 }, { "STOK", 12 }, { "STATUS", 12 } });
-                tableRow(new Object[][] { { "1", 10 }, { "Paracetamol", 35 }, { "4", 12 }, { "Aman", 12 } });
-                tableRow(new Object[][] { { "2", 10 }, { "Pzifer", 35 }, { "22", 12 }, { "Aman", 12 } });
-                tableLine(74);
-                exitPrompt();
-                break;
             case 1:
                 kelolaObatPage();
                 break;
@@ -503,9 +496,9 @@ public class inventarisGudang {
                 }
             }
             if (!hasObat) {
-                tableRow(new Object[][] { { "- Gudang Kosong -", 59 } });
+                tableRow(new Object[][] { { "- Gudang Kosong -", 58 } });
             }
-            tableLine(59);
+            tableLine(60);
             System.out.println();
         }
         exitPrompt();
@@ -515,7 +508,7 @@ public class inventarisGudang {
         Scanner input = new Scanner(System.in);
         cleanDisplay();
         System.out.println("1. Tambah Jenis Obat");
-        System.out.println("2. Hapus Obat");
+        System.out.println("2. Hapus Jenis Obat");
         System.out.println("3. Lihat Keseluruhan Jenis Obat");
         System.out.println("4. Tambah Obat di Gudang");
         System.out.println("5. Hapus Obat di Gudang");
@@ -564,9 +557,9 @@ public class inventarisGudang {
         Scanner input = new Scanner(System.in);
         cleanDisplay();
         displayMedicine();
-        System.out.print("Pilih Obat yang Akan Dihapus : ");
+        System.out.print("Pilih Jenis Obat yang Akan Dihapus : ");
         int pilihMenu = (getUserInput(input, 1, namaObat.length) - 1);
-        if (confirmationPrompt("Apakah anda yakin ingin menghapus obat ini?")) {
+        if (confirmationPrompt("Apakah anda yakin ingin menghapus jenis obat ini?")) {
             for (int i = stok.length - 1; i >= 0; i--) {
                 if ((int) stok[i][0] > pilihMenu) {
                     stok[i][0] = (int) stok[i][0] - 1;
@@ -1168,6 +1161,14 @@ public class inventarisGudang {
 
     static void tableLine(int width) {
         System.out.println("-".repeat(width));
+    }
+
+    static void deleteObatHabis(){
+        for (int i = stok.length - 1; i >= 0; i--) {
+            if ((int) stok[i][1] <= 0) {
+                stok = deleteElement(stok, i);
+            }
+        }
     }
 
     public static int[] addElement(int[] originalArray, int elementToAdd) {
