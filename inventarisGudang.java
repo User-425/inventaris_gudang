@@ -13,11 +13,16 @@ public class inventarisGudang {
     static int indexDatabase = 0;
     static String userInput;
     static int y, z;
+    static int loggedUser = -1;
     static boolean isLoggedIn = false, isRunning = true;
     static String[] namaObat = { "Pfizer", "Promag", "Paracetamol", "Amoxicillin", "Decolgen" };
     static String[] gudang = { "Malang", "Jakarta", "Kediri", "Surabaya", "Gresik" };
-    static String userData = "admin";
-    static String userPass = "test";
+    static Object[][] loginDatabase = {
+            { "Anfasa", "Qw123", "Manager" },
+            { "Ammar", "test", "Manager" },
+            { "Arjuna", "345", "Manager" },
+            { "admin", "test", "Admin" },
+    };
     // Stok keseluruhan
     static Object[][] stok = {
             { 0, 21, 0, "Batch001", "15-03-2024" },
@@ -62,19 +67,23 @@ public class inventarisGudang {
                 // isLoggedIn = true;
                 loginPage();
             } else {
-                menuPage();
+                if (loginDatabase[loggedUser][2].equals("Admin")) {
+                    adminMenuPage();
+                } else if (loginDatabase[loggedUser][2].equals("Manager")) {
+                    managerMenuPage();
+                }
             }
         }
 
     }
 
-    static void menuPage() throws ParseException {
+    static void adminMenuPage() throws ParseException {
         Scanner input = new Scanner(System.in);
         deleteObatHabis();
         cleanDisplay();
         // Notification if login valid
         System.out.printf("Selamat Datang Kembali %s\n",
-                userData);
+                (String) loginDatabase[loggedUser][0]);
         displayMenu();
 
         System.out.print("Pilih Menu : ");
@@ -103,6 +112,46 @@ public class inventarisGudang {
                 break;
             // Menu Keluar
             case 6:
+                exitPage();
+                break;
+            default:
+                System.out.println("Error: Invalid User Input!");
+                exitPrompt();
+                break;
+        }
+    }
+
+    static void managerMenuPage() throws ParseException {
+        Scanner input = new Scanner(System.in);
+        deleteObatHabis();
+        cleanDisplay();
+        // Notification if login valid
+        System.out.printf("Selamat Datang Kembali %s\n",
+                (String) loginDatabase[loggedUser][0]);
+        displayManagerMenu();
+
+        System.out.print("Pilih Menu : ");
+        int pilihMenu = input.nextInt();
+
+        switch (pilihMenu) {
+            // Cari Obat
+            case 1:
+                searchPage();
+                break;
+            // Data Keseluruhan
+            case 2:
+                allDatasPage();
+                break;
+            // Setting Gudang
+            case 3:
+                gudangSettingPage();
+                break;
+            // Setting User
+            case 4:
+                userSettingPage();
+                break;
+            // Menu Keluar
+            case 5:
                 exitPage();
                 break;
             default:
@@ -669,7 +718,7 @@ public class inventarisGudang {
         }
         tableLine(70);
         System.out.println("Pilih Obat : ");
-        int pilihNamaObat = checkValidNamaObat(getUserInput(input, 0, namaObat.length - 1), pilihPenghapusanGudang) ;
+        int pilihNamaObat = checkValidNamaObat(getUserInput(input, 0, namaObat.length - 1), pilihPenghapusanGudang);
         cleanDisplay();
         tableHeader("DATA OBAT" + " GUDANG " + gudang[pilihPenghapusanGudang].toUpperCase(), 114);
         columnHeader(new Object[][] { { "ID", 8 }, { "NAMA OBAT", 35 }, { "STOK", 12 }, { "BATCH", 30 },
@@ -793,6 +842,85 @@ public class inventarisGudang {
         exitPrompt();
     }
 
+    static void userSettingPage() {
+        Scanner input = new Scanner(System.in);
+        cleanDisplay();
+        headLine("SETTING USER");
+        System.out.println("1. Lihat User");
+        System.out.println("2. Tambah User");
+        System.out.println("3. Hapus User");
+        System.out.print("Pilih Menu : ");
+        int pilihMenu = input.nextInt();
+        switch (pilihMenu) {
+            case 1: // Lihat User
+                lihatUserPage();
+                break;
+            case 2: // Tambah User
+                addUserPage();
+                break;
+            case 3: // Hapus User
+                deleteUserPage();
+                break;
+            default:
+                break;
+        }
+    }
+
+    static void lihatUserPage() {
+        cleanDisplay();
+        showAllUsers();
+        exitPrompt();
+    }
+
+    static void showAllUsers() {
+        tableHeader("DATA USER", 44);
+        columnHeader(new Object[][] { { "ID", 7 }, { "USERNAME", 20 }, { "ROLE", 15 } });
+        for (int i = 0; i < loginDatabase.length; i++) {
+            tableRow(new Object[][] { {Integer.toString(i), 7}, { loginDatabase[i][0], 20 }, { loginDatabase[i][2], 15 } });
+        }
+        tableLine(46);
+    }
+
+    static void addUserPage() {
+        Scanner input = new Scanner(System.in);
+        cleanDisplay();
+        headLine("TAMBAH USER");
+        System.out.print("Nama User Baru : ");
+        String userBaru = input.next();
+        System.out.println("Masukkan Sandi User: ");
+        String sandiUser = input.next();
+        System.out.println("Pilih Role User: ");
+        System.out.println("1. Admin");
+        System.out.println("2. Manager");
+        int pilihRole = getUserInput(input, 1, 2);
+        String userRole = "";
+        if (pilihRole == 1) {
+            userRole = "Admin";
+        } else if (pilihRole == 2) {
+            userRole = "Manager";
+        }
+        if (confirmationPrompt("Apakah data sudah benar?")) {
+            Object[] newUser = new Object[] { userBaru, sandiUser, userRole };
+            loginDatabase = addElement(loginDatabase, newUser);
+                System.out.println("User " + userBaru + " Berhasil ditambahkan");
+        }
+        exitPrompt();
+    }
+
+    static void deleteUserPage() {
+        Scanner input = new Scanner(System.in);
+        cleanDisplay();
+        headLine("HAPUS USER");
+        showAllUsers();
+        System.out.print("Masukkan ID User yang Akan Dihapus : ");
+        int pilihMenu = (getUserInput(input, 1, loginDatabase.length));
+        if (confirmationPrompt("Apakah Anda yakin ingin menghapus user "+loginDatabase[pilihMenu][0]+" ?")) {
+            int index = 0;
+            loginDatabase = deleteElement(loginDatabase, pilihMenu);
+        }
+        exitPrompt();
+    }
+
     static void gudangSettingPage() {
         Scanner input = new Scanner(System.in);
         cleanDisplay();
@@ -847,6 +975,7 @@ public class inventarisGudang {
         Scanner input = new Scanner(System.in);
         cleanDisplay();
         // Exit Menu
+        headLine("EXIT");
         System.out.println("1. Keluar Akun");
         System.out.println("2. Keluar Program");
         System.out.println("3. Kembali");
@@ -857,6 +986,7 @@ public class inventarisGudang {
             case 1:
                 cleanDisplay();
                 isLoggedIn = false;
+                loggedUser = -1;
                 break;
             // Exit Program Menu
             case 2:
@@ -913,16 +1043,19 @@ public class inventarisGudang {
     static void loginPage() {
         Scanner input = new Scanner(System.in);
         short loginAttempt = 1;
-        while (loginAttempt <= 3) {
-            headLine(" GUDANG OBAT ");
+        while (loginAttempt <= 3 && !isLoggedIn) {
+            headLine(" Login ");
             System.out.print("Masukkan Username : ");
             String user = input.nextLine();
             System.out.print("Masukkan Password : ");
             String pass = input.nextLine();
-            if (userData.equals(user) && userPass.equals(pass)) {
-                isLoggedIn = true;
-                break;
-            } else if (loginAttempt == 3) {
+            for (int i = 0; i < loginDatabase.length; i++) {
+                if (user.equalsIgnoreCase((String) loginDatabase[i][0]) && pass.equals((String) loginDatabase[i][1])) {
+                    isLoggedIn = true;
+                    loggedUser = i;
+                }
+            }
+            if (loginAttempt == 3 && !isLoggedIn) {
                 isRunning = false;
                 cleanDisplay();
                 System.out.println("Akses Ditolak!");
@@ -951,6 +1084,15 @@ public class inventarisGudang {
         System.out.println("4. Konfigurasi Obat");
         System.out.println("5. Konfigurasi Gudang");
         System.out.println("6. Keluar");
+    }
+
+    static void displayManagerMenu() {
+        System.out.println("Menu:");
+        System.out.println("1. Cari Obat");
+        System.out.println("2. Data Keseluruhan");
+        System.out.println("3. Konfigurasi Gudang");
+        System.out.println("4. Konfigurasi User");
+        System.out.println("5. Keluar");
     }
 
     static String getNamaObat(int index) {
