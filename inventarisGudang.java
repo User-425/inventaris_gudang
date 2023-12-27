@@ -1234,19 +1234,21 @@ public class inventarisGudang {
             }
         } else {
             int matchedQuery = searchSubstrings(word);
-            System.out.println("Tidak ada obat yang sesuai");
+            System.out.println("Tidak ada obat yang sesuai!");
             System.out.println("Mungkin yang anda maksud adalah : " + namaObat[matchedQuery] + " (Y/N)");
             Scanner scanner = new Scanner(System.in);
             char c = scanner.next().charAt(0);
+            cleanDisplay();
             if (c == 'Y' || c == 'y') {
+                tableHeader(" Hasil Pencarian ", 134);
+                columnHeader(new Object[][] { { "ID", 13 }, { "NAMA OBAT", 40 }, { "JUMLAH STOK", 17 },
+                    { "TANGGAL EXPIRED", 19 }, { "BATCH", 25 }, {"GUDANG", 15}});
                 for (int i = 0; i < stok.length; i++) { // repeat per stok
                     if ((int) stok[i][0] == matchedQuery) {
-                        System.out.println(
-                                (i + 1) + ". " + getNamaObat(matchedQuery) + " " + getStokObat(matchedQuery)
-                                        + " " + getBatchObat(matchedQuery) + " " + getExpObat(matchedQuery));
-
+                    tableRow(new Object[][] { { Integer.toString(i), 13 },{namaObat[(int) stok[i][0]], 40}, {Integer.toString(getStokObat(i)), 17},{getExpObat(i), 19}, {getBatchObat(i), 25} , {gudang[(int) stok[i][2]], 15}});   
                     }
                 }
+                tableLine(136);
             }
         }
     }
