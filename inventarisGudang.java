@@ -21,6 +21,7 @@ public class inventarisGudang {
             { "Anfasa", "Qw123", "Manager" },
             { "Ammar", "test", "Manager" },
             { "Arjuna", "345", "Manager" },
+            { "manajer", "test", "Manager" },
             { "admin", "test", "Admin" },
     };
     // Stok keseluruhan
@@ -242,6 +243,9 @@ public class inventarisGudang {
             tableLine(120);
             System.out.println();
         }
+        if (matchedGudang.length == 0) {
+            System.out.println("Data Obat Expired Tidak Ditemukan!");
+        }
         exitPrompt();
     }
 
@@ -342,7 +346,7 @@ public class inventarisGudang {
             boolean isExpired = checkExpiry(getExpObat(pilihStok));
             cleanDisplay();
             headLine(" Tambah Obat ");
-            System.out.println("ID Obat       : " + stok[pilihStok][0]);
+            System.out.println("ID Obat       : " + pilihStok);
             System.out.println("Nama Obat     : " + getNamaObat(pilihStok));
             System.out.println("Batch         : " + getBatchObat(pilihStok));
             System.out.println("Expired       : " + getExpObat(pilihStok));
@@ -464,7 +468,7 @@ public class inventarisGudang {
             if (ambilStok <= getStokObat(pilihStok)) {
                 cleanDisplay();
                 headLine(" Ambil Obat ");
-                System.out.println("ID Obat       : " + stok[pilihStok][0]);
+                System.out.println("ID Obat       : " + pilihStok);
                 System.out.println("Nama Obat     : " + getNamaObat(pilihStok));
                 System.out.println("Batch         : " + getBatchObat(pilihStok));
                 System.out.println("Expired       : " + getExpObat(pilihStok));
@@ -651,7 +655,7 @@ public class inventarisGudang {
         System.out.println("Masukkan Jumlah Obat : ");
         int jumlahObat = input.nextInt();
         System.out.println("Masukkan Batch Obat : ");
-        String batch = input.next();
+        String batch = input.nextLine();
 
         // Validate the expiration date
         String expired = "";
@@ -661,7 +665,7 @@ public class inventarisGudang {
 
         while (!validDate) {
             System.out.println("Masukkan Expired Obat (DD-MM-YYYY) : ");
-            expired = input.next();
+            expired = input.nextLine();
 
             try {
                 Date expirationDate = dateFormat.parse(expired);
@@ -876,7 +880,8 @@ public class inventarisGudang {
         tableHeader("DATA USER", 44);
         columnHeader(new Object[][] { { "ID", 7 }, { "USERNAME", 20 }, { "ROLE", 15 } });
         for (int i = 0; i < loginDatabase.length; i++) {
-            tableRow(new Object[][] { {Integer.toString(i), 7}, { loginDatabase[i][0], 20 }, { loginDatabase[i][2], 15 } });
+            tableRow(new Object[][] { { Integer.toString(i), 7 }, { loginDatabase[i][0], 20 },
+                    { loginDatabase[i][2], 15 } });
         }
         tableLine(46);
     }
@@ -902,7 +907,7 @@ public class inventarisGudang {
         if (confirmationPrompt("Apakah data sudah benar?")) {
             Object[] newUser = new Object[] { userBaru, sandiUser, userRole };
             loginDatabase = addElement(loginDatabase, newUser);
-                System.out.println("User " + userBaru + " Berhasil ditambahkan");
+            System.out.println("User " + userBaru + " Berhasil ditambahkan");
         }
         exitPrompt();
     }
@@ -914,7 +919,7 @@ public class inventarisGudang {
         showAllUsers();
         System.out.print("Masukkan ID User yang Akan Dihapus : ");
         int pilihMenu = (getUserInput(input, 1, loginDatabase.length));
-        if (confirmationPrompt("Apakah Anda yakin ingin menghapus user "+loginDatabase[pilihMenu][0]+" ?")) {
+        if (confirmationPrompt("Apakah Anda yakin ingin menghapus user " + loginDatabase[pilihMenu][0] + " ?")) {
             int index = 0;
             loginDatabase = deleteElement(loginDatabase, pilihMenu);
         }
